@@ -1,20 +1,52 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ThumbsUp, ThumbsDown, Share2, MoreHorizontal, User } from 'lucide-react';
 import { formatViewCount } from '../../../core/utils/formatUtils';
 import type { VideoDetails } from '../../../core/utils/youtubeApi';
 import { useChannelStore } from '../../../core/stores/channelStore';
 import { useUIStore } from '../../../core/stores/uiStore';
+import { VideoCardMenu } from '../../Video/VideoCardMenu';
+import { AddToPlaylistModal } from '../../Playlists/modals/AddToPlaylistModal';
 
 interface WatchPageVideoInfoProps {
     video: VideoDetails;
 }
 
 export const WatchPageVideoInfo: React.FC<WatchPageVideoInfoProps> = ({ video }) => {
+    const navigate = useNavigate();
     const { currentChannel } = useChannelStore();
     const { showToast } = useUIStore();
     const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
+    const [showPlaylistModal, setShowPlaylistModal] = useState(false);
+
     const description = video?.description || '';
+
+    const handleMenuOpen = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        setMenuAnchor(e.currentTarget);
+        setIsMenuOpen(true);
+    };
+
+    const handleMenuClose = () => {
+        setIsMenuOpen(false);
+        setMenuAnchor(null);
+    };
+
+    const handleDetails = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        handleMenuClose();
+        if (!currentChannel) return;
+        navigate(`/video/${currentChannel.id}/${video.id}/details`);
+    };
+
+    const handleAddToPlaylist = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        handleMenuClose();
+        setShowPlaylistModal(true);
+    };
 
     return (
         <>
@@ -75,11 +107,31 @@ export const WatchPageVideoInfo: React.FC<WatchPageVideoInfoProps> = ({ video })
                         <Share2 size={18} />
                         Share
                     </button>
-                    <button className="flex items-center justify-center w-9 h-9 bg-bg-secondary rounded-full hover:bg-hover-bg cursor-pointer border-none text-text-primary flex-shrink-0">
+                    <button
+                        onClick={handleMenuOpen}
+                        className="flex items-center justify-center w-9 h-9 bg-bg-secondary rounded-full hover:bg-hover-bg cursor-pointer border-none text-text-primary flex-shrink-0"
+                    >
                         <MoreHorizontal size={20} />
                     </button>
+
+                    <VideoCardMenu
+                        isOpen={isMenuOpen}
+                        onClose={handleMenuClose}
+                        anchorEl={menuAnchor}
+                        onAddToPlaylist={handleAddToPlaylist}
+                        onDetails={handleDetails}
+                        onRemove={() => { /* not used: hideDelete=true */ }}
+                        hideDelete
+                    />
                 </div>
             </div>
+
+            {showPlaylistModal && (
+                <AddToPlaylistModal
+                    onClose={() => setShowPlaylistModal(false)}
+                    videoIds={[video.id]}
+                />
+            )}
 
             <div
                 className="bg-bg-secondary rounded-xl p-3 text-sm text-text-primary cursor-pointer hover:bg-hover-bg transition-colors mb-2"
