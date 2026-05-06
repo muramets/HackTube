@@ -203,7 +203,8 @@ interface YoutubeChannelResponse {
             };
         };
         statistics: {
-            subscriberCount: string;
+            subscriberCount?: string;
+            hiddenSubscriberCount?: boolean;
         };
     }>;
 }
@@ -354,6 +355,33 @@ describe('TrendService.addTrendChannel', () => {
         mockYoutubeFetch(buildYoutubeResponse());
         await TrendService.addTrendChannel(USER_ID, SOURCE_CHAN, '@testchannel', API_KEY);
         expect(mockHttpsCallable).not.toHaveBeenCalled();
+    });
+
+    // Regression: Artist - Topic / auto-generated music channels lack `customUrl`
+    // and often have `hiddenSubscriberCount: true`. Firestore rejects undefined,
+    // so missing fields must be omitted entirely instead of written as undefined.
+    it('omits handle and subscriberCount for Artist - Topic channels (no customUrl, hidden subs)', async () => {
+        mockYoutubeFetch({
+            items: [{
+                id: 'UCvrXFlJKj9HS-URvoM4CysA',
+                snippet: {
+                    title: 'Some Artist - Topic',
+                    thumbnails: { default: { url: 'http://img/topic.jpg' } },
+                },
+                contentDetails: { relatedPlaylists: { uploads: 'UUvrXFlJKj9HS-URvoM4CysA' } },
+                statistics: { hiddenSubscriberCount: true },
+            }],
+        });
+
+        await TrendService.addTrendChannel(USER_ID, SOURCE_CHAN, 'UCvrXFlJKj9HS-URvoM4CysA', API_KEY);
+
+        const persisted = getCollection(`users/${USER_ID}/channels/${SOURCE_CHAN}/trendChannels`).get('UCvrXFlJKj9HS-URvoM4CysA') as Record<string, unknown>;
+        expect(persisted).toBeDefined();
+        expect(Object.keys(persisted)).not.toContain('handle');
+        expect(Object.keys(persisted)).not.toContain('subscriberCount');
+        for (const [key, value] of Object.entries(persisted)) {
+            expect(value, `field ${key} must not be undefined`).not.toBeUndefined();
+        }
     });
 });
 

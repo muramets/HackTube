@@ -7,6 +7,7 @@ import { useApiKey } from '../../../core/hooks/useApiKey';
 import { useChannelStore } from '../../../core/stores/channelStore';
 import { useUIStore } from '../../../core/stores/uiStore';
 import { logger } from '../../../core/utils/logger';
+import { isFunctionsDeadlineExceeded } from '../../../core/utils/firebaseErrors';
 
 interface AddChannelModalProps {
     isOpen: boolean;
@@ -65,6 +66,16 @@ export const AddChannelModal: React.FC<AddChannelModalProps> = ({ isOpen, onClos
             // function writes `lastUpdated`, and the user is notified via the notifications bell.
             TrendService.syncChannelCloud(currentChannel.id, [channel.id], false)
                 .catch((err: unknown) => {
+                    if (isFunctionsDeadlineExceeded(err)) {
+                        // Server function continues running past the client deadline; videos
+                        // will surface via the trendChannels Firestore subscription on completion.
+                        logger.warn('Initial sync exceeded client deadline; server still running', {
+                            component: 'AddChannelModal',
+                            channelId: channel.id
+                        });
+                        showToast(`Sync for ${channel.title} is taking longer than usual — videos will appear when ready.`, 'success');
+                        return;
+                    }
                     logger.error('Initial sync dispatch failed', {
                         component: 'AddChannelModal',
                         channelId: channel.id,

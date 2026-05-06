@@ -8,6 +8,7 @@ import { useChannels } from '../../../../core/hooks/useChannels';
 import { useApiKey } from '../../../../core/hooks/useApiKey';
 import { useUIStore } from '../../../../core/stores/uiStore';
 import { logger } from '../../../../core/utils/logger';
+import { isFunctionsDeadlineExceeded } from '../../../../core/utils/firebaseErrors';
 import type { TrendChannel } from '../../../../core/types/trends';
 
 interface MenuState {
@@ -154,6 +155,14 @@ export const useTrendsSidebar = () => {
                 }
             })
             .catch((error: unknown) => {
+                if (isFunctionsDeadlineExceeded(error)) {
+                    logger.warn('Per-channel sync exceeded client deadline; server still running', {
+                        component: 'useTrendsSidebar',
+                        channelId
+                    });
+                    showToast(`${channel.title} is taking longer than usual — videos will appear when ready.`, 'success');
+                    return;
+                }
                 const message = error instanceof Error ? error.message : String(error);
                 logger.error('Per-channel sync dispatch failed', {
                     component: 'useTrendsSidebar',

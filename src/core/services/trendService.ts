@@ -524,15 +524,27 @@ export const TrendService = {
         }
 
         const item = data.items[0];
+        const avatarUrl =
+            item.snippet.thumbnails?.medium?.url ||
+            item.snippet.thumbnails?.default?.url ||
+            '';
+        const subscriberCountRaw = item.statistics?.subscriberCount;
+        const subscriberCount =
+            !item.statistics?.hiddenSubscriberCount && subscriberCountRaw
+                ? parseInt(subscriberCountRaw, 10)
+                : undefined;
+
         const newChannel: TrendChannel = {
             id: item.id,
             title: item.snippet.title,
-            handle: item.snippet.customUrl,
-            avatarUrl: item.snippet.thumbnails.medium?.url || item.snippet.thumbnails.default?.url,
+            avatarUrl,
             uploadsPlaylistId: item.contentDetails.relatedPlaylists.uploads,
             isVisible: true,
-            subscriberCount: parseInt(item.statistics.subscriberCount),
             lastUpdated: 0,
+            ...(item.snippet.customUrl ? { handle: item.snippet.customUrl } : {}),
+            ...(typeof subscriberCount === 'number' && !Number.isNaN(subscriberCount)
+                ? { subscriberCount }
+                : {}),
         };
 
         await setDoc(doc(db, `users/${userId}/channels/${userChannelId}/trendChannels`, newChannel.id), newChannel);
@@ -567,7 +579,10 @@ export const TrendService = {
         const { functions } = await import('../../config/firebase');
         const { httpsCallable } = await import('firebase/functions');
 
-        const manualTrendSync = httpsCallable(functions, 'manualTrendSync');
+        // Match server-side timeoutSeconds: 540 in functions/src/trends/manualSync.ts.
+        // Default client deadline (~70s) was firing deadline-exceeded for first-time syncs
+        // of large channels even though the function continued running on the server.
+        const manualTrendSync = httpsCallable(functions, 'manualTrendSync', { timeout: 540_000 });
 
         await manualTrendSync({
             channelId, // The context (User Channel ID)
