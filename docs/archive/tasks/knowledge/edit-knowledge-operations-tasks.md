@@ -212,7 +212,7 @@ Final verification — all test suites + lint + typecheck
 
 ### Verification
 ```bash
-cd /Users/muramets/Documents/youtube-interface
+cd /Users/muramets/Code/youtube-interface
 npx vitest run functions/src/services/tools/utils/__tests__/applyOperations.test.ts
 npm run check
 ```
@@ -355,7 +355,7 @@ npm run check
 
 ### Verification
 ```bash
-cd /Users/muramets/Documents/youtube-interface
+cd /Users/muramets/Code/youtube-interface
 npx vitest run functions/src/services/tools/handlers/knowledge/__tests__/editKnowledge.test.ts
 npm run check
 ```
@@ -481,7 +481,7 @@ npm run check
 
 ### Verification
 ```bash
-cd /Users/muramets/Documents/youtube-interface
+cd /Users/muramets/Code/youtube-interface
 npm run check
 # Manual verification: read the updated definition and confirm JSON Schema is valid
 npx vitest run --project functions
@@ -565,7 +565,7 @@ npx vitest run --project frontend
 **Fix all findings. Then run final verification:**
 
 ```bash
-cd /Users/muramets/Documents/youtube-interface
+cd /Users/muramets/Code/youtube-interface
 npm run check
 npx vitest run --project frontend
 npx vitest run --project functions

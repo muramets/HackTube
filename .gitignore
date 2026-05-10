@@ -45,3 +45,4 @@ storybook-static
 .firebase/
 hosting.*.cache
 temporary/
+.claude/scheduled_tasks.lock

@@ -126,7 +126,7 @@ T1.3 + T1.4 — PARALLEL (independent test files, both depend on T1.1+T1.2)
 
 ### Verification
 ```bash
-cd /Users/muramets/Documents/youtube-interface
+cd /Users/muramets/Code/youtube-interface
 npx vitest run --project functions -- src/services/ai/__tests__/retry.test.ts
 npx vitest run --project functions -- src/services/claude/__tests__/streamChat.test.ts
 npm run check
@@ -259,7 +259,7 @@ T2.7 — SEQUENTIAL LAST (tests depend on all above)
 
 ### Verification
 ```bash
-cd /Users/muramets/Documents/youtube-interface
+cd /Users/muramets/Code/youtube-interface
 npx vitest run --project functions -- src/services/claude/__tests__/streamChat.test.ts
 npx vitest run --project functions -- src/services/ai/__tests__/retry.test.ts
 npm run check
@@ -433,7 +433,7 @@ T3.6 — OPTIONAL, parallel with or instead of T3.5
 
 ### Verification
 ```bash
-cd /Users/muramets/Documents/youtube-interface
+cd /Users/muramets/Code/youtube-interface
 npx vitest run --project functions -- src/services/claude/__tests__/streamChat.test.ts
 npx vitest run --project functions -- src/chat/__tests__/aiChat.thinkingTimeout.test.ts
 npx vitest run --project functions
@@ -551,7 +551,7 @@ T4.5 — SEQUENTIAL LAST (tests)
 
 ### Verification
 ```bash
-cd /Users/muramets/Documents/youtube-interface
+cd /Users/muramets/Code/youtube-interface
 npx vitest run --project frontend
 npm run check
 ```
@@ -633,7 +633,7 @@ Answer these production questions:
 
 ### Verification (FINAL)
 ```bash
-cd /Users/muramets/Documents/youtube-interface
+cd /Users/muramets/Code/youtube-interface
 npx vitest run --project frontend
 npx vitest run --project functions
 npm run check
