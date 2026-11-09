@@ -24,7 +24,7 @@ npm run logs         # Stream function logs
 ### Admin CLI (`scripts/`)
 Node scripts against production Firebase (admin SDK + `gcloud` ADC). Writes are dry-run by default; add `--execute` to apply. Full index: `scripts/README.md`.
 ```bash
-node scripts/create-custom-video.mjs --help   # create/update a video for publishing: cover, title, description, tags, playlist, draft/version; --list shows channels + playlists
+node scripts/create-custom-video.mjs --help   # create/update a video for publishing: cover, title, description, tags, playlist, draft/version; --list shows channels + playlists; --delete --video <id>
 node scripts/move-video-to-channel.mjs ...    # move a video with full history to another internal channel
 ```
 

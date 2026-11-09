@@ -8,6 +8,8 @@
 //                          optionally into a playlist and saved as v.1.
 //   --video <id>           Update an existing custom video: only the passed
 //                          fields change; saved as draft or as a new version.
+//   --delete --video <id>  Delete a video the way the app does (Storage files,
+//                          subcollections, Home order, playlist references).
 // Nothing is uploaded to YouTube.
 //
 // Usage:
@@ -44,6 +46,7 @@ Modes:
   --list                       Print channels with their playlists (use with --channel to filter)
   (default)                    Create a new video
   --video <id>                 Update an existing custom video (only passed fields change)
+  --delete --video <id>        Delete a video with its files, history and playlist references
 
 Fields:
   --title <text>               Title (required when creating)
@@ -73,6 +76,7 @@ function readCliOptions() {
     const { values } = parseArgs({
         options: {
             list: { type: 'boolean', default: false },
+            delete: { type: 'boolean', default: false },
             video: { type: 'string' },
             user: { type: 'string' },
             channel: { type: 'string' },
@@ -90,6 +94,16 @@ function readCliOptions() {
         strict: true,
     });
     return values;
+}
+
+const FIELD_FLAGS = ['title', 'description', 'description-file', 'tags', 'thumbnail', 'playlist', 'playlist-only', 'save-version'];
+
+function validateDeleteOptions(options) {
+    if (!options.video) throw new Error('--delete requires --video <id>');
+    const conflicting = FIELD_FLAGS.filter((flag) => options[flag] !== undefined && options[flag] !== false);
+    if (conflicting.length > 0) {
+        throw new Error(`--delete cannot be combined with ${conflicting.map((f) => `--${f}`).join(', ')}`);
+    }
 }
 
 function validateOptions(options) {
@@ -317,6 +331,79 @@ async function applyVideoWrite(ctx, plan) {
     return updateVideo(ctx, plan);
 }
 
+// ── Delete ───────────────────────────────────────────────────────────────────
+
+/** Everything the app removes when a video is deleted — collected for the dry-run report. */
+async function buildDeletePlan({ db, bucket }, options) {
+    const userId = await resolveUserId(db, options.user);
+    const channel = await resolveChannel(db, userId, options);
+    const videoId = options.video;
+    const videoRef = channel.ref.collection('videos').doc(videoId);
+    const video = await videoRef.get();
+    if (!video.exists) throw new Error(`Video ${videoId} not found in channel ${formatEntry(channel)}`);
+
+    const [storageFiles] = await bucket.getFiles({ prefix: `${videoRef.path}/` });
+    const subcollections = [];
+    for (const sub of await videoRef.listCollections()) {
+        subcollections.push({ name: sub.id, docCount: (await sub.get()).size });
+    }
+    const playlists = (await channel.ref.collection('playlists').where('videoIds', 'array-contains', videoId).get()).docs;
+    const order = (await channel.ref.collection('settings').doc('videoOrder').get()).data()?.order ?? [];
+    return { userId, channel, videoId, videoRef, video, storageFiles, subcollections, playlists, isOnHome: order.includes(videoId) };
+}
+
+function printDeletePlan(plan, execute) {
+    const { channel, videoId, video, storageFiles, subcollections, playlists, isOnHome } = plan;
+    const subSummary = subcollections.map((s) => `${s.name} (${s.docCount})`).join(', ') || '(none)';
+    console.log(`=== Delete Video ${videoId} ===`);
+    console.log(`Mode:           ${execute ? 'EXECUTE' : 'DRY-RUN (nothing is deleted)'}`);
+    console.log(`Channel:        ${formatEntry(channel)}`);
+    console.log(`Title:          "${video.data().title ?? '(no title)'}"  — ${video.data().isCustom ? 'custom video' : 'YouTube video'}`);
+    console.log(`Storage files:  ${storageFiles.length}`);
+    console.log(`Subcollections: ${subSummary}`);
+    console.log(`Home:           ${isOnHome ? 'will be removed from Home order' : 'not on Home'}`);
+    console.log(`Playlists:      ${playlists.length ? playlists.map(formatEntry).join(', ') : '(none)'}\n`);
+}
+
+/** Remove an id from an array field inside a transaction. */
+async function removeIdFromDoc(db, ref, field, id, extraFields = {}) {
+    await db.runTransaction(async (tx) => {
+        const snap = await tx.get(ref);
+        const current = snap.exists && Array.isArray(snap.data()[field]) ? snap.data()[field] : [];
+        if (!current.includes(id)) return;
+        tx.update(ref, { [field]: current.filter((existing) => existing !== id), ...extraFields });
+    });
+}
+
+/** Same order as VideoService.deleteVideo: files → docs → Home order → playlists. */
+async function deleteVideo({ db }, plan) {
+    const { channel, videoId, videoRef, storageFiles, playlists, isOnHome } = plan;
+    await Promise.all(storageFiles.map((file) => file.delete({ ignoreNotFound: true })));
+    await db.recursiveDelete(videoRef);
+    console.log(`Deleted video ${videoId} (${storageFiles.length} storage files)`);
+
+    if (isOnHome) {
+        await removeIdFromDoc(db, channel.ref.collection('settings').doc('videoOrder'), 'order', videoId);
+        console.log('Removed from Home');
+    }
+    for (const playlist of playlists) {
+        await removeIdFromDoc(db, playlist.ref, 'videoIds', videoId, { updatedAt: Date.now() });
+        console.log(`Removed from playlist "${docName(playlist)}"`);
+    }
+}
+
+async function runDelete(ctx, options) {
+    validateDeleteOptions(options);
+    const plan = await buildDeletePlan(ctx, options);
+    printDeletePlan(plan, options.execute);
+    if (!options.execute) {
+        console.log('Dry run only. Re-run with --execute to delete.');
+        return;
+    }
+    await deleteVideo(ctx, plan);
+    console.log('\nDone.');
+}
+
 // ── Plan output ──────────────────────────────────────────────────────────────
 
 function describeCover(cover) {
@@ -405,6 +492,10 @@ async function main() {
 
     if (options.list) {
         await printChannelsWithPlaylists(ctx.db, await resolveUserId(ctx.db, options.user), options.channel);
+        return;
+    }
+    if (options.delete) {
+        await runDelete(ctx, options);
         return;
     }
 
