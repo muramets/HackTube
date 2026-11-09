@@ -336,9 +336,12 @@ export const VideoGrid: React.FC<VideoGridProps> = ({
     });
   }
 
-  // 5. Apply Sorting (Home Sort) - overrides default order
+  // 5. Apply Sorting (Home Sort) - overrides default order.
+  // Home-only: playlist views own their order (manual / playlistVideoSortBy),
+  // re-sorting them here would revert drag-and-drop reorders.
+  const shouldApplyHomeSort = !playlistId && homeSortBy !== 'default';
   let filteredVideos = result; // Initialize return variable
-  if (homeSortBy !== 'default') {
+  if (shouldApplyHomeSort) {
     const sorted = [...result];
     sorted.sort((a, b) => {
       if (homeSortBy === 'views') {
