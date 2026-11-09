@@ -9,7 +9,6 @@ import { TrafficErrorState } from './components/TrafficErrorState';
 import { TrafficFloatingBar } from './components/TrafficFloatingBar';
 import { useEnrichmentGate, enrichSources, batchLookupCachedVideos } from './hooks/useEnrichmentGate';
 import { findPreviousSnapshot } from './hooks/useTrafficDataLoader';
-import { generateTrafficCsv } from './utils/csvGenerator';
 import { computeEnrichmentStats, mergeSources } from './utils/enrichment';
 import { exportTrafficCsv, downloadCsv, generateExportFilename, generateDiscrepancyReport } from './utils/exportTrafficCsv';
 import { useApiKey } from '../../../../core/hooks/useApiKey';
@@ -55,7 +54,7 @@ interface TrafficTabProps {
     trafficData: import('../../../../core/types/suggestedTraffic/traffic').TrafficData | null;
     isLoadingData: boolean;
     isSaving: boolean;
-    handleCsvUpload: (sources: TrafficSource[], totalRow?: TrafficSource, file?: File, targetVersion?: number) => Promise<string | null>;
+    handleCsvUpload: (sources: TrafficSource[], totalRow?: TrafficSource, targetVersion?: number) => Promise<string | null>;
     onSnapshotClick?: (id: string) => void;
     onSwitchToVersion?: (version: number) => void;
     packagingHistory?: import('../../../../core/types/versioning').PackagingVersion[]; // Passed to resolve version aliases
@@ -130,7 +129,6 @@ export const TrafficTab: React.FC<TrafficTabProps> = ({
     const [pendingUpload, setPendingUpload] = useState<{
         sources: TrafficSource[],
         totalRow?: TrafficSource,
-        file?: File,
         /** Accurate cache including batch-looked-up external videos */
         resolvedCache?: VideoDetails[]
     } | null>(null);
@@ -831,7 +829,6 @@ export const TrafficTab: React.FC<TrafficTabProps> = ({
 
         // Patch from cache using mergeSources (O(1) Map lookup, not O(n) find)
         const patchedSources = mergeSources(sources, new Map(), allVideos);
-        const wasPatched = sources.some((s, i) => s.sourceTitle !== patchedSources[i].sourceTitle);
 
         // Batch-lookup new video IDs in Firestore cache for accurate enrichment count.
         // Without this, allVideos only has cache for the CURRENT snapshot's IDs — new CSV
@@ -847,21 +844,15 @@ export const TrafficTab: React.FC<TrafficTabProps> = ({
 
         // Check enrichment with accurate cache
         const uploadStats = computeEnrichmentStats(patchedSources, fullCache);
-        if (uploadStats.needsEnrichment && file) {
-            setPendingUpload({ sources: patchedSources, totalRow, file, resolvedCache: fullCache });
+        if (uploadStats.needsEnrichment) {
+            setPendingUpload({ sources: patchedSources, totalRow, resolvedCache: fullCache });
             setIsEnrichmentModalOpen(true);
             return;
         }
 
         // All good — upload directly
         try {
-            let finalFile = file;
-            if (wasPatched && file) {
-                const newCsvContent = generateTrafficCsv(patchedSources, totalRow);
-                finalFile = new File([newCsvContent], file.name, { type: 'text/csv' });
-            }
-
-            const newSnapshotId = await handleCsvUpload(patchedSources, totalRow, finalFile, uploadTargetVersion);
+            const newSnapshotId = await handleCsvUpload(patchedSources, totalRow, uploadTargetVersion);
             if (newSnapshotId && onSnapshotClick) onSnapshotClick(newSnapshotId);
             if (typeof viewingVersion === 'number' && uploadTargetVersion !== viewingVersion && onSwitchToVersion) {
                 onSwitchToVersion(uploadTargetVersion);
@@ -884,10 +875,7 @@ export const TrafficTab: React.FC<TrafficTabProps> = ({
                 pendingUpload.resolvedCache ?? allVideos,
             );
 
-            const newCsvContent = generateTrafficCsv(enrichedSources, pendingUpload.totalRow);
-            const enrichedFile = new File([newCsvContent], pendingUpload.file?.name || 'traffic_data.csv', { type: 'text/csv' });
-
-            const newSnapshotId = await handleCsvUpload(enrichedSources, pendingUpload.totalRow, enrichedFile);
+            const newSnapshotId = await handleCsvUpload(enrichedSources, pendingUpload.totalRow);
             if (newSnapshotId && onSnapshotClick) onSnapshotClick(newSnapshotId);
 
             setPendingUpload(null);
@@ -918,7 +906,7 @@ export const TrafficTab: React.FC<TrafficTabProps> = ({
 
         setIsSkipping(true);
         try {
-            const newSnapshotId = await handleCsvUpload(pendingUpload.sources, pendingUpload.totalRow, pendingUpload.file);
+            const newSnapshotId = await handleCsvUpload(pendingUpload.sources, pendingUpload.totalRow);
             if (newSnapshotId && onSnapshotClick) onSnapshotClick(newSnapshotId);
         } catch (error: unknown) {
             logger.error('Upload failed', { error });

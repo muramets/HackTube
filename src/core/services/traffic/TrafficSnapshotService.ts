@@ -5,6 +5,15 @@ import { TrafficDataService } from './TrafficDataService';
 import { syncSnapshotCount } from './syncSnapshotCount';
 import { generateAutoLabel } from '../../../pages/Details/tabs/TrafficSource/utils/autoLabel';
 import { logger, snapshotLogger } from '../../utils/logger';
+import { generateTrafficCsv } from '../../utils/suggestedTraffic/csvGenerator';
+
+/**
+ * Build the CSV we persist to Storage from already-parsed sources.
+ * We never store the raw export: a normalized file always re-parses without
+ * column mapping (manual mappings and renamed YouTube columns are baked in).
+ */
+const toNormalizedCsvBlob = (sources: TrafficSource[], totalRow?: TrafficSource): Blob =>
+    new Blob([generateTrafficCsv(sources, totalRow)], { type: 'text/csv' });
 
 /**
  * Сервис для управления снапшотами трафика.
@@ -24,7 +33,6 @@ export const TrafficSnapshotService = {
         version: number,
         sources: TrafficSource[],
         totalRow?: TrafficSource,
-        csvFile?: File,
         publishDate?: number
     ): Promise<string> {
         const currentData = await TrafficDataService.fetch(userId, channelId, videoId);
@@ -39,33 +47,23 @@ export const TrafficSnapshotService = {
             sources[0]
         );
 
-        let storagePath: string | undefined;
-
-        if (csvFile) {
-            try {
-                const uploadResult = await uploadCsvSnapshot(
-                    userId,
-                    channelId,
-                    videoId,
-                    snapshotId,
-                    csvFile
-                );
-                storagePath = uploadResult.storagePath;
-            } catch (error) {
-                logger.error('Failed to upload CSV to Storage', {
-                    component: 'TrafficSnapshotService',
-                    snapshotId,
-                    error
-                });
-                throw new Error('FAILED_TO_UPLOAD_SNAPSHOT');
-            }
-        } else {
-            // If no CSV file provided, we cannot create a valid snapshot in the new system
-            logger.error('No CSV file provided for snapshot', {
+        let storagePath: string;
+        try {
+            const uploadResult = await uploadCsvSnapshot(
+                userId,
+                channelId,
+                videoId,
+                snapshotId,
+                toNormalizedCsvBlob(sources, totalRow)
+            );
+            storagePath = uploadResult.storagePath;
+        } catch (error) {
+            logger.error('Failed to upload CSV to Storage', {
                 component: 'TrafficSnapshotService',
-                snapshotId
+                snapshotId,
+                error
             });
-            throw new Error('CSV_FILE_REQUIRED');
+            throw new Error('FAILED_TO_UPLOAD_SNAPSHOT');
         }
 
         // Создаем метаданные снапшота
@@ -195,15 +193,13 @@ export const TrafficSnapshotService = {
         videoId: string,
         snapshotId: string,
         sources: TrafficSource[],
-        totalRow?: TrafficSource,
-        csvFile?: File
+        totalRow?: TrafficSource
     ): Promise<void> {
         logger.info('Starting snapshot update', {
             component: 'TrafficSnapshotService',
             snapshotId,
             sourcesCount: sources.length,
-            hasTotalRow: !!totalRow,
-            hasCsvFile: !!csvFile
+            hasTotalRow: !!totalRow
         });
 
         const currentData = await TrafficDataService.fetch(userId, channelId, videoId);
@@ -214,30 +210,26 @@ export const TrafficSnapshotService = {
 
         const snapshot = currentData.snapshots[snapshotIndex];
 
-        // 1. Upload new CSV (overwrite or new path)
-        let storagePath = snapshot.storagePath;
-        if (csvFile) {
-            try {
-                // If we have an existing path, we can potentially overwrite it or just upload new
-                // To be safe and avoid caching issues, we'll upload as a new file (same ID logic though)
-                const uploadResult = await uploadCsvSnapshot(
-                    userId,
-                    channelId,
-                    videoId,
-                    snapshotId,
-                    csvFile
-                );
-                storagePath = uploadResult.storagePath;
+        // 1. Re-upload the normalized CSV so Storage always matches the updated sources
+        let storagePath: string;
+        try {
+            const uploadResult = await uploadCsvSnapshot(
+                userId,
+                channelId,
+                videoId,
+                snapshotId,
+                toNormalizedCsvBlob(sources, totalRow)
+            );
+            storagePath = uploadResult.storagePath;
 
-                logger.debug('CSV uploaded during update', {
-                    component: 'TrafficSnapshotService',
-                    snapshotId,
-                    storagePath
-                });
-            } catch (error) {
-                logger.error('Failed to update CSV in Storage', { error });
-                throw new Error('FAILED_TO_UPLOAD_SNAPSHOT');
-            }
+            logger.debug('CSV uploaded during update', {
+                component: 'TrafficSnapshotService',
+                snapshotId,
+                storagePath
+            });
+        } catch (error) {
+            logger.error('Failed to update CSV in Storage', { component: 'TrafficSnapshotService', snapshotId, error });
+            throw new Error('FAILED_TO_UPLOAD_SNAPSHOT');
         }
 
         // 2. Update Metadata

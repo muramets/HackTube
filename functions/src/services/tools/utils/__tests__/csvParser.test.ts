@@ -100,3 +100,18 @@ External,external website,some site,5,10,2,0:00:30,0.05`;
         expect(result.rows[0].videoId).toBe('abc123');
     });
 });
+
+describe('parseSuggestedTrafficCsv — YouTube "Thumbnail" export format', () => {
+    const THUMBNAIL_CSV = `Traffic source,Source type,Source title,Thumbnail impressions,Thumbnail click-through rate (%),Views,Average view duration,Watch time (hours)
+Total,,,633,0.63,6,0:08:12,0.5491
+YT_RELATED.WLSYf-09NEA,Content,Top 10 Places To Visit in The Netherlands - Travel Guide,1,100,1,0:21:45,0.3626
+YT_RELATED.K5WwxzHh1Fk,Content,🍁Slow Autumn Days | Preparing an Autumn Feast|🍂🕯️,2,50,1,0:05:27,0.0908`;
+
+    it('reads impressions and CTR from the renamed columns', () => {
+        const result = parseSuggestedTrafficCsv(THUMBNAIL_CSV);
+
+        expect(result.total).toEqual({ impressions: 633, ctr: 0.63, views: 6, watchTimeHours: 0.5491 });
+        expect(result.rows).toHaveLength(2);
+        expect(result.rows[1]).toMatchObject({ videoId: 'K5WwxzHh1Fk', impressions: 2, ctr: 50 });
+    });
+});

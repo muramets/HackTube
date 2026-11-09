@@ -57,7 +57,7 @@ export const parseCsvLine = (str: string): string[] => {
  */
 export const detectColumnMapping = <K extends string>(
     headers: string[],
-    knownHeaders: Record<K, string[]>
+    knownHeaders: Record<K, readonly string[]>
 ): Record<K, number> | null => {
     const keys = Object.keys(knownHeaders) as K[];
     const mapping = {} as Record<K, number>;
@@ -101,3 +101,10 @@ export const parseIntField = (s: string | undefined): number => {
     const parsed = parseInt(cleaned, 10);
     return isNaN(parsed) ? 0 : parsed;
 };
+
+/**
+ * Wrap a text value as a quoted CSV field (RFC 4180): `a, b` → `"a, b"`.
+ * Inner double quotes are doubled.
+ */
+export const quoteCsvField = (value: string): string =>
+    `"${value.replace(/"/g, '""')}"`;

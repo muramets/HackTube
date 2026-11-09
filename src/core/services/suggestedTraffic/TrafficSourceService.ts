@@ -11,6 +11,7 @@ import { db } from '../../../config/firebase';
 import { doc, setDoc, getDocFromServer } from 'firebase/firestore';
 import type { TrafficSourceData, TrafficSourceSnapshot, TrafficSourceMetric } from '../../types/suggestedTraffic/trafficSource';
 import { uploadTrafficSourceCsv } from '../storageService';
+import { generateTrafficSourceCsv } from '../../utils/trafficSource/csvGenerator';
 import { generateAutoLabel } from '../../../pages/Details/tabs/TrafficSource/utils/autoLabel';
 import { syncSnapshotCount } from '../traffic/syncSnapshotCount';
 
@@ -76,17 +77,18 @@ export const TrafficSourceService = {
         userId: string,
         channelId: string,
         videoId: string,
-        _metrics: TrafficSourceMetric[],
+        metrics: TrafficSourceMetric[],
         totalRow: TrafficSourceMetric | undefined,
-        file: File,
         publishedAt?: string
     ): Promise<string> {
         const now = Date.now();
         const snapshotId = `ts_${now}`;  // "ts_" prefix to distinguish from traffic snapshots
 
 
-        // 1. Upload CSV to Cloud Storage
-        const { storagePath } = await uploadTrafficSourceCsv(userId, channelId, videoId, snapshotId, file);
+        // 1. Upload a NORMALIZED CSV (not the raw export) — guarantees the snapshot
+        //    re-parses without column mapping, even if the upload needed manual mapping.
+        const normalizedCsv = new Blob([generateTrafficSourceCsv(metrics, totalRow)], { type: 'text/csv' });
+        const { storagePath } = await uploadTrafficSourceCsv(userId, channelId, videoId, snapshotId, normalizedCsv);
 
 
         // 2. Create snapshot metadata (storagePath comes from actual upload, not manual construction)

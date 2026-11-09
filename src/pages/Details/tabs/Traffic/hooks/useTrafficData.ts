@@ -19,7 +19,7 @@ export interface TrafficHookState {
     isLoading: boolean;
     isSaving: boolean;
     error: string | null;
-    handleCsvUpload: (sources: TrafficSource[], totalRow?: TrafficSource, file?: File, targetVersion?: number) => Promise<string | null>;
+    handleCsvUpload: (sources: TrafficSource[], totalRow?: TrafficSource, targetVersion?: number) => Promise<string | null>;
     handleDeleteSnapshot: (snapshotId: string) => Promise<void>;
     saveData: (newData: TrafficData) => Promise<void>;
     updateLocalData: (newData: TrafficData) => void;
@@ -76,7 +76,7 @@ export const useTrafficData = ({ userId, channelId, video, packagingHistory = []
     }, [userId, channelId, video.id]);
 
     // Action: Handle New CSV Upload
-    const handleCsvUpload = useCallback(async (sources: TrafficSource[], totalRow?: TrafficSource, file?: File, targetVersion?: number) => {
+    const handleCsvUpload = useCallback(async (sources: TrafficSource[], totalRow?: TrafficSource, targetVersion?: number) => {
         if (!userId || !video.id) return null;
         setIsSaving(true);
         try {
@@ -101,7 +101,6 @@ export const useTrafficData = ({ userId, channelId, video, packagingHistory = []
                 version,
                 sources,
                 totalRow,
-                file,
                 publishDate
             );
 

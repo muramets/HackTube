@@ -29,8 +29,7 @@ interface TrafficSourceTabProps {
     onSnapshotUploaded: (snapshotId: string) => void;
     handleCsvUpload: (
         metrics: TrafficSourceMetric[],
-        totalRow: TrafficSourceMetric | undefined,
-        file: File
+        totalRow: TrafficSourceMetric | undefined
     ) => Promise<string | null>;
 }
 
@@ -94,7 +93,7 @@ export const TrafficSourceTab = React.memo<TrafficSourceTabProps>(({
         setParseError(null);
         try {
             const { metrics, totalRow } = await parseTrafficSourceCsv(file);
-            const snapshotId = await handleCsvUpload(metrics, totalRow, file);
+            const snapshotId = await handleCsvUpload(metrics, totalRow);
             if (snapshotId) onSnapshotUploaded(snapshotId);
         } catch (err) {
             if (err instanceof Error) {
@@ -118,7 +117,7 @@ export const TrafficSourceTab = React.memo<TrafficSourceTabProps>(({
 
         try {
             const { metrics, totalRow } = await parseTrafficSourceCsv(pendingFile, mapping);
-            const snapshotId = await handleCsvUpload(metrics, totalRow, pendingFile);
+            const snapshotId = await handleCsvUpload(metrics, totalRow);
             if (snapshotId) onSnapshotUploaded(snapshotId);
         } catch (err) {
             if (err instanceof Error) {

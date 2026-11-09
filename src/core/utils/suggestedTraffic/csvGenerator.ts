@@ -1,19 +1,21 @@
-import type { TrafficSource } from '../../../../../core/types/suggestedTraffic/traffic';
-import { csvLogger } from '../../../../../core/utils/logger';
+import type { TrafficSource } from '../../types/suggestedTraffic/traffic';
+import { csvLogger } from '../logger';
+import { quoteCsvField } from '../csvUtils';
+import { YT_CSV_CANONICAL_HEADERS } from '../../../../shared/youtubeAnalyticsCsv';
 
 export const generateTrafficCsv = (sources: TrafficSource[], totalRow?: TrafficSource): string => {
     csvLogger.debug('Starting generation', { sourcesCount: sources.length, hasTotalRow: !!totalRow });
 
     // 1. Headers (Standard YouTube Format)
     const headers = [
-        "Traffic source",
-        "Source type",
-        "Source title",
-        "Impressions",
-        "Impressions click-through rate (%)",
-        "Views",
-        "Average view duration",
-        "Watch time (hours)",
+        YT_CSV_CANONICAL_HEADERS.trafficSource,
+        YT_CSV_CANONICAL_HEADERS.sourceType,
+        YT_CSV_CANONICAL_HEADERS.sourceTitle,
+        YT_CSV_CANONICAL_HEADERS.impressions,
+        YT_CSV_CANONICAL_HEADERS.ctr,
+        YT_CSV_CANONICAL_HEADERS.views,
+        YT_CSV_CANONICAL_HEADERS.avgViewDuration,
+        YT_CSV_CANONICAL_HEADERS.watchTimeHours,
         "Channel ID",
         "Not Found"
     ];
@@ -47,13 +49,10 @@ export const generateTrafficCsv = (sources: TrafficSource[], totalRow?: TrafficS
             csvLogger.warn('Source missing videoId', { source });
         }
 
-        // Escape quotes in title
-        const escape = (s: string) => `"${s.replace(/"/g, '""')}"`;
-
         const row = [
             sourceId,
             source.sourceType || 'Content',
-            escape(source.sourceTitle || ''),
+            quoteCsvField(source.sourceTitle || ''),
             source.impressions,
             source.ctr,
             source.views,

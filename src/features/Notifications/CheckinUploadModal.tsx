@@ -87,7 +87,7 @@ export const CheckinUploadModal: React.FC = () => {
 
             const snapshotId = await TrafficSnapshotService.create(
                 user.uid, currentChannel.id, video.id,
-                version, sources, totalRow, file, publishDate
+                version, sources, totalRow, publishDate
             );
 
             // Set label to badge text (e.g. "24 hours snapshot")
@@ -125,7 +125,7 @@ export const CheckinUploadModal: React.FC = () => {
 
             const snapshotId = await TrafficSourceService.createSnapshot(
                 user.uid, currentChannel.id, video.id,
-                metrics, totalRow, file, video.publishedAt
+                metrics, totalRow, video.publishedAt
             );
 
             // Set label to badge text

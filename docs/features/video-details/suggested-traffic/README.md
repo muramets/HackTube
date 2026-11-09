@@ -4,6 +4,8 @@
 
 **Stages 1-6 реализованы.** Таб Suggested Traffic внутри Video Details page. CSV upload, smart parsing, YouTube API enrichment, snapshot versioning с delta mode, Smart Assistant (traffic type, viewer type, niche suggestions), Chat Bridge + Canvas Bridge, per-snapshot notes и reactions. AI-анализ on-demand через tool `analyzeSuggestedTraffic` — строит per-video timelines, находит transitions (new/dropped), анализирует контент (shared tags, keywords, channels), определяет self-channel видео.
 
+**Устойчивость к формату YouTube:** старые и новые названия колонок экспорта (например, "Thumbnail impressions") распознаются автоматически. В хранилище всегда кладётся «переведённая» копия таблицы со стандартными заголовками (включая результаты обогащения), поэтому snapshot открывается повторно без ручного маппинга.
+
 ---
 
 ## Что это
@@ -258,8 +260,8 @@ Bridge передаёт только IDs вместо полных данных.
 | Файл | Назначение |
 |------|-----------|
 | `pages/Details/tabs/Traffic/utils/enrichment.ts` | Pure functions: `classifySources()`, `computeEnrichmentStats()`, `mergeSources()`, `filterIdsToFetch()`, `isTitleMissing()` |
-| `pages/Details/tabs/Traffic/utils/csvParser.ts` | Client-side CSV parser (auto-detect EN + RU headers) |
-| `pages/Details/tabs/Traffic/utils/csvGenerator.ts` | CSV generation (re-export after enrichment) |
+| `pages/Details/tabs/Traffic/utils/csvParser.ts` | Client-side CSV parser (auto-detect via shared vocabulary `shared/youtubeAnalyticsCsv.ts`) |
+| `core/utils/suggestedTraffic/csvGenerator.ts` | Normalized CSV generation (canonical headers + enrichment columns) — используется `TrafficSnapshotService` для каждого upload'а |
 | `pages/Details/tabs/Traffic/utils/exportTrafficCsv.ts` | Export с discrepancy report |
 | `pages/Details/tabs/Traffic/utils/snapshotLoader.ts` | Cloud Storage download + parse |
 | `pages/Details/tabs/Traffic/utils/snapshotCache.ts` | In-memory LRU cache |
@@ -272,7 +274,7 @@ Bridge передаёт только IDs вместо полных данных.
 | Файл | Назначение |
 |------|-----------|
 | `core/services/traffic/TrafficDataService.ts` | Firestore CRUD for traffic data |
-| `core/services/traffic/TrafficSnapshotService.ts` | Snapshot creation → Cloud Storage + Firestore |
+| `core/services/traffic/TrafficSnapshotService.ts` | Snapshot creation → Cloud Storage (всегда нормализованный CSV из sources, не raw export) + Firestore |
 | `core/services/traffic/TrafficDeltaService.ts` | Delta computation (current vs previous) |
 | `core/services/suggestedTraffic/TrafficNicheService.ts` | Niche/group CRUD |
 | `core/services/suggestedTraffic/TrafficNoteService.ts` | Per-video notes |
@@ -329,8 +331,8 @@ Upload:
   User drags CSV → csvParser.ts (auto-detect headers)
     → computeEnrichmentStats (check if data needs enrichment)
     → EnrichmentModal (YouTube API batch if still missing)
-    → enrichSources() → mergeSources() → csvGenerator.ts
-    → Cloud Storage upload + Firestore snapshot metadata
+    → enrichSources() → mergeSources()
+    → TrafficSnapshotService: csvGenerator.ts (normalized CSV) → Cloud Storage + Firestore snapshot metadata
 
 View:
   User clicks snapshot → snapshotLoader.ts (download + parse + cache)

@@ -4,6 +4,8 @@
 
 **Stages 1-3 реализованы.** Таб Traffic Sources в Video Details page: CSV upload (drag & drop), auto-naming ("13 hours", "3 days"), sidebar timeline, sortable table с 6 колонками, cumulative/delta toggle. AI-анализ доступен on-demand через tool `analyzeTrafficSources` — AI сам скачивает все snapshot'ы, строит per-source timelines с pre-computed deltas и интерпретирует тренды. Общие CSV утилиты переиспользуются между Traffic Sources и Suggested Traffic.
 
+**Устойчивость к формату YouTube:** названия колонок в экспорте периодически меняются (например, "Impressions" → "Thumbnail impressions"). Приложение узнаёт старые и новые варианты автоматически. Если колонки всё же пришлось сопоставить вручную, сохраняется уже «переведённая» копия таблицы — поэтому snapshot всегда открывается повторно без ручного маппинга.
+
 **Snapshot count denormalization:** `trafficSourceSnapshotCount` записывается на документ видео при каждом create/delete снэпшота и при входе в Traffic Sources таб (lazy sync). `getMultipleVideoDetails` пробрасывает это поле для own-видео, а tool description указывает LLM проверять его перед вызовом.
 
 ---
@@ -26,6 +28,7 @@
 | **Связь** | Вызывается ПЕРВЫМ — показывает общую картину | Вызывается ПОСЛЕ — если Suggested доминирует, AI drill-down'ит в конкретные видео |
 
 ### CSV формат
+Пример (до 2026-11). С ноября 2026 YouTube называет колонки `Thumbnail impressions` и `Thumbnail click-through rate (%)` и ставит их сразу после `Traffic source` — оба варианта распознаются автоматически, порядок колонок не важен.
 ```
 Traffic source,Views,Watch time (hours),Average view duration,Impressions,Impressions click-through rate (%)
 Total,36,6.9541,0:11:35,840,2.5
@@ -121,9 +124,11 @@ AI-ассистент анализирует traffic sources через dedicate
 | `pages/Details/tabs/TrafficSource/hooks/useTrafficSourceDataLoader.ts` | Loader: скачивает CSV, парсит, считает delta |
 | `pages/Details/tabs/TrafficSource/modals/TrafficSourceColumnMapperModal.tsx` | Fallback column mapping UI |
 | `pages/Details/Sidebar/TrafficSource/TrafficSourceNav.tsx` | Sidebar: timeline list, inline rename, delete |
-| `core/services/suggestedTraffic/TrafficSourceService.ts` | Firestore CRUD + Cloud Storage upload |
+| `core/services/suggestedTraffic/TrafficSourceService.ts` | Firestore CRUD + Cloud Storage upload (пишет нормализованный CSV, не raw export) |
 | `core/types/suggestedTraffic/trafficSource.ts` | `TrafficSourceMetric`, `TrafficSourceSnapshot`, `TrafficSourceData`, `SnapshotWithMetrics` |
-| `core/utils/trafficSource/parser.ts` | Client-side CSV parser (auto-detect EN + RU headers) |
+| `core/utils/trafficSource/parser.ts` | Client-side CSV parser (auto-detect EN + RU headers via shared vocabulary) |
+| `core/utils/trafficSource/csvGenerator.ts` | Normalized CSV для Storage (canonical headers) — snapshot всегда re-parse'ится без маппинга |
+| `shared/youtubeAnalyticsCsv.ts` | SSOT словарь заголовков YouTube CSV (frontend + Cloud Functions) + canonical labels |
 | `core/utils/trafficSource/snapshotLoader.ts` | Cloud Storage download + LRU cache (max 20) |
 | `core/utils/trafficSource/delta.ts` | Delta calculation + `TrafficSourceDeltaMetric` type |
 | `core/ai/utils/formatTrafficSources.ts` | Compact text formatter для AI context (utility) |
@@ -162,7 +167,9 @@ User asks about traffic → LLM calls analyzeTrafficSources(videoId)
 | Файл | Кейсов |
 |------|--------|
 | `functions/src/services/tools/handlers/analysis/__tests__/analyzeTrafficSources.test.ts` | 7 (validation, empty data, full pipeline, broken CSV, download failures) |
-| `functions/src/services/tools/utils/__tests__/trafficSourceCsvParser.test.ts` | 10 (standard CSV, edge cases, RU headers, RFC 4180) |
+| `functions/src/services/tools/utils/__tests__/trafficSourceCsvParser.test.ts` | 13 (standard CSV, edge cases, RU headers, RFC 4180, Thumbnail-формат) |
+| `src/core/utils/trafficSource/__tests__/csvGenerator.test.ts` | 5 (round-trip без маппинга, кавычки/запятые, Thumbnail-формат, MAPPING_REQUIRED) |
+| `shared/__tests__/youtubeAnalyticsCsv.test.ts` | 6 (legacy + Thumbnail заголовки, canonical self-match) |
 | `functions/src/services/tools/utils/__tests__/trafficSourceTimeline.test.ts` | Timeline builder (multi-snapshot, deltas, gaps) |
 | `src/core/utils/trafficSource/__tests__/delta.test.ts` | 5 (deltas, new sources, division by zero) |
 | `src/core/ai/utils/__tests__/formatTrafficSources.test.ts` | 13 (empty, single, multi, top-5 cap, large numbers) |

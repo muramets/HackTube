@@ -143,3 +143,22 @@ describe("parseTrafficSourceCsv", () => {
         expect(result.metrics[2].source).toBe("Browse features");
     });
 });
+
+describe("parseTrafficSourceCsv — YouTube \"Thumbnail\" export format", () => {
+    it("reads impressions and CTR from the renamed columns", () => {
+        const input = [
+            "Traffic source,Thumbnail impressions,Thumbnail click-through rate (%),Views,Average view duration,Watch time (hours)",
+            "Total,1213,2.23,92,0:16:33,8.8543",
+            "Browse features,566,3.89,82,0:17:35,7.3516",
+        ].join("\n");
+
+        const result = parseTrafficSourceCsv(input);
+
+        expect(result.totalRow).toEqual({
+            source: "Total", views: 92, watchTimeHours: 8.8543, avgViewDuration: "0:16:33", impressions: 1213, ctr: 2.23,
+        });
+        expect(result.metrics).toEqual([
+            { source: "Browse features", views: 82, watchTimeHours: 7.3516, avgViewDuration: "0:17:35", impressions: 566, ctr: 3.89 },
+        ]);
+    });
+});

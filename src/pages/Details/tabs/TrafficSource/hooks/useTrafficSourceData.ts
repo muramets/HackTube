@@ -25,8 +25,7 @@ export interface TrafficSourceHookState {
     error: string | null;
     handleCsvUpload: (
         metrics: TrafficSourceMetric[],
-        totalRow: TrafficSourceMetric | undefined,
-        file: File
+        totalRow: TrafficSourceMetric | undefined
     ) => Promise<string | null>;
     handleDeleteSnapshot: (snapshotId: string) => Promise<void>;
     updateLocalData: (newData: TrafficSourceData) => void;
@@ -71,8 +70,7 @@ export const useTrafficSourceData = ({
     // Upload new CSV
     const handleCsvUpload = useCallback(async (
         metrics: TrafficSourceMetric[],
-        totalRow: TrafficSourceMetric | undefined,
-        file: File
+        totalRow: TrafficSourceMetric | undefined
     ): Promise<string | null> => {
         if (!userId || !video.id) return null;
         setIsSaving(true);
@@ -83,7 +81,6 @@ export const useTrafficSourceData = ({
                 video.id,
                 metrics,
                 totalRow,
-                file,
                 video.publishedAt
             );
 

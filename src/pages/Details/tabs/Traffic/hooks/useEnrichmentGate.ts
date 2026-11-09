@@ -7,7 +7,6 @@ import type { VideoDetails } from '../../../../../core/utils/youtubeApi';
 import { fetchVideosBatch } from '../../../../../core/utils/youtubeApi';
 import { VideoService, getExternalVideosPath } from '../../../../../core/services/videoService';
 import { TrafficSnapshotService } from '../../../../../core/services/traffic/TrafficSnapshotService';
-import { generateTrafficCsv } from '../utils/csvGenerator';
 import { logger } from '../../../../../core/utils/logger';
 import { debug } from '../../../../../core/utils/debug';
 import { externalVideoQueryPrefix } from './useExternalVideoLookup';
@@ -257,22 +256,19 @@ export const useEnrichmentGate = ({
             // Invalidate external video cache so useExternalVideoLookup picks up enriched data
             queryClient.invalidateQueries({ queryKey: externalVideoQueryPrefix(userId, channelId) });
 
-            // Regenerate CSV and update/create snapshot
-            const csvContent = generateTrafficCsv(updatedSources, existingTotalRow);
-            const csvFile = new File([csvContent], 'enriched_traffic_data.csv', { type: 'text/csv' });
-
+            // Update/create snapshot (the service persists a regenerated, normalized CSV)
             let snapshotId = currentSnapshotId;
 
             if (currentSnapshotId) {
                 await TrafficSnapshotService.update(
                     userId, channelId, trafficVideoId, currentSnapshotId,
-                    updatedSources, existingTotalRow, csvFile,
+                    updatedSources, existingTotalRow,
                 );
                 debug.enrichment('runEnrichment: snapshot updated', { snapshotId: currentSnapshotId });
             } else {
                 snapshotId = await TrafficSnapshotService.create(
                     userId, channelId, trafficVideoId, activeVersion,
-                    updatedSources, existingTotalRow, csvFile,
+                    updatedSources, existingTotalRow,
                 );
                 debug.enrichment('runEnrichment: snapshot created', { snapshotId });
             }

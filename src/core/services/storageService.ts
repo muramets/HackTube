@@ -209,7 +209,7 @@ export const deleteStagingAttachment = async (storagePath: string): Promise<void
  * @param channelId - Channel ID
  * @param videoId - Video ID
  * @param snapshotId - Unique snapshot ID (e.g., "snap_1704672000000_v1")
- * @param file - CSV file to upload
+ * @param csvContent - CSV content to upload
  * @returns Storage path and download URL
  */
 export const uploadCsvSnapshot = async (
@@ -217,7 +217,7 @@ export const uploadCsvSnapshot = async (
     channelId: string,
     videoId: string,
     snapshotId: string,
-    file: File
+    csvContent: Blob
 ): Promise<{ storagePath: string; downloadUrl: string }> => {
     try {
         // Construct storage path
@@ -225,7 +225,7 @@ export const uploadCsvSnapshot = async (
         const storageRef = ref(storage, storagePath);
 
         // Upload file with metadata
-        await uploadBytes(storageRef, file, {
+        await uploadBytes(storageRef, csvContent, {
             contentType: 'text/csv',
             customMetadata: {
                 snapshotId,
@@ -337,12 +337,12 @@ export const uploadTrafficSourceCsv = async (
     channelId: string,
     videoId: string,
     snapshotId: string,
-    file: File
+    csvContent: Blob
 ): Promise<{ storagePath: string; downloadUrl: string }> => {
     const storagePath = `users/${userId}/channels/${channelId}/videos/${videoId}/trafficSources/${snapshotId}.csv`;
     const storageRef = ref(storage, storagePath);
 
-    await uploadBytes(storageRef, file, {
+    await uploadBytes(storageRef, csvContent, {
         contentType: 'text/csv',
         customMetadata: {
             snapshotId,

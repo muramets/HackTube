@@ -11,7 +11,7 @@ interface TrafficModalsProps {
     isMapperOpen: boolean;
     failedFile: File | null;
     onMapperClose: () => void;
-    onCsvUpload: (sources: TrafficSource[], totalRow?: TrafficSource, file?: File) => Promise<string | null>;
+    onCsvUpload: (sources: TrafficSource[], totalRow?: TrafficSource) => Promise<string | null>;
 
     // Enrichment Modal
     isEnrichmentOpen: boolean;
@@ -47,7 +47,7 @@ export const TrafficModals: React.FC<TrafficModalsProps> = ({
 
         try {
             const { sources, totalRow } = await parseTrafficCsv(failedFile, mapping);
-            await onCsvUpload(sources, totalRow, failedFile);
+            await onCsvUpload(sources, totalRow);
             onMapperClose();
         } catch {
             showToast('Mapping failed to produce valid data.', 'error');

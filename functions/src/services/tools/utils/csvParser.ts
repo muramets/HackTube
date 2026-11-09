@@ -6,6 +6,8 @@
 //   Traffic source | Source type | Source title | Impressions |
 //   Impressions click-through rate (%) | Views | Average view duration |
 //   Watch time (hours)
+// Header names vary between export versions (e.g. "Thumbnail impressions") —
+// matched via the shared vocabulary in shared/youtubeAnalyticsCsv.ts.
 //
 // Key characteristics:
 //   - Total row: Traffic source="Total", Source type="", Source title=""
@@ -13,6 +15,8 @@
 //   - CTR field is empty when Impressions = 0
 //   - Source title may contain commas inside quoted fields
 // =============================================================================
+
+import { findYtCsvColumn, type YtCsvField } from '../../../shared/youtubeAnalyticsCsv.js';
 
 export interface SuggestedVideoRow {
     videoId: string;          // Stripped: "abc123" (no YT_RELATED. prefix)
@@ -36,19 +40,19 @@ export interface ParsedSnapshot {
     total: CsvTotalRow | null;  // null if no Total row present
 }
 
-// Known header variants (lowercase for matching)
-const HEADER_MAP = {
-    source:      ['traffic source'],
-    sourceType:  ['source type'],
-    sourceTitle: ['source title'],
-    impressions: ['impressions'],
-    ctr:         ['impressions click-through rate'],
-    views:       ['views'],
-    duration:    ['average view duration'],
-    watchTime:   ['watch time (hours)'],
-} as const;
+// Our column keys → shared YouTube header vocabulary (SSOT in shared/youtubeAnalyticsCsv.ts)
+const COLUMN_FIELDS = {
+    source:      'trafficSource',
+    sourceType:  'sourceType',
+    sourceTitle: 'sourceTitle',
+    impressions: 'impressions',
+    ctr:         'ctr',
+    views:       'views',
+    duration:    'avgViewDuration',
+    watchTime:   'watchTimeHours',
+} as const satisfies Record<string, YtCsvField>;
 
-type ColKey = keyof typeof HEADER_MAP;
+type ColKey = keyof typeof COLUMN_FIELDS;
 
 /**
  * Parse a single CSV line, respecting RFC 4180 quoted fields.
@@ -97,15 +101,10 @@ function parseFloatOrNull(s: string | undefined): number | null {
  * Returns a partial mapping — missing columns get index -1.
  */
 function detectColumns(headers: string[]): Record<ColKey, number> {
-    const lower = headers.map(h => h.toLowerCase().trim());
     const result = {} as Record<ColKey, number>;
-
-    for (const key of Object.keys(HEADER_MAP) as ColKey[]) {
-        const variants = HEADER_MAP[key] as readonly string[];
-        const idx = lower.findIndex(h => variants.some(v => h.includes(v)));
-        result[key] = idx;
+    for (const key of Object.keys(COLUMN_FIELDS) as ColKey[]) {
+        result[key] = findYtCsvColumn(headers, COLUMN_FIELDS[key]);
     }
-
     return result;
 }
 

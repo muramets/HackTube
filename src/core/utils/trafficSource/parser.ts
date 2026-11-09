@@ -14,6 +14,7 @@
 import type { TrafficSourceMetric } from '../../types/suggestedTraffic/trafficSource';
 import { parseCsvLine, detectColumnMapping, cleanCsvField, parseNumericField, parseIntField } from '../csvUtils';
 import { logger } from '../logger';
+import { YT_CSV_HEADER_VARIANTS } from '../../../../shared/youtubeAnalyticsCsv';
 import { debug } from '../debug';
 
 // Column mapping for Traffic Source CSV
@@ -26,14 +27,14 @@ export interface TrafficSourceCsvMapping {
     ctr: number;
 }
 
-// Known header variants for auto-detection (EN + RU)
-const KNOWN_HEADERS: Record<keyof TrafficSourceCsvMapping, string[]> = {
-    source: ['Traffic source', 'Source', 'Источник трафика'],
-    views: ['Views', 'Просмотры'],
-    watchTime: ['Watch time (hours)', 'Watch time', 'Время просмотра'],
-    avgDuration: ['Average view duration', 'Avg duration', 'Средняя длительность просмотра'],
-    impressions: ['Impressions', 'Показы'],
-    ctr: ['Impressions click-through rate', 'CTR', 'Показатель кликабельности показов'],
+// Known header variants for auto-detection (shared SSOT vocabulary, EN + RU)
+const KNOWN_HEADERS: Record<keyof TrafficSourceCsvMapping, readonly string[]> = {
+    source: YT_CSV_HEADER_VARIANTS.trafficSource,
+    views: YT_CSV_HEADER_VARIANTS.views,
+    watchTime: YT_CSV_HEADER_VARIANTS.watchTimeHours,
+    avgDuration: YT_CSV_HEADER_VARIANTS.avgViewDuration,
+    impressions: YT_CSV_HEADER_VARIANTS.impressions,
+    ctr: YT_CSV_HEADER_VARIANTS.ctr,
 };
 
 // Required columns — all are mandatory for valid import

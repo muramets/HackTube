@@ -13,6 +13,8 @@
 // Input: raw CSV string (from Cloud Storage buffer.toString("utf-8"))
 // =============================================================================
 
+import { findYtCsvColumn, type YtCsvField } from "../../../shared/youtubeAnalyticsCsv.js";
+
 // --- Types ---
 
 export interface TrafficSourceMetric {
@@ -32,16 +34,17 @@ export interface ParsedTrafficSourceSnapshot {
 
 // --- Header detection ---
 
-const HEADER_MAP = {
-    source: ["traffic source", "source", "источник трафика"],
-    views: ["views", "просмотры"],
-    watchTime: ["watch time (hours)", "watch time", "время просмотра"],
-    avgDuration: ["average view duration", "avg duration", "средняя длительность просмотра"],
-    impressions: ["impressions", "показы"],
-    ctr: ["impressions click-through rate", "ctr", "показатель кликабельности показов"],
-} as const;
+// Our column keys → shared YouTube header vocabulary (SSOT in shared/youtubeAnalyticsCsv.ts)
+const COLUMN_FIELDS = {
+    source: "trafficSource",
+    views: "views",
+    watchTime: "watchTimeHours",
+    avgDuration: "avgViewDuration",
+    impressions: "impressions",
+    ctr: "ctr",
+} as const satisfies Record<string, YtCsvField>;
 
-type ColKey = keyof typeof HEADER_MAP;
+type ColKey = keyof typeof COLUMN_FIELDS;
 
 // --- Internal helpers ---
 
@@ -74,15 +77,10 @@ function parseLine(line: string): string[] {
 }
 
 function detectColumns(headers: string[]): Record<ColKey, number> {
-    const lower = headers.map(h => h.toLowerCase().trim());
     const result = {} as Record<ColKey, number>;
-
-    for (const key of Object.keys(HEADER_MAP) as ColKey[]) {
-        const variants = HEADER_MAP[key] as readonly string[];
-        const idx = lower.findIndex(h => variants.some(v => h.includes(v)));
-        result[key] = idx;
+    for (const key of Object.keys(COLUMN_FIELDS) as ColKey[]) {
+        result[key] = findYtCsvColumn(headers, COLUMN_FIELDS[key]);
     }
-
     return result;
 }
 

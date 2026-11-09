@@ -175,8 +175,7 @@ export const useSnapshotManagement = ({
                 video.id,
                 versionNum,
                 sources,
-                totalRow,
-                file
+                totalRow
             );
 
             // Для CREATE_VERSION: очищаем текущие данные

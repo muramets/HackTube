@@ -2,6 +2,7 @@ import type { TrafficSource } from '../../../../../core/types/suggestedTraffic/t
 import { logger } from '../../../../../core/utils/logger';
 import { debug } from '../../../../../core/utils/debug';
 import { parseCsvLine, detectColumnMapping, cleanCsvField } from '../../../../../core/utils/csvUtils';
+import { YT_CSV_HEADER_VARIANTS } from '../../../../../../shared/youtubeAnalyticsCsv';
 
 export interface CsvMapping {
     sourceId: number;
@@ -31,18 +32,18 @@ export const DEFAULT_MAPPING: CsvMapping = {
     notFound: 9        // "Not Found" (unfindable video marker)
 };
 
-// Known headers for auto-detection
-const HEADER_KEYWORDS: Record<keyof CsvMapping, string[]> = {
-    sourceId: ['Traffic source', 'Source'],
-    sourceType: ['Source type', 'Type'],
-    sourceTitle: ['Source title', 'Title'],
-    impressions: ['Impressions'],
-    ctr: ['Impressions click-through rate', 'CTR'],
-    views: ['Views'],
-    avgDuration: ['Average view duration', 'Duration'],
-    watchTime: ['Watch time (hours)', 'Watch time', 'Hours'],
-    channelId: ['Channel ID', 'Channel Id', 'channel_id'],
-    notFound: ['Not Found', 'not_found', 'NotFound']
+// Known headers for auto-detection (YouTube columns come from the shared SSOT vocabulary)
+const HEADER_KEYWORDS: Record<keyof CsvMapping, readonly string[]> = {
+    sourceId: YT_CSV_HEADER_VARIANTS.trafficSource,
+    sourceType: YT_CSV_HEADER_VARIANTS.sourceType,
+    sourceTitle: YT_CSV_HEADER_VARIANTS.sourceTitle,
+    impressions: YT_CSV_HEADER_VARIANTS.impressions,
+    ctr: YT_CSV_HEADER_VARIANTS.ctr,
+    views: YT_CSV_HEADER_VARIANTS.views,
+    avgDuration: YT_CSV_HEADER_VARIANTS.avgViewDuration,
+    watchTime: YT_CSV_HEADER_VARIANTS.watchTimeHours,
+    channelId: ['channel id', 'channel_id'],
+    notFound: ['not found', 'not_found', 'notfound']
 };
 
 /**
