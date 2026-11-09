@@ -1,5 +1,6 @@
 import type { VideoDetails } from '../../../core/utils/youtubeApi';
 import type { PackagingVersion } from '../../../core/types/versioning';
+import { ensureActivePeriods, closeAllPeriods, addNewActivePeriod } from '../../../../shared/packagingPeriods';
 
 /**
  * Сервис для работы с версиями packaging.
@@ -179,68 +180,10 @@ export const VersionService = {
     },
 
     /**
-     * BUSINESS LOGIC: Period Management Helpers
+     * BUSINESS LOGIC: Period Management Helpers — single source of truth in shared/packagingPeriods.ts
      */
-    ensureActivePeriods(version: PackagingVersion): PackagingVersion {
-        const rawPeriods = (version.activePeriods && version.activePeriods.length > 0)
-            ? version.activePeriods
-            : [{
-                startDate: version.startDate,
-                endDate: (version.endDate === undefined || version.endDate === null) ? null : version.endDate,
-                closingSnapshotId: null
-            }];
-
-        const sanitizedPeriods = rawPeriods.map(p => ({
-            ...p,
-            endDate: (p.endDate === undefined || p.endDate === null) ? null : p.endDate,
-            closingSnapshotId: (p.closingSnapshotId === undefined || p.closingSnapshotId === null) ? null : p.closingSnapshotId
-        }));
-
-        return {
-            ...version,
-            endDate: (version.endDate === undefined || version.endDate === null) ? null : version.endDate,
-            activePeriods: sanitizedPeriods
-        };
-    },
-
-    closeAllPeriods(version: PackagingVersion, closingSnapshotId?: string | null): PackagingVersion {
-        const now = Date.now();
-        const versionWithPeriods = VersionService.ensureActivePeriods(version);
-        const periods = versionWithPeriods.activePeriods!;
-
-        const hasOpen = periods.some(p => p.endDate === null || p.endDate === undefined);
-        if (!hasOpen) return versionWithPeriods;
-
-        const updatedPeriods = periods.map(p =>
-            (p.endDate === null || p.endDate === undefined)
-                ? { ...p, endDate: now, closingSnapshotId: closingSnapshotId || null }
-                : p
-        );
-
-        return {
-            ...versionWithPeriods,
-            endDate: now,
-            activePeriods: updatedPeriods
-        };
-    },
-
-    addNewActivePeriod(version: PackagingVersion): PackagingVersion {
-        const now = Date.now();
-        const versionWithPeriods = VersionService.ensureActivePeriods(version);
-        const periods = versionWithPeriods.activePeriods!;
-
-        const newPeriod = {
-            startDate: now,
-            endDate: null,
-            closingSnapshotId: null
-        };
-
-        return {
-            ...versionWithPeriods,
-            startDate: now,
-            endDate: null,
-            activePeriods: [newPeriod, ...periods]
-        };
-    }
+    ensureActivePeriods: (version: PackagingVersion): PackagingVersion => ensureActivePeriods(version),
+    closeAllPeriods: (version: PackagingVersion, closingSnapshotId?: string | null): PackagingVersion =>
+        closeAllPeriods(version, closingSnapshotId),
+    addNewActivePeriod: (version: PackagingVersion): PackagingVersion => addNewActivePeriod(version),
 };
-

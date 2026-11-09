@@ -143,3 +143,7 @@ Internal-канал — это пользовательская папка/ка�
 
 - Planner (unit): same-channel detection, path replacement в `customImage`, в `snapshot[i].storagePath`, обработка пустых subcollections, snapshot без storagePath.
 - Cloud Function (integration с Firestore emulator): happy path с реальными docs/snapshots, отказ при существующем dest, отказ при отсутствующем source, корректное удаление playlist references.
+
+## Связанные CLI
+
+- [Create Custom Video (CLI)](./create-custom-video-cli.md). Индекс всех CLI проекта — `scripts/README.md`.

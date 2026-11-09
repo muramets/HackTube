@@ -208,7 +208,8 @@ A/B тест данные и packaging history доступны AI-ассист�
 |------|-----------|
 | `pages/Details/DetailsLayout.tsx` | Page orchestrator: tabs, versions, modals, traffic |
 | `pages/Details/DetailsPage.tsx` | Entry point: URL params → video lookup |
-| `pages/Details/services/VersionService.ts` | Pure logic: computeDraftState, calculateDeleteVersionData, prepareRestoreVersionData, period helpers |
+| `pages/Details/services/VersionService.ts` | Pure logic: computeDraftState, calculateDeleteVersionData, prepareRestoreVersionData; period helpers delegate to `shared/packagingPeriods.ts` |
+| `shared/packagingPeriods.ts` | SSOT для active periods (`ensureActivePeriods`, `closeAllPeriods`, `addNewActivePeriod`) — общий для Packaging tab и CLI [create-custom-video](../video-management/create-custom-video-cli.md) |
 | `pages/Details/hooks/useVersionManagement.ts` | Version click, delete, restore handlers (Firestore writes) |
 | `pages/Details/hooks/useSnapshotManagement.ts` | Traffic snapshot request/upload/skip workflow |
 | `pages/Details/hooks/useModalState.ts` | Modal state machine (SWITCH_CONFIRM, DELETE_CONFIRM, SNAPSHOT_REQUEST) |
