@@ -63,7 +63,7 @@ export const ColorPicker = ({ editor }: ColorPickerProps) => {
                         <button
                             type="button"
                             onClick={() => editor.chain().focus().unsetMark('textStyle').run()}
-                            className="w-5 h-5 rounded-full flex items-center justify-center border border-text-secondary/20 transition-transform hover:scale-125 hover:border-white/50 cursor-pointer relative"
+                            className="w-5 h-5 rounded-full flex items-center justify-center border border-text-secondary/20 transition-transform hover:scale-125 hover:border-overlay/50 cursor-pointer relative"
                             title="Reset color"
                         >
                             <div className="w-full h-px bg-text-secondary/50 rotate-45 absolute" />
@@ -76,8 +76,8 @@ export const ColorPicker = ({ editor }: ColorPickerProps) => {
                                 type="button"
                                 onClick={() => editor.chain().focus().setColor(c).run()}
                                 className={clsx(
-                                    "w-5 h-5 rounded-full transition-transform hover:scale-125 hover:ring-2 hover:ring-white/30 cursor-pointer",
-                                    isColorActive(c) && "ring-2 ring-white/50 scale-110"
+                                    "w-5 h-5 rounded-full transition-transform hover:scale-125 hover:ring-2 hover:ring-overlay/30 cursor-pointer",
+                                    isColorActive(c) && "ring-2 ring-overlay/50 scale-110"
                                 )}
                                 style={{ backgroundColor: c }}
                             />

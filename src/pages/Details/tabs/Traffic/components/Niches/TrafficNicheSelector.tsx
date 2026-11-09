@@ -343,8 +343,8 @@ export const TrafficNicheSelector: React.FC<TrafficNicheSelectorProps> = ({
                 className={`
                     relative flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all whitespace-nowrap
                     before:absolute before:inset-[-8px] before:content-['']
-                    ${displayNiche ? 'bg-white/10 text-white' : 'bg-white/10 hover:bg-white/20 text-white'}
-                    ${isOpen ? 'ring-1 ring-white/30' : ''}
+                    ${displayNiche ? 'bg-overlay/10 text-text-primary' : 'bg-overlay/10 hover:bg-overlay/20 text-text-primary'}
+                    ${isOpen ? 'ring-1 ring-overlay/30' : ''}
                 `}
                 style={{ backgroundColor: displayNiche?.color ? `${displayNiche.color}20` : undefined }}
             >
@@ -409,8 +409,8 @@ export const TrafficNicheSelector: React.FC<TrafficNicheSelectorProps> = ({
                                     // Use standard compact padding matching PlaylistSelector
                                     className={`
                                         group flex items-center justify-between px-3 py-2 text-xs rounded-lg cursor-pointer transition-all duration-200 shrink-0
-                                        ${isHighlighted ? 'bg-white/10 text-white' : 'text-text-secondary hover:text-white hover:bg-white/5'}
-                                        ${showSeparator ? 'mt-2 border-t border-white/10 pt-2 rounded-t-none' : ''}
+                                        ${isHighlighted ? 'bg-overlay/10 text-text-primary' : 'text-text-secondary hover:text-text-primary hover:bg-overlay/5'}
+                                        ${showSeparator ? 'mt-2 border-t border-overlay/10 pt-2 rounded-t-none' : ''}
                                     `}
                                 >
                                     <div className="flex items-center gap-2 min-w-0 flex-1">
@@ -431,7 +431,7 @@ export const TrafficNicheSelector: React.FC<TrafficNicheSelectorProps> = ({
                                                     });
                                                     setActiveNicheMenuId(null);
                                                 }}
-                                                className="w-2 h-2 rounded-full flex-shrink-0 transition-transform hover:scale-125 hover:ring-2 hover:ring-white/20"
+                                                className="w-2 h-2 rounded-full flex-shrink-0 transition-transform hover:scale-125 hover:ring-2 hover:ring-overlay/20"
                                                 style={{ backgroundColor: niche.color }}
                                             />
                                         )}
@@ -448,7 +448,7 @@ export const TrafficNicheSelector: React.FC<TrafficNicheSelectorProps> = ({
                                             <input
                                                 autoFocus
                                                 type="text"
-                                                className="bg-transparent text-white text-xs px-0 py-0.5 border-b border-white/30 focus:outline-none focus:border-white/60 w-full rounded-none"
+                                                className="bg-transparent text-text-primary text-xs px-0 py-0.5 border-b border-overlay/30 focus:outline-none focus:border-overlay/60 w-full rounded-none"
                                                 value={editValue}
                                                 onChange={(e) => setEditValue(e.target.value)}
                                                 onKeyDown={(e) => {
@@ -484,8 +484,8 @@ export const TrafficNicheSelector: React.FC<TrafficNicheSelectorProps> = ({
                                                     setMenuPosition({ x: rect.left, y: rect.bottom });
                                                     setActiveNicheMenuId(activeNicheMenuId === niche.id ? null : niche.id);
                                                 }}
-                                                className={`p-1 rounded-md text-text-tertiary hover:text-white hover:bg-white/10 opacity-0 group-hover:opacity-100 transition-all
-                                                    ${activeNicheMenuId === niche.id ? 'opacity-100 bg-white/10 text-white' : ''}
+                                                className={`p-1 rounded-md text-text-tertiary hover:text-text-primary hover:bg-overlay/10 opacity-0 group-hover:opacity-100 transition-all
+                                                    ${activeNicheMenuId === niche.id ? 'opacity-100 bg-overlay/10 text-text-primary' : ''}
                                                 `}
                                             >
                                                 <MoreVertical size={12} />
@@ -524,14 +524,14 @@ export const TrafficNicheSelector: React.FC<TrafficNicheSelectorProps> = ({
                     </div>
 
                     {/* Input Section (Now at the Bottom) */}
-                    <div className="p-2 border-t border-white/10 bg-white/5 shrink-0 z-10">
+                    <div className="p-2 border-t border-overlay/10 bg-overlay/5 shrink-0 z-10">
                         <form onSubmit={handleCreateSubmit} className="relative flex flex-col gap-2">
                             <div className="relative">
                                 <input
                                     ref={inputRef}
                                     type="text"
                                     placeholder="Search or create niche..."
-                                    className="w-full bg-bg-primary text-white text-xs px-3 py-2 pl-8 rounded-lg focus:outline-none focus:ring-1 focus:ring-white/20 placeholder:text-text-secondary"
+                                    className="w-full bg-bg-primary text-text-primary text-xs px-3 py-2 pl-8 rounded-lg focus:outline-none focus:ring-1 focus:ring-overlay/20 placeholder:text-text-secondary"
                                     value={inputValue}
                                     onChange={handleInputChange}
                                     // Don't override handler, use the one defined in component which handles ArrowUp/Down
@@ -545,7 +545,7 @@ export const TrafficNicheSelector: React.FC<TrafficNicheSelectorProps> = ({
                             {showCreateUI && (
                                 <div className="flex items-center gap-2 px-1 py-1 animate-in fade-in slide-in-from-bottom-1 duration-200">
                                     {/* Property Switcher - Compact & Premium */}
-                                    <div className="relative flex bg-white/5 rounded-full p-0.5 border border-white/10 backdrop-blur-sm h-6 flex-shrink-0">
+                                    <div className="relative flex bg-overlay/5 rounded-full p-0.5 border border-overlay/10 backdrop-blur-sm h-6 flex-shrink-0">
                                         {/* Highlight Pill */}
                                         <div
                                             className={`
@@ -570,7 +570,7 @@ export const TrafficNicheSelector: React.FC<TrafficNicheSelectorProps> = ({
                                                 type="button"
                                                 onClick={() => setSelectedProperty('unrelated')}
                                                 className={`w-6 h-5 flex items-center justify-center rounded-full transition-all duration-200 
-                                                    ${selectedProperty === 'unrelated' ? 'text-white' : 'text-stone-400 hover:text-stone-300 hover:bg-white/5'}
+                                                    ${selectedProperty === 'unrelated' ? 'text-white' : 'text-stone-400 hover:text-stone-300 hover:bg-overlay/5'}
                                                 `}
                                                 title="Unrelated"
                                             >
@@ -580,7 +580,7 @@ export const TrafficNicheSelector: React.FC<TrafficNicheSelectorProps> = ({
                                                 type="button"
                                                 onClick={() => setSelectedProperty('adjacent')}
                                                 className={`w-6 h-5 flex items-center justify-center rounded-full transition-all duration-200 
-                                                    ${selectedProperty === 'adjacent' ? 'text-white' : 'text-white/40 hover:text-blue-400 hover:bg-white/5'}
+                                                    ${selectedProperty === 'adjacent' ? 'text-white' : 'text-text-primary/40 hover:text-blue-400 hover:bg-overlay/5'}
                                                 `}
                                                 title="Adjacent"
                                             >
@@ -590,7 +590,7 @@ export const TrafficNicheSelector: React.FC<TrafficNicheSelectorProps> = ({
                                                 type="button"
                                                 onClick={() => setSelectedProperty('targeted')}
                                                 className={`w-6 h-5 flex items-center justify-center rounded-full transition-all duration-200 
-                                                    ${selectedProperty === 'targeted' ? 'text-black/80' : 'text-white/40 hover:text-yellow-400 hover:bg-white/5'}
+                                                    ${selectedProperty === 'targeted' ? 'text-black/80' : 'text-text-primary/40 hover:text-yellow-400 hover:bg-overlay/5'}
                                                 `}
                                                 title="Targeted"
                                             >
@@ -600,7 +600,7 @@ export const TrafficNicheSelector: React.FC<TrafficNicheSelectorProps> = ({
                                                 type="button"
                                                 onClick={() => setSelectedProperty('desired')}
                                                 className={`w-6 h-5 flex items-center justify-center rounded-full transition-all duration-200 
-                                                    ${selectedProperty === 'desired' ? 'text-white' : 'text-white/40 hover:text-emerald-400 hover:bg-white/5'}
+                                                    ${selectedProperty === 'desired' ? 'text-white' : 'text-text-primary/40 hover:text-emerald-400 hover:bg-overlay/5'}
                                                 `}
                                                 title="Desired"
                                             >
@@ -623,7 +623,7 @@ export const TrafficNicheSelector: React.FC<TrafficNicheSelectorProps> = ({
                                             className="group relative w-5 h-5 flex items-center justify-center focus:outline-none"
                                         >
                                             <div
-                                                className="w-2.5 h-2.5 rounded-full shadow-sm ring-1 ring-white/20 group-hover:ring-white/40 transition-all group-hover:scale-110"
+                                                className="w-2.5 h-2.5 rounded-full shadow-sm ring-1 ring-overlay/20 group-hover:ring-overlay/40 transition-all group-hover:scale-110"
                                                 style={{ backgroundColor: selectedColor }}
                                             />
                                         </button>
@@ -634,7 +634,7 @@ export const TrafficNicheSelector: React.FC<TrafficNicheSelectorProps> = ({
                                     {/* Create Button - Subtle */}
                                     <button
                                         type="submit"
-                                        className="h-6 px-3 bg-white/10 hover:bg-white/20 text-white text-[10px] font-medium rounded-full transition-colors flex items-center gap-1"
+                                        className="h-6 px-3 bg-overlay/10 hover:bg-overlay/20 text-text-primary text-[10px] font-medium rounded-full transition-colors flex items-center gap-1"
                                     >
                                         Create
                                     </button>
@@ -653,7 +653,7 @@ export const TrafficNicheSelector: React.FC<TrafficNicheSelectorProps> = ({
                         onClick={() => setColorPickerState(null)}
                     />
                     <div
-                        className="fixed z-[501] bg-[#1a1a1a] border border-white/10 rounded-xl p-3 shadow-xl animate-in zoom-in-95 duration-100 w-[240px]"
+                        className="fixed z-[501] bg-surface-primary border border-overlay/10 rounded-xl p-3 shadow-xl animate-in zoom-in-95 duration-100 w-[240px]"
                         style={{
                             top: Math.min(window.innerHeight - 200, colorPickerState.rect.bottom + 8),
                             left: Math.max(8, Math.min(window.innerWidth - 248, colorPickerState.rect.left - 110))

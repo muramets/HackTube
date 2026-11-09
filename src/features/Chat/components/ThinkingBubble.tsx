@@ -103,7 +103,7 @@ export const ThinkingBubble: React.FC<ThinkingBubbleProps> = ({ text, isStreamin
                             ul: ({ children }) => <ul className="text-[11px] text-text-tertiary/70 pl-4 my-0.5 list-disc">{children}</ul>,
                             ol: ({ children }) => <ol className="text-[11px] text-text-tertiary/70 pl-4 my-0.5 list-decimal">{children}</ol>,
                             li: ({ children }) => <li className="my-0.5">{children}</li>,
-                            code: ({ children }) => <code className="text-[10px] bg-white/[0.04] px-1 py-0.5 rounded">{children}</code>,
+                            code: ({ children }) => <code className="text-[10px] bg-overlay/[0.04] px-1 py-0.5 rounded">{children}</code>,
                             pre: ({ children }) => <pre className="text-[11px] text-text-tertiary/70 whitespace-pre-wrap break-words m-0 my-1">{children}</pre>,
                             h1: ({ children }) => <p className="text-[11px] font-semibold text-text-tertiary/80 m-0 mb-1">{children}</p>,
                             h2: ({ children }) => <p className="text-[11px] font-semibold text-text-tertiary/80 m-0 mb-1">{children}</p>,

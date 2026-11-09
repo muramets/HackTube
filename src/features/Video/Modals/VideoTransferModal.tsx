@@ -88,10 +88,10 @@ export const VideoTransferModal: React.FC<VideoTransferModalProps> = ({ isOpen, 
         : (isBulk ? 'Copy Videos to Channel' : 'Copy to Channel');
     const ctaLabel = isMove ? 'Move' : 'Copy';
     const Icon = isMove ? ArrowRightLeft : Copy;
-    const accentClass = isMove ? 'text-amber-500' : 'text-[#3ea6ff]';
+    const accentClass = isMove ? 'text-amber-500' : 'text-brand-blue';
     const ctaClass = isMove
         ? 'bg-amber-600 hover:bg-amber-700'
-        : 'bg-[#3ea6ff] hover:bg-[#3ea6ff]/90';
+        : 'bg-brand-blue hover:bg-brand-blue/90';
 
     /**
      * Run the transfer on the given subset of videos. Sequential — each video
@@ -190,7 +190,7 @@ export const VideoTransferModal: React.FC<VideoTransferModalProps> = ({ isOpen, 
                     {!isRunning && (
                         <button
                             onClick={handleClose}
-                            className="p-1 rounded-full text-text-secondary hover:text-text-primary hover:bg-white/10 transition-colors"
+                            className="p-1 rounded-full text-text-secondary hover:text-text-primary hover:bg-overlay/10 transition-colors"
                         >
                             <X size={20} />
                         </button>
@@ -200,12 +200,12 @@ export const VideoTransferModal: React.FC<VideoTransferModalProps> = ({ isOpen, 
                 <div className="p-6">
                     {/* Source preview: single thumbnail+title or bulk grid */}
                     {isBulk ? (
-                        <div className="flex items-center gap-3 p-3 rounded-lg bg-white/5 mb-4">
+                        <div className="flex items-center gap-3 p-3 rounded-lg bg-overlay/5 mb-4">
                             <div className="flex -space-x-3">
                                 {videos.slice(0, PREVIEW_THUMBS).map(v => (
                                     <div
                                         key={v.id}
-                                        className="w-12 h-8 rounded ring-2 ring-bg-secondary overflow-hidden bg-white/10 shrink-0"
+                                        className="w-12 h-8 rounded ring-2 ring-bg-secondary overflow-hidden bg-overlay/10 shrink-0"
                                     >
                                         {v.thumbnail && (
                                             <img
@@ -229,7 +229,7 @@ export const VideoTransferModal: React.FC<VideoTransferModalProps> = ({ isOpen, 
                             </div>
                         </div>
                     ) : (
-                        <div className="flex items-center gap-3 p-3 rounded-lg bg-white/5 mb-4">
+                        <div className="flex items-center gap-3 p-3 rounded-lg bg-overlay/5 mb-4">
                             {videos[0].thumbnail ? (
                                 <img
                                     src={videos[0].thumbnail}
@@ -238,7 +238,7 @@ export const VideoTransferModal: React.FC<VideoTransferModalProps> = ({ isOpen, 
                                     referrerPolicy="no-referrer"
                                 />
                             ) : (
-                                <div className="w-20 h-12 rounded bg-white/10 shrink-0" />
+                                <div className="w-20 h-12 rounded bg-overlay/10 shrink-0" />
                             )}
                             <div className="flex-1 min-w-0">
                                 <div className="text-text-primary text-sm font-medium line-clamp-2">{videos[0].title}</div>
@@ -267,8 +267,8 @@ export const VideoTransferModal: React.FC<VideoTransferModalProps> = ({ isOpen, 
                                     </span>
                                 </div>
                             ) : (
-                                <div className="flex items-start gap-2 px-3 py-2 rounded-lg bg-[#3ea6ff]/5 border border-[#3ea6ff]/20 text-xs text-text-secondary">
-                                    <Copy size={14} className="text-[#3ea6ff] shrink-0 mt-0.5" />
+                                <div className="flex items-start gap-2 px-3 py-2 rounded-lg bg-brand-blue/5 border border-brand-blue/20 text-xs text-text-secondary">
+                                    <Copy size={14} className="text-brand-blue shrink-0 mt-0.5" />
                                     <span>
                                         Creates a full duplicate in the target channel — snapshots, traffic data, thumbnail history and storage files. Source is untouched.
                                     </span>
@@ -416,9 +416,9 @@ const ChannelOption: React.FC<{
     accent: 'amber' | 'blue';
 }> = ({ channel, isSelected, onClick, accent }) => {
     const ringClass = accent === 'amber'
-        ? (isSelected ? 'border-amber-500 bg-amber-500/10' : 'border-border bg-white/5 hover:bg-white/10')
-        : (isSelected ? 'border-[#3ea6ff] bg-[#3ea6ff]/10' : 'border-border bg-white/5 hover:bg-white/10');
-    const checkClass = accent === 'amber' ? 'text-amber-500' : 'text-[#3ea6ff]';
+        ? (isSelected ? 'border-amber-500 bg-amber-500/10' : 'border-border bg-overlay/5 hover:bg-overlay/10')
+        : (isSelected ? 'border-brand-blue bg-brand-blue/10' : 'border-border bg-overlay/5 hover:bg-overlay/10');
+    const checkClass = accent === 'amber' ? 'text-amber-500' : 'text-brand-blue';
 
     return (
         <button

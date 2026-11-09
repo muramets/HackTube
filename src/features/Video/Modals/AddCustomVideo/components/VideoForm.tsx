@@ -163,7 +163,7 @@ export const VideoForm: React.FC<VideoFormProps> = ({
                 <div className="border-t border-border pt-4">
                     <button
                         onClick={() => setIsStatsExpanded(!isStatsExpanded)}
-                        className="flex items-center gap-2 px-4 py-2 rounded-full bg-modal-button-bg text-white text-sm font-medium hover:bg-modal-button-hover transition-colors mb-4"
+                        className="flex items-center gap-2 px-4 py-2 rounded-full bg-modal-button-bg text-modal-text-primary text-sm font-medium hover:bg-modal-button-hover transition-colors mb-4"
                     >
                         {isStatsExpanded ? 'Show less' : 'Show more'}
                         {isStatsExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}

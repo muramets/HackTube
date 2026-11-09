@@ -92,7 +92,7 @@ export const VideoPreviewTooltip: React.FC<VideoPreviewTooltipProps> = ({
                                 flex items-center gap-1.5 text-[10px] px-2 py-1 rounded-md transition-all border
                                 ${isComparing
                                     ? 'bg-red-500/20 text-red-400 border-red-500/50 hover:bg-red-500/30 font-medium'
-                                    : 'bg-white/5 text-text-secondary hover:text-text-primary border-white/5 hover:bg-white/10'
+                                    : 'bg-overlay/5 text-text-secondary hover:text-text-primary border-overlay/5 hover:bg-overlay/10'
                                 }
                             `}
                             title="Compare metadata with my video"
@@ -108,7 +108,7 @@ export const VideoPreviewTooltip: React.FC<VideoPreviewTooltipProps> = ({
                                 e.preventDefault();
                                 window.open(`/video/${currentChannel.id}/${videoId}/details`, '_blank');
                             }}
-                            className="flex items-center gap-1.5 text-[10px] bg-white/5 hover:bg-white/10 text-text-secondary hover:text-text-primary px-2 py-1 rounded-md transition-colors border border-white/5"
+                            className="flex items-center gap-1.5 text-[10px] bg-overlay/5 hover:bg-overlay/10 text-text-secondary hover:text-text-primary px-2 py-1 rounded-md transition-colors border border-overlay/5"
                             title="Open video details"
                         >
                             <ExternalLink size={12} />
@@ -122,7 +122,7 @@ export const VideoPreviewTooltip: React.FC<VideoPreviewTooltipProps> = ({
                                 e.preventDefault();
                                 minimize(embedId, title);
                             }}
-                            className="flex items-center gap-1.5 text-[10px] bg-white/5 hover:bg-white/10 text-text-secondary hover:text-text-primary px-2 py-1 rounded-md transition-colors border border-white/5"
+                            className="flex items-center gap-1.5 text-[10px] bg-overlay/5 hover:bg-overlay/10 text-text-secondary hover:text-text-primary px-2 py-1 rounded-md transition-colors border border-overlay/5"
                             title="Minimize player"
                         >
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

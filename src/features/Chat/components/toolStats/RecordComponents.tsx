@@ -243,7 +243,7 @@ const OperationDiff: React.FC<{ op: MemoryEditOperation; index: number }> = ({ o
         ) : (
             <>
                 {op.anchor && (
-                    <pre className="px-1.5 py-1 rounded bg-white/[0.03] text-text-tertiary whitespace-pre-wrap break-words font-mono text-[10px] leading-relaxed">
+                    <pre className="px-1.5 py-1 rounded bg-overlay/[0.03] text-text-tertiary whitespace-pre-wrap break-words font-mono text-[10px] leading-relaxed">
                         ⚓ {truncateDiff(op.anchor)}
                     </pre>
                 )}

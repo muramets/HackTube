@@ -45,7 +45,7 @@ export const CanvasFloatingBar: React.FC = () => {
                     {/* Bring to front */}
                     <button
                         onClick={() => bringNodesToFront(ids)}
-                        className="p-2 hover:bg-white/10 rounded-full text-text-primary hover:text-white transition-colors border-none cursor-pointer flex items-center justify-center"
+                        className="p-2 hover:bg-overlay/10 rounded-full text-text-primary transition-colors border-none cursor-pointer flex items-center justify-center"
                         title="Bring to front"
                     >
                         <BringToFront size={20} />
@@ -54,7 +54,7 @@ export const CanvasFloatingBar: React.FC = () => {
                     {/* Send to back */}
                     <button
                         onClick={() => sendNodesToBack(ids)}
-                        className="p-2 hover:bg-white/10 rounded-full text-text-primary hover:text-white transition-colors border-none cursor-pointer flex items-center justify-center"
+                        className="p-2 hover:bg-overlay/10 rounded-full text-text-primary transition-colors border-none cursor-pointer flex items-center justify-center"
                         title="Send to back"
                     >
                         <SendToBack size={20} />
@@ -64,7 +64,7 @@ export const CanvasFloatingBar: React.FC = () => {
                     {isMulti && (
                         <button
                             onClick={() => alignNodesTop(ids)}
-                            className="p-2 hover:bg-white/10 rounded-full text-text-primary hover:text-white transition-colors border-none cursor-pointer flex items-center justify-center"
+                            className="p-2 hover:bg-overlay/10 rounded-full text-text-primary transition-colors border-none cursor-pointer flex items-center justify-center"
                             title="Align top edges"
                         >
                             <AlignStartHorizontal size={20} />
@@ -75,7 +75,7 @@ export const CanvasFloatingBar: React.FC = () => {
                     {isMulti && (
                         <button
                             onClick={() => alignNodesCenterY(ids)}
-                            className="p-2 hover:bg-white/10 rounded-full text-text-primary hover:text-white transition-colors border-none cursor-pointer flex items-center justify-center"
+                            className="p-2 hover:bg-overlay/10 rounded-full text-text-primary transition-colors border-none cursor-pointer flex items-center justify-center"
                             title="Align vertical centers"
                         >
                             <AlignCenterHorizontal size={20} />
@@ -85,7 +85,7 @@ export const CanvasFloatingBar: React.FC = () => {
                     {/* Delete */}
                     <button
                         onClick={() => deleteNodes(ids)}
-                        className="p-2 hover:bg-white/10 rounded-full text-red-400 hover:text-red-300 transition-colors border-none cursor-pointer flex items-center justify-center"
+                        className="p-2 hover:bg-overlay/10 rounded-full text-red-400 hover:text-red-300 transition-colors border-none cursor-pointer flex items-center justify-center"
                         title="Remove from canvas"
                     >
                         <Trash2 size={20} />

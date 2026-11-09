@@ -64,7 +64,7 @@ export const DetailsPage: React.FC = () => {
                 <p className="text-text-secondary">The video you're looking for doesn't exist.</p>
                 <button
                     onClick={() => navigate('/')}
-                    className="px-4 py-2 bg-white text-black rounded-full font-medium hover:bg-gray-200 transition-colors"
+                    className="px-4 py-2 bg-text-primary text-bg-primary rounded-full font-medium hover:bg-text-primary/90 transition-colors"
                 >
                     Go Home
                 </button>

@@ -80,10 +80,10 @@ export const TrafficSourceColumnMapperModal: React.FC<TrafficSourceColumnMapperM
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-            <div className="bg-bg-secondary border border-white/10 rounded-2xl w-full max-w-2xl text-text-primary shadow-2xl flex flex-col max-h-[90vh]">
-                <div className="p-6 border-b border-white/10 flex justify-between items-center">
+            <div className="bg-bg-secondary border border-overlay/10 rounded-2xl w-full max-w-2xl text-text-primary shadow-2xl flex flex-col max-h-[90vh]">
+                <div className="p-6 border-b border-overlay/10 flex justify-between items-center">
                     <h2 className="text-xl font-semibold">Map Traffic Source Columns</h2>
-                    <button onClick={onClose} className="text-text-secondary hover:text-white transition-colors">
+                    <button onClick={onClose} className="text-text-secondary hover:text-text-primary transition-colors">
                         <X size={24} />
                     </button>
                 </div>
@@ -103,7 +103,7 @@ export const TrafficSourceColumnMapperModal: React.FC<TrafficSourceColumnMapperM
                                     <p className="text-xs text-text-tertiary mt-0.5">{field.hint}</p>
                                 </div>
                                 <select
-                                    className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-accent-blue transition-colors"
+                                    className="bg-overlay/5 border border-overlay/10 rounded-lg px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent-blue transition-colors"
                                     value={mapping[field.key]}
                                     onChange={(e) => handleFieldChange(field.key, parseInt(e.target.value))}
                                 >
@@ -119,7 +119,7 @@ export const TrafficSourceColumnMapperModal: React.FC<TrafficSourceColumnMapperM
                     </div>
                 </div>
 
-                <div className="p-6 border-t border-white/10 flex justify-end gap-3 bg-bg-secondary rounded-b-2xl">
+                <div className="p-6 border-t border-overlay/10 flex justify-end gap-3 bg-bg-secondary rounded-b-2xl">
                     <Button variant="secondary" onClick={onClose}>
                         Cancel
                     </Button>

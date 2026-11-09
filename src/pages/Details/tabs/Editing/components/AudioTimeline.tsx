@@ -114,7 +114,7 @@ export const AudioTimeline: React.FC = () => {
                     {totalDuration > 0 && (
                         <button
                             onClick={handlePlayPause}
-                            className="flex items-center justify-center w-5 h-5 rounded-full bg-white/[0.08] hover:bg-white/[0.15] transition-colors"
+                            className="flex items-center justify-center w-5 h-5 rounded-full bg-overlay/[0.08] hover:bg-overlay/[0.15] transition-colors"
                             title={isPlaying ? 'Pause' : 'Play'}
                         >
                             {isPlaying
@@ -172,10 +172,10 @@ export const AudioTimeline: React.FC = () => {
                             value={volume}
                             disabled={isLocked}
                             onChange={(e) => setVolume(parseFloat(e.target.value))}
-                            className={`w-16 h-1 accent-accent bg-white/[0.08] rounded-full appearance-none
+                            className={`w-16 h-1 accent-accent bg-overlay/[0.08] rounded-full appearance-none
                                        [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-2.5 [&::-webkit-slider-thumb]:h-2.5
                                        [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-text-primary [&::-webkit-slider-thumb]:shadow-sm
-                                       [&::-webkit-slider-thumb]:hover:bg-white
+                                       [&::-webkit-slider-thumb]:hover:bg-text-primary
                                        ${isLocked ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}`}
                         />
                     </div>
@@ -290,11 +290,11 @@ export const AudioTimeline: React.FC = () => {
                                     {/* Hover cursor line (spans both ruler and lane) */}
                                     {hoverPx !== null && (
                                         <div
-                                            className="absolute top-0 h-full w-px bg-white/20 pointer-events-none z-[5]"
+                                            className="absolute top-0 h-full w-px bg-overlay/20 pointer-events-none z-[5]"
                                             style={{ left: hoverPx }}
                                         >
                                             {hoverTimeLabel && (
-                                                <span className="absolute top-0.5 left-1.5 text-[9px] text-white/60 bg-bg-secondary/80 px-1 rounded tabular-nums whitespace-nowrap">
+                                                <span className="absolute top-0.5 left-1.5 text-[9px] text-text-primary/60 bg-bg-secondary/80 px-1 rounded tabular-nums whitespace-nowrap">
                                                     {hoverTimeLabel}
                                                 </span>
                                             )}

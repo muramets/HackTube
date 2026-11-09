@@ -48,7 +48,7 @@ export const SlashCommandList = forwardRef<SlashCommandListRef, SlashCommandList
                     <button
                         key={item.label}
                         className={`w-full flex items-center gap-2.5 px-3 py-1.5 text-left cursor-pointer border-none bg-transparent ${
-                            index === selectedIndex ? 'bg-white/[0.08]' : 'hover:bg-white/[0.04]'
+                            index === selectedIndex ? 'bg-overlay/8' : 'hover:bg-overlay/4'
                         }`}
                         onClick={() => selectItem(index)}
                         onMouseEnter={() => setRawIndex(index)}

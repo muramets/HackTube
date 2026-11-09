@@ -220,7 +220,7 @@ export const ThumbnailHistoryModal: React.FC<ThumbnailHistoryModalProps> = ({
                                     <span className="text-xs font-bold uppercase tracking-widest text-modal-text-secondary">Current Version</span>
                                 </div>
                                 <div className={`aspect-video rounded-xl overflow-hidden border transition-all bg-black/40 shadow-inner group relative
-                                ${isCurrentTooltipOpen ? 'border-white/20 ring-1 ring-white/10' : 'border-white/10'}`}>
+                                ${isCurrentTooltipOpen ? 'border-overlay/20 ring-1 ring-overlay/10' : 'border-overlay/10'}`}>
                                     <img src={effectiveCurrentThumbnail} alt="Current" className="w-full h-full object-cover" />
                                     <div className="absolute inset-0 ring-1 ring-inset ring-white/5 pointer-events-none" />
 
@@ -250,7 +250,7 @@ export const ThumbnailHistoryModal: React.FC<ThumbnailHistoryModalProps> = ({
                         {showHistoricalColumn && (
                             <div className={`space-y-4 relative ${!effectiveCurrentThumbnail ? 'w-full max-w-xl mx-auto' : ''}`}>
                                 <div className="flex items-center justify-between px-1">
-                                    <span className="text-xs font-bold uppercase tracking-widest text-[#3ea6ff]">
+                                    <span className="text-xs font-bold uppercase tracking-widest text-brand-blue">
                                         {allVersionsDeleted ? 'No Versions' : 'Historical'}
                                     </span>
                                     <span className="text-[10px] text-modal-text-secondary font-medium">
@@ -261,8 +261,8 @@ export const ThumbnailHistoryModal: React.FC<ThumbnailHistoryModalProps> = ({
                                 <div className="relative group z-20">
                                     <div className={`aspect-video rounded-xl overflow-hidden border transition-all bg-black/40 shadow-2xl relative
                                         ${allVersionsDeleted
-                                            ? 'border-white/10'
-                                            : (isHistoricalTooltipOpen ? 'border-[#3ea6ff]/60 ring-1 ring-[#3ea6ff]/20' : 'border-[#3ea6ff]/30')}`}>
+                                            ? 'border-overlay/10'
+                                            : (isHistoricalTooltipOpen ? 'border-brand-blue/60 ring-1 ring-brand-blue/20' : 'border-brand-blue/30')}`}>
 
                                         {/* Empty State - All versions deleted */}
                                         {allVersionsDeleted ? (
@@ -390,10 +390,10 @@ export const ThumbnailHistoryModal: React.FC<ThumbnailHistoryModalProps> = ({
                                             onClick={() => handleThumbnailSelect(index)}
                                             className={`flex-shrink-0 w-36 aspect-video rounded-lg overflow-hidden border-2 transition-all relative group group/item cursor-pointer
                                                 ${selectedIndex === index
-                                                    ? 'border-[#3ea6ff] scale-105 z-10 shadow-lg shadow-[#3ea6ff]/10'
+                                                    ? 'border-brand-blue scale-105 z-10 shadow-lg shadow-brand-blue/10'
                                                     : (openTooltipTimestamp === version.timestamp
-                                                        ? 'opacity-100 border-white/20 ring-1 ring-white/10'
-                                                        : 'border-transparent opacity-60 hover:opacity-100 hover:border-white/20')}`}
+                                                        ? 'opacity-100 border-overlay/20 ring-1 ring-overlay/10'
+                                                        : 'border-transparent opacity-60 hover:opacity-100 hover:border-overlay/20')}`}
                                         >
                                             <img
                                                 src={version.url}
@@ -417,7 +417,7 @@ export const ThumbnailHistoryModal: React.FC<ThumbnailHistoryModalProps> = ({
                                             />
 
                                             {selectedIndex === index && (
-                                                <div className="absolute top-1 right-1 w-4 h-4 rounded-full bg-[#3ea6ff] flex items-center justify-center shadow-lg pointer-events-none">
+                                                <div className="absolute top-1 right-1 w-4 h-4 rounded-full bg-brand-blue flex items-center justify-center shadow-lg pointer-events-none">
                                                     <Check size={10} strokeWidth={3} className="text-[#1f1f1f]" />
                                                 </div>
                                             )}
@@ -440,7 +440,7 @@ export const ThumbnailHistoryModal: React.FC<ThumbnailHistoryModalProps> = ({
                                     size="sm"
                                     onClick={handleApply}
                                     disabled={!selectedVersion && !allVersionsDeleted && pendingChanges.thumbnailUrl === null}
-                                    className="!bg-[#3ea6ff] !text-[#1f1f1f] hover:!bg-[#65b8ff]"
+                                    className="!bg-brand-blue !text-[#1f1f1f] hover:!bg-[#65b8ff]"
                                 >
                                     {hasOnlyCurrentThumbnail ? 'Save' : (hasNothingLeft ? 'Clear Thumbnail' : 'Apply Version')}
                                 </Button>

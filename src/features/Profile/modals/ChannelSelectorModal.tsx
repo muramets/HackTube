@@ -124,14 +124,14 @@ export const ChannelSelectorModal: React.FC<ChannelSelectorModalProps> = ({ isOp
                 {/* Left Side: Title */}
                 <div className="flex-1 flex flex-col justify-center">
                     <div className="mb-6">
-                        <div className="w-10 h-10 bg-[#3ea6ff] rounded flex items-center justify-center mb-4">
+                        <div className="w-10 h-10 bg-brand-blue rounded flex items-center justify-center mb-4">
                             {/* Placeholder logo */}
                             <div className="w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[10px] border-l-white"></div>
                         </div>
                         <h2 className="m-0 mb-4 text-[32px] font-normal leading-[1.2]">
                             Choose your account<br />or a brand account
                         </h2>
-                        <p className="m-0 text-[#aaa] text-base">to continue to MyTube</p>
+                        <p className="m-0 text-text-secondary text-base">to continue to MyTube</p>
                     </div>
                 </div>
 

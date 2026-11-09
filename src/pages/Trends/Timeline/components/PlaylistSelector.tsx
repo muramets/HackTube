@@ -219,7 +219,7 @@ export const PlaylistSelector: React.FC<PlaylistSelectorProps> = ({
                 onMouseDown={(e) => e.stopPropagation()}
                 onClick={onToggle}
                 disabled={isProcessing}
-                className={`p-1.5 rounded-full transition-colors ${isOpen ? 'bg-white text-black' : 'text-text-secondary hover:text-white hover:bg-white/10'} ${isProcessing ? 'opacity-50' : ''}`}
+                className={`p-1.5 rounded-full transition-colors ${isOpen ? 'bg-text-primary text-bg-primary' : 'text-text-secondary hover:text-text-primary hover:bg-overlay/10'} ${isProcessing ? 'opacity-50' : ''}`}
                 title="Add to Playlist"
             >
                 <ListVideo size={16} />
@@ -232,14 +232,14 @@ export const PlaylistSelector: React.FC<PlaylistSelectorProps> = ({
                 width={256}
             >
                 <div data-portal-wrapper className="flex flex-col h-full min-h-0">
-                    <div className="p-2 border-b border-white/10 bg-white/5">
+                    <div className="p-2 border-b border-overlay/10 bg-overlay/5">
                         <form onSubmit={handleCreatePlaylist} className="relative flex flex-col gap-2">
                             <div className="relative">
                                 <input
                                     ref={inputRef}
                                     type="text"
                                     placeholder="Search or create playlist..."
-                                    className="w-full bg-bg-primary text-white text-xs px-3 py-2 pl-8 rounded-lg focus:outline-none focus:ring-1 focus:ring-white/20 placeholder:text-text-secondary"
+                                    className="w-full bg-bg-primary text-text-primary text-xs px-3 py-2 pl-8 rounded-lg focus:outline-none focus:ring-1 focus:ring-overlay/20 placeholder:text-text-secondary"
                                     value={newPlaylistName}
                                     onChange={(e) => setNewPlaylistName(e.target.value)}
                                     onKeyDown={handleKeyDown}
@@ -258,8 +258,8 @@ export const PlaylistSelector: React.FC<PlaylistSelectorProps> = ({
                                 <button
                                     key={playlist.id}
                                     onClick={() => handlePlaylistToggle(playlist.id, playlist.name, isChecked)}
-                                    className={`w-full text-left px-3 py-2 text-xs rounded-lg flex items-center gap-2 transition-colors justify-between ${isChecked ? 'text-white' : 'text-text-secondary'
-                                        } ${activeIndex === index ? 'bg-white/10 text-white' : 'hover:bg-white/5 hover:text-white'
+                                    className={`w-full text-left px-3 py-2 text-xs rounded-lg flex items-center gap-2 transition-colors justify-between ${isChecked ? 'text-text-primary' : 'text-text-secondary'
+                                        } ${activeIndex === index ? 'bg-overlay/10 text-text-primary' : 'hover:bg-overlay/5 hover:text-text-primary'
                                         }`}
                                 >
                                     <div className="flex items-center gap-2 truncate">

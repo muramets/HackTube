@@ -76,14 +76,14 @@ export const SortButton: React.FC<SortButtonProps> = ({
             {isOpen && position && createPortal(
                 <div
                     ref={dropdownRef}
-                    className="fixed z-dropdown bg-[#1F1F1F] rounded-xl shadow-2xl min-w-[200px] overflow-hidden animate-scale-in"
+                    className="fixed z-dropdown bg-card-bg rounded-xl shadow-2xl min-w-[200px] overflow-hidden animate-scale-in"
                     style={{
                         top: position.top,
                         right: position.right,
                     }}
                 >
                     <div className="p-2">
-                        <div className="px-3 py-2 text-xs font-bold text-[#AAAAAA] uppercase tracking-wider flex items-center gap-2 border-b border-[#333333] mb-1">
+                        <div className="px-3 py-2 text-xs font-bold text-text-secondary uppercase tracking-wider flex items-center gap-2 border-b border-border mb-1">
                             Sort By
                         </div>
                         {sortOptions.map(option => (
@@ -93,7 +93,7 @@ export const SortButton: React.FC<SortButtonProps> = ({
                                     onSortChange(option.value);
                                     setIsOpen(false);
                                 }}
-                                className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium flex items-center justify-between transition-colors border-none cursor-pointer ${activeSort === option.value ? 'bg-[#333333] text-white' : 'text-[#AAAAAA] hover:bg-[#161616] hover:text-white bg-transparent'}`}
+                                className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium flex items-center justify-between transition-colors border-none cursor-pointer ${activeSort === option.value ? 'bg-menu-item-active-bg text-text-primary' : 'text-text-secondary hover:bg-menu-item-hover-bg hover:text-text-primary bg-transparent'}`}
                             >
                                 {option.label}
                                 {activeSort === option.value && <Check size={16} />}

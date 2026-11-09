@@ -285,7 +285,7 @@ export const TrafficRow = ({
         >
             {/* Selection indicator line - Absolute to avoid clipping */}
             {isSelected && (
-                <div className="absolute left-0 top-0 bottom-0 w-[4px] bg-[#3EA6FF] z-10 shadow-[2px_0_8px_rgba(62,166,255,0.4)]" />
+                <div className="absolute left-0 top-0 bottom-0 w-[4px] bg-brand-blue z-10 shadow-[2px_0_8px_rgba(62,166,255,0.4)]" />
             )}
             <div
                 className="flex items-center justify-center p-2 -m-2 z-10" // Expanded hit area + z-index

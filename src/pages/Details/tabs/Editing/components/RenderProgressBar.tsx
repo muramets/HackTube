@@ -105,7 +105,7 @@ export const RenderProgressBar: React.FC<RenderProgressBarProps> = ({ videoId })
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 download={fileName || 'render.mp4'}
-                                className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-xs font-medium text-[#3ea6ff] hover:bg-[#3ea6ff]/10 transition-colors"
+                                className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-xs font-medium text-brand-blue hover:bg-brand-blue/10 transition-colors"
                             >
                                 <Download size={12} />
                                 Download

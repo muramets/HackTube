@@ -122,7 +122,7 @@ export const PlaylistEditModal: React.FC<PlaylistEditModalProps> = ({ isOpen, on
                             onClick={() => fileInputRef.current?.click()}
                             className={`
                                 border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all min-h-[150px]
-                                ${isDragging ? 'border-[#3ea6ff] bg-[#3ea6ff]/10' : 'border-border bg-transparent'}
+                                ${isDragging ? 'border-brand-blue bg-brand-blue/10' : 'border-border bg-transparent'}
                             `}
                         >
                             {coverImage ? (
@@ -173,7 +173,7 @@ export const PlaylistEditModal: React.FC<PlaylistEditModalProps> = ({ isOpen, on
                         </button>
                         <button
                             type="submit"
-                            className="px-6 py-2.5 rounded-full border-none bg-[#3ea6ff] text-black cursor-pointer font-bold hover:bg-[#3ea6ff]/90 transition-colors"
+                            className="px-6 py-2.5 rounded-full border-none bg-brand-blue text-black cursor-pointer font-bold hover:bg-brand-blue/90 transition-colors"
                         >
                             Save
                         </button>

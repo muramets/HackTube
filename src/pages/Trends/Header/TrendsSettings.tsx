@@ -121,17 +121,17 @@ export const TrendsSettings: React.FC<TrendsSettingsProps> = ({
                 ) : settingsView === 'scaling' ? (
                     /* Scaling Submenu */
                     <div className="pb-2">
-                        <div className="flex items-center justify-between px-2 py-2 border-b border-[#333333] mb-2">
+                        <div className="flex items-center justify-between px-2 py-2 border-b border-border mb-2">
                             <button
                                 onClick={() => setSettingsView('main')}
-                                className="p-2 hover:bg-[#333333] rounded-full text-text-secondary hover:text-text-primary transition-colors"
+                                className="p-2 hover:bg-menu-item-active-bg rounded-full text-text-secondary hover:text-text-primary transition-colors"
                             >
                                 <ChevronLeft size={20} />
                             </button>
                             <span className="text-sm font-bold text-text-primary">Size Scaling</span>
                             <button
                                 onClick={handleClose}
-                                className="p-2 hover:bg-[#333333] rounded-full text-text-secondary hover:text-text-primary transition-colors"
+                                className="p-2 hover:bg-menu-item-active-bg rounded-full text-text-secondary hover:text-text-primary transition-colors"
                             >
                                 <X size={20} />
                             </button>
@@ -198,17 +198,17 @@ export const TrendsSettings: React.FC<TrendsSettingsProps> = ({
                 ) : (
                     /* Baseline Submenu */
                     <div className="pb-2">
-                        <div className="flex items-center justify-between px-2 py-2 border-b border-[#333333] mb-2">
+                        <div className="flex items-center justify-between px-2 py-2 border-b border-border mb-2">
                             <button
                                 onClick={() => setSettingsView('main')}
-                                className="p-2 hover:bg-[#333333] rounded-full text-text-secondary hover:text-text-primary transition-colors"
+                                className="p-2 hover:bg-menu-item-active-bg rounded-full text-text-secondary hover:text-text-primary transition-colors"
                             >
                                 <ChevronLeft size={20} />
                             </button>
                             <span className="text-sm font-bold text-text-primary">Average Views Baseline</span>
                             <button
                                 onClick={handleClose}
-                                className="p-2 hover:bg-[#333333] rounded-full text-text-secondary hover:text-text-primary transition-colors"
+                                className="p-2 hover:bg-menu-item-active-bg rounded-full text-text-secondary hover:text-text-primary transition-colors"
                             >
                                 <X size={20} />
                             </button>

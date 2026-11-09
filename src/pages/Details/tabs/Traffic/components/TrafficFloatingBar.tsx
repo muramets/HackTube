@@ -339,7 +339,7 @@ export const TrafficFloatingBar: React.FC<TrafficFloatingBarProps> = ({
                     </div>
 
                     {/* Separator */}
-                    <div className="w-px h-4 bg-white/10 mx-1" />
+                    <div className="w-px h-4 bg-overlay/10 mx-1" />
 
                     {/* Canvas Dropdown */}
                     {onAddToCanvas && (
@@ -367,12 +367,12 @@ export const TrafficFloatingBar: React.FC<TrafficFloatingBarProps> = ({
                         <button
                             onClick={handleHomeToggle}
                             className={`relative p-1.5 rounded-full transition-colors duration-150 ${!isProcessing && areAllAddedToHome
-                                ? 'text-white hover:bg-red-500/20 hover:text-red-300'
-                                : 'text-text-secondary hover:text-white hover:bg-white/10'
+                                ? 'text-text-primary hover:bg-red-500/20 hover:text-red-300'
+                                : 'text-text-secondary hover:text-text-primary hover:bg-overlay/10'
                                 }`}
                         >
                             {isProcessing ? (
-                                <Loader2 size={16} className="animate-spin text-white" />
+                                <Loader2 size={16} className="animate-spin text-text-primary" />
                             ) : (
                                 <>
                                     <Home size={16} />
@@ -408,7 +408,7 @@ export const TrafficFloatingBar: React.FC<TrafficFloatingBarProps> = ({
                             className={`p-1.5 rounded-full transition-colors duration-150 disabled:opacity-50
                                 ${isInTrash
                                     ? 'text-red-400 bg-red-500/10 hover:bg-red-500/20'
-                                    : 'text-text-secondary hover:text-red-400 hover:bg-white/10'
+                                    : 'text-text-secondary hover:text-red-400 hover:bg-overlay/10'
                                 }
                             `}
                         >

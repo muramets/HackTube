@@ -43,15 +43,15 @@ export const SmartTrafficTooltip: React.FC<SmartTrafficTooltipProps> = ({
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
             >
-                <div className="flex items-center gap-2 font-medium text-sm border-b pb-2 mb-1 border-white/10 text-red-400">
+                <div className="flex items-center gap-2 font-medium text-sm border-b pb-2 mb-1 border-overlay/10 text-red-400">
                     <AlertTriangle className="w-4 h-4" />
                     <span>Comparison Unavailable</span>
                 </div>
-                <div className="text-[13px] text-white/80 leading-relaxed">
+                <div className="text-[13px] text-text-primary/80 leading-relaxed">
                     <p>
                         The "Total" column was not found in the uploaded CSV for the previous snapshot.
                     </p>
-                    <p className="mt-2 text-white/60 text-[11px] italic">
+                    <p className="mt-2 text-text-primary/60 text-[11px] italic">
                         Without an explicit total row, the application cannot calculate the true traffic growth vs. new table entries.
                     </p>
                 </div>
@@ -88,50 +88,50 @@ export const SmartTrafficTooltip: React.FC<SmartTrafficTooltipProps> = ({
                     if (onMouseLeave) onMouseLeave();
                 }}
             >
-                <div className="flex items-center gap-2 font-medium text-sm border-b pb-2 mb-1 border-white/10">
+                <div className="flex items-center gap-2 font-medium text-sm border-b pb-2 mb-1 border-overlay/10">
                     <Info className="w-4 h-4 text-blue-400" />
                     <span>Traffic Growth Analysis</span>
                 </div>
 
                 <div className="space-y-2 text-[13px] leading-relaxed">
                     {/* Total Change */}
-                    <div className="flex justify-between text-white/90">
+                    <div className="flex justify-between text-text-primary/90">
                         <div className="flex flex-col">
                             <span>Total Change (Report):</span>
-                            <span className="text-[10px] text-white/40 font-mono">
+                            <span className="text-[10px] text-text-primary/40 font-mono">
                                 {previous.toLocaleString()} → {current.toLocaleString()}
                             </span>
                         </div>
-                        <span className="text-white font-mono font-bold">
+                        <span className="text-text-primary font-mono font-bold">
                             +{delta.toLocaleString()}
                         </span>
                     </div>
 
-                    <div className="h-px bg-white/5 my-1" />
+                    <div className="h-px bg-overlay/5 my-1" />
 
                     {/* Breakdown */}
                     <div className="space-y-1">
-                        <div className="flex justify-between text-white/60 text-[12px]">
+                        <div className="flex justify-between text-text-primary/60 text-[12px]">
                             <span>Top Videos Growth:</span>
                             <span className="font-mono">+{nonTrashTableGrowth.toLocaleString()}</span>
                         </div>
                         {trashChange > 0 && (
-                            <div className="flex justify-between text-white/60 text-[12px]">
+                            <div className="flex justify-between text-text-primary/60 text-[12px]">
                                 <span>Trash Traffic Variation:</span>
                                 <span>+{trashChange.toLocaleString()}</span>
                             </div>
                         )}
                     </div>
 
-                    <div className="flex justify-between pt-1 border-t border-white/5 font-medium">
-                        <span className="text-white/80"><strong>Unaccounted</strong> Growth:</span>
-                        <span className={`font-mono ${isSignificantGrowth ? 'text-amber-300' : 'text-white/60'}`}>
+                    <div className="flex justify-between pt-1 border-t border-overlay/5 font-medium">
+                        <span className="text-text-primary/80"><strong>Unaccounted</strong> Growth:</span>
+                        <span className={`font-mono ${isSignificantGrowth ? 'text-amber-300' : 'text-text-primary/60'}`}>
                             +{unaccountedGrowth.toLocaleString()}
                         </span>
                     </div>
                 </div>
 
-                <div className="text-[11px] text-white/40 italic mt-2 leading-relaxed flex flex-col gap-2.5 [hyphens:none] [word-break:normal]">
+                <div className="text-[11px] text-text-primary/40 italic mt-2 leading-relaxed flex flex-col gap-2.5 [hyphens:none] [word-break:normal]">
                     <p>
                         This breakdown shows actual growth between reports compared to the new videos appearing in your table.
                     </p>
@@ -166,7 +166,7 @@ export const SmartTrafficTooltip: React.FC<SmartTrafficTooltipProps> = ({
                     if (onMouseLeave) onMouseLeave();
                 }}
             >
-                <div className="flex items-center gap-2 font-medium text-sm border-b pb-2 mb-1 border-white/10">
+                <div className="flex items-center gap-2 font-medium text-sm border-b pb-2 mb-1 border-overlay/10">
                     {isSignificant ? (
                         <AlertTriangle className="w-4 h-4 text-amber-400" />
                     ) : (
@@ -176,31 +176,31 @@ export const SmartTrafficTooltip: React.FC<SmartTrafficTooltipProps> = ({
                 </div>
 
                 <div className="space-y-1.5 text-[13px] leading-relaxed">
-                    <div className="flex justify-between text-white/60 gap-4">
+                    <div className="flex justify-between text-text-primary/60 gap-4">
                         <span>Actual Total (from report):</span>
-                        <span className="text-white font-mono">{actualTotal.toLocaleString()}</span>
+                        <span className="text-text-primary font-mono">{actualTotal.toLocaleString()}</span>
                     </div>
 
                     <div className="space-y-1">
-                        <div className="flex justify-between text-white/60 text-[12px]">
+                        <div className="flex justify-between text-text-primary/60 text-[12px]">
                             <span>Top Videos Sum:</span>
-                            <span className="text-white/80 font-mono">{nonTrashTable.toLocaleString()}</span>
+                            <span className="text-text-primary/80 font-mono">{nonTrashTable.toLocaleString()}</span>
                         </div>
                         {trashValue > 0 && (
-                            <div className="flex justify-between text-white/60 text-[12px]">
+                            <div className="flex justify-between text-text-primary/60 text-[12px]">
                                 <span>Trash Content:</span>
-                                <span className="text-white/80 font-mono">{trashValue.toLocaleString()}</span>
+                                <span className="text-text-primary/80 font-mono">{trashValue.toLocaleString()}</span>
                             </div>
                         )}
                     </div>
 
-                    <div className="flex justify-between pt-1 border-t border-white/5 font-medium">
-                        <span className="text-white/80"><strong>Long Tail</strong> Difference:</span>
+                    <div className="flex justify-between pt-1 border-t border-overlay/5 font-medium">
+                        <span className="text-text-primary/80"><strong>Long Tail</strong> Difference:</span>
                         <span className="text-amber-300 font-mono">+{longTail.toLocaleString()}</span>
                     </div>
                 </div>
 
-                <div className="text-[11px] text-white/40 italic mt-2 leading-relaxed flex flex-col gap-2.5 [hyphens:none] [word-break:normal]">
+                <div className="text-[11px] text-text-primary/40 italic mt-2 leading-relaxed flex flex-col gap-2.5 [hyphens:none] [word-break:normal]">
                     <p>
                         The list below displays your top performing sources. The difference in numbers represents the 'Long Tail' — aggregated data from minor sources and privacy-protected views that are hidden to keep your report clean.
                     </p>

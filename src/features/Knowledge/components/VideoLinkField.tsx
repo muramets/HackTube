@@ -126,7 +126,7 @@ export const VideoLinkField = ({
                         )}
                     </div>
                     {linkedVideo.ownership === 'competitor' && (
-                        <span className="text-[9px] text-text-tertiary bg-white/[0.06] px-1.5 py-0.5 rounded-full flex-shrink-0">
+                        <span className="text-[9px] text-text-tertiary bg-overlay/[0.06] px-1.5 py-0.5 rounded-full flex-shrink-0">
                             Competitor
                         </span>
                     )}
@@ -171,7 +171,7 @@ export const VideoLinkField = ({
                                     key={video.videoId}
                                     type="button"
                                     className={`w-full flex items-center gap-2.5 px-3 py-1.5 text-left cursor-pointer border-none bg-transparent ${
-                                        index === highlightedIndex ? 'bg-white/[0.08]' : 'hover:bg-white/[0.04]'
+                                        index === highlightedIndex ? 'bg-overlay/[0.08]' : 'hover:bg-overlay/[0.04]'
                                     }`}
                                     onClick={() => handleSelect(video)}
                                     onMouseEnter={() => setHighlightedIndex(index)}
@@ -190,7 +190,7 @@ export const VideoLinkField = ({
                                         )}
                                     </div>
                                     {video.ownership === 'competitor' && (
-                                        <span className="text-[9px] text-text-tertiary bg-white/[0.06] px-1.5 py-0.5 rounded-full flex-shrink-0">
+                                        <span className="text-[9px] text-text-tertiary bg-overlay/[0.06] px-1.5 py-0.5 rounded-full flex-shrink-0">
                                             Competitor
                                         </span>
                                     )}

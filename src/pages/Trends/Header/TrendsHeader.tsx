@@ -119,7 +119,7 @@ export const TrendsHeader: React.FC<TrendsHeaderProps> = ({
                                 }}
                                 className={`p-1.5 rounded-md transition-all ${currentViewMode === 'timeline'
                                     ? 'bg-bg-primary shadow-sm text-text-primary'
-                                    : 'text-text-secondary hover:text-text-primary hover:bg-white/5'
+                                    : 'text-text-secondary hover:text-text-primary hover:bg-overlay/5'
                                     }`}
                             >
                                 <LayoutGrid size={16} />
@@ -134,7 +134,7 @@ export const TrendsHeader: React.FC<TrendsHeaderProps> = ({
                                 }}
                                 className={`p-1.5 rounded-md transition-all ${currentViewMode === 'table'
                                     ? 'bg-bg-primary shadow-sm text-text-primary'
-                                    : 'text-text-secondary hover:text-text-primary hover:bg-white/5'
+                                    : 'text-text-secondary hover:text-text-primary hover:bg-overlay/5'
                                     }`}
                             >
                                 <Table2 size={16} />

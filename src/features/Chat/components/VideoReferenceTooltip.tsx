@@ -74,7 +74,7 @@ export const VideoReferenceTooltip: React.FC<VideoReferenceTooltipProps> = React
             inline
         >
             <span
-                className={`video-reference-highlight ${onBadgeClick ? 'cursor-pointer hover:bg-white/10' : ''}`}
+                className={`video-reference-highlight ${onBadgeClick ? 'cursor-pointer hover:bg-overlay/10' : ''}`}
                 onClick={(e) => {
                     if (onBadgeClick) {
                         e.preventDefault();

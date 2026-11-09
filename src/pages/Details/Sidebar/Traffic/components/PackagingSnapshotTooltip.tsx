@@ -52,7 +52,7 @@ export const PackagingSnapshotTooltip: React.FC<PackagingSnapshotTooltipProps> =
     return (
         <div className="flex flex-col gap-4 w-full">
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-1">
+            <div className="flex items-center justify-between border-b border-overlay/10 pb-2 mb-1">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-text-tertiary">
                     PRESERVED DATA v.{version}
                 </span>
@@ -60,7 +60,7 @@ export const PackagingSnapshotTooltip: React.FC<PackagingSnapshotTooltipProps> =
 
             {/* A/B Test Bundle (Titles + Thumbnails) */}
             {isBundleTest ? (
-                <div className="flex flex-col gap-2 p-3 bg-white/5 rounded-xl border border-white/10 relative group/ab">
+                <div className="flex flex-col gap-2 p-3 bg-overlay/5 rounded-xl border border-overlay/10 relative group/ab">
                     <div className="flex items-center gap-2 text-yellow-400/90 font-bold text-[10px] uppercase tracking-wider mb-1">
                         <SplitSquareHorizontal size={12} />
                         <span>Legacy A/B Test Stats ({data.abTestTitles?.length} Variants)</span>
@@ -72,7 +72,7 @@ export const PackagingSnapshotTooltip: React.FC<PackagingSnapshotTooltipProps> =
                             return (
                                 <div key={index} className="flex gap-3 items-start group/variant">
                                     {/* Thumbnail Variant */}
-                                    <div className="w-[100px] aspect-video rounded-lg bg-black/20 overflow-hidden border border-white/10 shrink-0 relative">
+                                    <div className="w-[100px] aspect-video rounded-lg bg-black/20 overflow-hidden border border-overlay/10 shrink-0 relative">
                                         {thumb ? (
                                             <img src={thumb} className="w-full h-full object-cover" alt={`Variant ${index + 1}`} />
                                         ) : (
@@ -90,7 +90,7 @@ export const PackagingSnapshotTooltip: React.FC<PackagingSnapshotTooltipProps> =
                                         </div>
                                         <button
                                             onClick={() => handleTitleCopy(title, index)}
-                                            className="absolute top-0 right-0 p-1 rounded hover:bg-white/10 text-text-tertiary hover:text-text-primary transition-opacity opacity-0 group-hover/variant:opacity-100"
+                                            className="absolute top-0 right-0 p-1 rounded hover:bg-overlay/10 text-text-tertiary hover:text-text-primary transition-opacity opacity-0 group-hover/variant:opacity-100"
                                             title="Copy Variant Title"
                                         >
                                             {copiedTitleIndex === index ? <Check size={12} className="text-green-400" /> : <Copy size={12} />}
@@ -122,7 +122,7 @@ export const PackagingSnapshotTooltip: React.FC<PackagingSnapshotTooltipProps> =
                                         </div>
                                         <button
                                             onClick={() => handleTitleCopy(title, index)}
-                                            className="absolute top-0 right-0 p-1 rounded hover:bg-white/10 text-text-tertiary hover:text-text-primary transition-opacity opacity-0 group-hover/variant:opacity-100"
+                                            className="absolute top-0 right-0 p-1 rounded hover:bg-overlay/10 text-text-tertiary hover:text-text-primary transition-opacity opacity-0 group-hover/variant:opacity-100"
                                             title="Copy Title"
                                         >
                                             {copiedTitleIndex === index ? <Check size={12} className="text-green-400" /> : <Copy size={12} />}
@@ -137,7 +137,7 @@ export const PackagingSnapshotTooltip: React.FC<PackagingSnapshotTooltipProps> =
                                 </div>
                                 <button
                                     onClick={() => handleTitleCopy(data.title, -1)}
-                                    className="absolute -top-1 right-0 p-1.5 rounded-md hover:bg-white/10 text-text-tertiary hover:text-text-primary transition-all opacity-0 group-hover/copy:opacity-100"
+                                    className="absolute -top-1 right-0 p-1.5 rounded-md hover:bg-overlay/10 text-text-tertiary hover:text-text-primary transition-all opacity-0 group-hover/copy:opacity-100"
                                     title="Copy Title"
                                 >
                                     {copiedTitleIndex === -1 ? <Check size={12} className="text-green-400" /> : <Copy size={12} />}
@@ -147,7 +147,7 @@ export const PackagingSnapshotTooltip: React.FC<PackagingSnapshotTooltipProps> =
                     </div>
 
                     {/* Thumbnails Section (Single or A/B) */}
-                    <div className="flex flex-col gap-1.5 border-t border-white/5 pt-3">
+                    <div className="flex flex-col gap-1.5 border-t border-overlay/5 pt-3">
                         <div className="flex items-center gap-1.5 text-[10px] font-bold text-text-tertiary uppercase tracking-wider">
                             <ImageIcon size={10} />
                             <span>{hasAbTestThumbnails ? `Thumbnails (${data.abTestThumbnails?.length} tested)` : 'Thumbnail'}</span>
@@ -156,7 +156,7 @@ export const PackagingSnapshotTooltip: React.FC<PackagingSnapshotTooltipProps> =
                         {hasAbTestThumbnails ? (
                             <div className="grid grid-cols-2 gap-2">
                                 {data.abTestThumbnails?.map((thumb, index) => (
-                                    <div key={index} className="relative aspect-video rounded-lg overflow-hidden border border-white/10 group/thumb">
+                                    <div key={index} className="relative aspect-video rounded-lg overflow-hidden border border-overlay/10 group/thumb">
                                         <img src={thumb} className="w-full h-full object-cover" alt={`Variant ${index + 1}`} />
                                         <div className="absolute top-0.5 left-0.5 bg-black/60 backdrop-blur-[2px] px-1.5 py-0.5 rounded text-[9px] text-white font-medium border border-white/10">
                                             {String.fromCharCode(65 + index)}
@@ -165,7 +165,7 @@ export const PackagingSnapshotTooltip: React.FC<PackagingSnapshotTooltipProps> =
                                 ))}
                             </div>
                         ) : data.coverImage ? (
-                            <div className="aspect-video w-[140px] rounded-lg overflow-hidden border border-white/10 relative">
+                            <div className="aspect-video w-[140px] rounded-lg overflow-hidden border border-overlay/10 relative">
                                 <img src={data.coverImage} className="w-full h-full object-cover" alt="Cover" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60" />
                                 <div className="absolute bottom-1 left-1.5 text-[9px] text-white/90 font-medium">Original</div>
@@ -179,7 +179,7 @@ export const PackagingSnapshotTooltip: React.FC<PackagingSnapshotTooltipProps> =
 
             {/* Description (Common) */}
             {data.description && (
-                <div className="flex flex-col gap-1.5 group/copy relative border-t border-white/5 pt-3">
+                <div className="flex flex-col gap-1.5 group/copy relative border-t border-overlay/5 pt-3">
                     <div className="flex items-center gap-1.5 text-[10px] font-bold text-text-tertiary uppercase tracking-wider">
                         <AlignLeft size={10} />
                         <span>Description</span>
@@ -194,7 +194,7 @@ export const PackagingSnapshotTooltip: React.FC<PackagingSnapshotTooltipProps> =
                         </div>
                         <button
                             onClick={() => handleCopy(data.description, setIsDescriptionCopied)}
-                            className="absolute -top-1 right-0 p-1.5 rounded-md hover:bg-white/10 text-text-tertiary hover:text-text-primary transition-all opacity-0 group-hover/copy:opacity-100"
+                            className="absolute -top-1 right-0 p-1.5 rounded-md hover:bg-overlay/10 text-text-tertiary hover:text-text-primary transition-all opacity-0 group-hover/copy:opacity-100"
                             title="Copy Description"
                         >
                             {isDescriptionCopied ? <Check size={12} className="text-green-400" /> : <Copy size={12} />}
@@ -205,14 +205,14 @@ export const PackagingSnapshotTooltip: React.FC<PackagingSnapshotTooltipProps> =
 
             {/* Tags (Common, Fixed Expansion) */}
             {data.tags && data.tags.length > 0 && (
-                <div className="flex flex-col gap-2 border-t border-white/5 pt-3 group/copy relative">
+                <div className="flex flex-col gap-2 border-t border-overlay/5 pt-3 group/copy relative">
                     <div className="flex items-center gap-1.5 text-[10px] font-bold text-text-tertiary uppercase tracking-wider">
                         <Tag size={10} />
                         <span>Tags</span>
                     </div>
                     <div className="flex flex-wrap gap-1.5 pr-8">
                         {(areTagsExpanded ? data.tags : data.tags.slice(0, 8)).map((tag, i) => (
-                            <span key={i} className="text-[10px] px-2 py-0.5 bg-white/5 text-text-secondary rounded-full border border-white/10">
+                            <span key={i} className="text-[10px] px-2 py-0.5 bg-overlay/5 text-text-secondary rounded-full border border-overlay/10">
                                 #{tag}
                             </span>
                         ))}
@@ -223,7 +223,7 @@ export const PackagingSnapshotTooltip: React.FC<PackagingSnapshotTooltipProps> =
                                     e.stopPropagation();
                                     setAreTagsExpanded(true);
                                 }}
-                                className="text-[10px] px-2 py-0.5 text-text-tertiary bg-white/5 rounded-full border border-white/5 border-dashed hover:bg-white/10 hover:text-text-secondary transition-colors cursor-pointer"
+                                className="text-[10px] px-2 py-0.5 text-text-tertiary bg-overlay/5 rounded-full border border-overlay/5 border-dashed hover:bg-overlay/10 hover:text-text-secondary transition-colors cursor-pointer"
                             >
                                 +{data.tags.length - 8} more
                             </button>
@@ -243,7 +243,7 @@ export const PackagingSnapshotTooltip: React.FC<PackagingSnapshotTooltipProps> =
                     </div>
                     <button
                         onClick={() => handleCopy(data.tags.join(', '), setIsTagsCopied)}
-                        className="absolute bottom-0 right-0 p-1.5 rounded-md hover:bg-white/10 text-text-tertiary hover:text-text-primary transition-all opacity-0 group-hover/copy:opacity-100"
+                        className="absolute bottom-0 right-0 p-1.5 rounded-md hover:bg-overlay/10 text-text-tertiary hover:text-text-primary transition-all opacity-0 group-hover/copy:opacity-100"
                         title="Copy All Tags"
                     >
                         {isTagsCopied ? <Check size={12} className="text-green-400" /> : <Copy size={12} />}

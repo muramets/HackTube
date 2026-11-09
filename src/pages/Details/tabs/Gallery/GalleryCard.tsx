@@ -190,15 +190,15 @@ export const GalleryCardInner: React.FC<GalleryCardInnerProps> = ({
             {/* Hover Substrate - matching VideoCard */}
             <div className={`absolute inset-0 rounded-xl transition-all duration-200 ease-out -z-10 pointer-events-none 
                 ${isActive ? 'opacity-100 scale-100' : 'opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100'} 
-                ${isSelected ? 'bg-blue-500/5 border-2 border-blue-500/50' : 'bg-white/10 border-2 border-white/20'}`}
+                ${isSelected ? 'bg-blue-500/5 border-2 border-blue-500/50' : 'bg-overlay/10 border-2 border-overlay/20'}`}
             />
             {/* Thumbnail */}
-            <div className="relative aspect-video rounded-xl overflow-hidden bg-[#1a1a1a] flex items-center justify-center">
+            <div className="relative aspect-video rounded-xl overflow-hidden bg-surface-primary flex items-center justify-center">
 
                 {/* Loader - visible while loading */}
                 {!isImageLoaded && (
                     <div className="absolute inset-0 flex items-center justify-center z-20">
-                        <Loader2 size={32} className="text-white/60 animate-spin" />
+                        <Loader2 size={32} className="text-text-tertiary animate-spin" />
                     </div>
                 )}
 
@@ -223,13 +223,13 @@ export const GalleryCardInner: React.FC<GalleryCardInnerProps> = ({
                             <div className="flex flex-col gap-1.5">
                                 {/* Header Row: Filename + Action Buttons */}
                                 <div className="flex items-start justify-between gap-3">
-                                    <div className="font-medium text-white text-sm break-words max-w-[200px]">
+                                    <div className="font-medium text-text-primary text-sm break-words max-w-[200px]">
                                         {item.filename}
                                     </div>
                                     <div className="flex items-center gap-0.5">
                                         <button
                                             onClick={(e) => { e.stopPropagation(); handleCopy(e); }}
-                                            className="p-1 rounded hover:bg-white/10 text-white transition-colors border-none cursor-pointer flex-shrink-0"
+                                            className="p-1 rounded hover:bg-overlay/10 text-text-primary transition-colors border-none cursor-pointer flex-shrink-0"
                                             title="Copy filename"
                                         >
                                             {copied ? <Check size={12} className="text-green-400" /> : <Copy size={12} />}
@@ -237,7 +237,7 @@ export const GalleryCardInner: React.FC<GalleryCardInnerProps> = ({
                                         <button
                                             onClick={handleDownload}
                                             disabled={isDownloading}
-                                            className="p-1 rounded hover:bg-white/10 text-white transition-colors border-none cursor-pointer flex-shrink-0 disabled:opacity-50 disabled:cursor-wait"
+                                            className="p-1 rounded hover:bg-overlay/10 text-text-primary transition-colors border-none cursor-pointer flex-shrink-0 disabled:opacity-50 disabled:cursor-wait"
                                             title="Download"
                                         >
                                             {isDownloading ? <Loader2 size={12} className="animate-spin" /> : <Download size={12} />}
@@ -245,9 +245,9 @@ export const GalleryCardInner: React.FC<GalleryCardInnerProps> = ({
                                         <button
                                             onClick={(e) => { e.stopPropagation(); handleDeleteClick(); }}
                                             className={`p-1 rounded flex items-center justify-center transition-all border-none cursor-pointer flex-shrink-0 ${confirmDelete
-                                                ? 'bg-red-600 scale-110 shadow-lg shadow-red-500/20'
-                                                : 'hover:bg-white/10'
-                                                } text-white`}
+                                                ? 'bg-red-600 scale-110 shadow-lg shadow-red-500/20 text-white'
+                                                : 'hover:bg-overlay/10 text-text-primary'
+                                                }`}
                                             title={confirmDelete ? "Click again to confirm" : "Delete"}
                                         >
                                             {confirmDelete ? <AlertCircle size={12} /> : <Trash2 size={12} />}
@@ -255,12 +255,12 @@ export const GalleryCardInner: React.FC<GalleryCardInnerProps> = ({
                                     </div>
                                 </div>
                                 {/* File info */}
-                                <div className="text-xs text-gray-300">
+                                <div className="text-xs text-text-secondary">
                                     {uploadDate} {item.fileSize ? `• ${formatFileSize(item.fileSize)}` : ''}
                                 </div>
 
                                 {/* Rating Actions (New Row) */}
-                                <div className="flex items-center gap-2 pt-2 mt-2 border-t border-[#ffffff20]">
+                                <div className="flex items-center gap-2 pt-2 mt-2 border-t border-overlay/12">
                                     <button
                                         onClick={(e) => {
                                             e.stopPropagation();
@@ -269,14 +269,14 @@ export const GalleryCardInner: React.FC<GalleryCardInnerProps> = ({
                                         }}
                                         className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded transition-colors ${item.rating === -1
                                             ? 'bg-red-500/20 text-red-500 hover:bg-red-500/30'
-                                            : 'hover:bg-white/10 text-white'
+                                            : 'hover:bg-overlay/10 text-text-primary'
                                             }`}
                                         title="Dislike"
                                     >
                                         <ThumbsDown size={14} className={item.rating === -1 ? "fill-current" : ""} />
                                         <span className="text-xs font-medium">Dislike</span>
                                     </button>
-                                    <div className="w-[1px] h-4 bg-[#ffffff20]" />
+                                    <div className="w-[1px] h-4 bg-overlay/12" />
                                     <button
                                         onClick={(e) => {
                                             e.stopPropagation();
@@ -285,7 +285,7 @@ export const GalleryCardInner: React.FC<GalleryCardInnerProps> = ({
                                         }}
                                         className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded transition-colors ${(item.rating === 1 || item.isLiked) // Support legacy isLiked
                                             ? 'bg-red-500/20 text-red-500 hover:bg-red-500/30'
-                                            : 'hover:bg-white/10 text-white'
+                                            : 'hover:bg-overlay/10 text-text-primary'
                                             }`}
                                         title="Like"
                                     >
@@ -331,7 +331,7 @@ export const GalleryCardInner: React.FC<GalleryCardInnerProps> = ({
             {/* Content */}
             <div className="flex gap-3">
                 {/* Channel Avatar */}
-                <div className="w-9 h-9 rounded-full overflow-hidden flex-shrink-0 bg-[#333]">
+                <div className="w-9 h-9 rounded-full overflow-hidden flex-shrink-0 bg-bg-secondary">
                     {channelAvatar ? (
                         <img src={channelAvatar} alt={channelTitle} className="w-full h-full object-cover" />
                     ) : (
@@ -356,7 +356,7 @@ export const GalleryCardInner: React.FC<GalleryCardInnerProps> = ({
                 <div className="relative">
                     <button
                         onClick={() => setShowMenu(!showMenu)}
-                        className={`p-1 rounded-full transition-all ${isOverlay ? 'opacity-100' : 'opacity-0 group-hover:opacity-100 hover:bg-[#ffffff10]'}`}
+                        className={`p-1 rounded-full transition-all ${isOverlay ? 'opacity-100' : 'opacity-0 group-hover:opacity-100 hover:bg-overlay/6'}`}
                     >
                         <MoreVertical size={18} className="text-text-secondary" />
                     </button>
@@ -373,19 +373,19 @@ export const GalleryCardInner: React.FC<GalleryCardInnerProps> = ({
                             />
 
                             {/* Menu */}
-                            <div className="absolute right-0 top-8 w-max min-w-[12rem] py-1 bg-[#282828] rounded-lg shadow-xl border border-border z-50 flex flex-col">
+                            <div className="absolute right-0 top-8 w-max min-w-[12rem] py-1 bg-modal-bg rounded-lg shadow-xl border border-border z-50 flex flex-col">
                                 {/* Set as Cover (First priority) */}
                                 {onSetAsCover && (
                                     <>
                                         <button
                                             onClick={() => { onSetAsCover(); setShowMenu(false); }}
                                             disabled={isSettingCover}
-                                            className="w-full flex items-center gap-2 px-3 py-2 text-sm text-text-primary hover:bg-[#ffffff10] transition-colors disabled:opacity-50"
+                                            className="w-full flex items-center gap-2 px-3 py-2 text-sm text-text-primary hover:bg-overlay/6 transition-colors disabled:opacity-50"
                                         >
                                             {isSettingCover ? <Loader2 size={16} className="animate-spin" /> : <ImageIcon size={16} />}
                                             Make Cover
                                         </button>
-                                        <div className="my-1 mx-2 border-t border-[#ffffff20]" />
+                                        <div className="my-1 mx-2 border-t border-overlay/12" />
                                     </>
                                 )}
 
@@ -394,7 +394,7 @@ export const GalleryCardInner: React.FC<GalleryCardInnerProps> = ({
                                     <button
                                         onClick={() => { onConvertToVideo(); setShowMenu(false); }}
                                         disabled={isConverting}
-                                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-text-primary hover:bg-[#ffffff10] transition-colors disabled:opacity-50"
+                                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-text-primary hover:bg-overlay/6 transition-colors disabled:opacity-50"
                                     >
                                         {isConverting ? <Loader2 size={16} className="animate-spin" /> : <Video size={16} />}
                                         Convert to Video
@@ -404,7 +404,7 @@ export const GalleryCardInner: React.FC<GalleryCardInnerProps> = ({
                                     <button
                                         onClick={() => { onConvertToVideoInPlaylist(); setShowMenu(false); }}
                                         disabled={isConverting}
-                                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-text-primary hover:bg-[#ffffff10] transition-colors disabled:opacity-50"
+                                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-text-primary hover:bg-overlay/6 transition-colors disabled:opacity-50"
                                     >
                                         <ListPlus size={16} />
                                         Convert to Video in Playlist
@@ -413,14 +413,14 @@ export const GalleryCardInner: React.FC<GalleryCardInnerProps> = ({
 
                                 {/* Separator between Convert and Clone */}
                                 {(onConvertToVideo || onConvertToVideoInPlaylist) && (onCloneToHome || onCloneToPlaylist) && (
-                                    <div className="my-1 mx-2 border-t border-[#ffffff20]" />
+                                    <div className="my-1 mx-2 border-t border-overlay/12" />
                                 )}
 
                                 {onCloneToHome && (
                                     <button
                                         onClick={() => { onCloneToHome(); setShowMenu(false); }}
                                         disabled={isCloning}
-                                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-text-primary hover:bg-[#ffffff10] transition-colors disabled:opacity-50"
+                                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-text-primary hover:bg-overlay/6 transition-colors disabled:opacity-50"
                                     >
                                         {isCloning ? <Loader2 size={16} className="animate-spin" /> : <Clock size={16} />}
                                         Clone to Home
@@ -430,7 +430,7 @@ export const GalleryCardInner: React.FC<GalleryCardInnerProps> = ({
                                     <button
                                         onClick={() => { onCloneToPlaylist(); setShowMenu(false); }}
                                         disabled={isCloning}
-                                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-text-primary hover:bg-[#ffffff10] transition-colors disabled:opacity-50"
+                                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-text-primary hover:bg-overlay/6 transition-colors disabled:opacity-50"
                                     >
                                         <Clock size={16} />
                                         Clone to Playlist
@@ -439,13 +439,13 @@ export const GalleryCardInner: React.FC<GalleryCardInnerProps> = ({
 
                                 {/* Separator if any action exists */}
                                 {(onConvertToVideo || onCloneToHome) && (
-                                    <div className="my-1 mx-2 border-t border-[#ffffff20]" />
+                                    <div className="my-1 mx-2 border-t border-overlay/12" />
                                 )}
 
                                 <button
                                     onClick={handleDownload}
                                     disabled={isDownloading}
-                                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-text-primary hover:bg-[#ffffff10] transition-colors disabled:opacity-50 disabled:cursor-wait"
+                                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-text-primary hover:bg-overlay/6 transition-colors disabled:opacity-50 disabled:cursor-wait"
                                 >
                                     {isDownloading ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />}
                                     {isDownloading ? 'Downloading...' : 'Download'}
@@ -454,7 +454,7 @@ export const GalleryCardInner: React.FC<GalleryCardInnerProps> = ({
                                     onClick={handleDeleteClick}
                                     className={`w-full flex items-center gap-2 px-3 py-2 text-sm transition-colors ${confirmDelete
                                         ? 'text-red-500 bg-red-500/10'
-                                        : 'text-text-primary hover:bg-[#ffffff10]'
+                                        : 'text-text-primary hover:bg-overlay/6'
                                         }`}
                                 >
                                     <Trash2 size={16} />

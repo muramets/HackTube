@@ -140,19 +140,19 @@ export const TrendNicheItem: React.FC<TrendNicheItemProps> = ({
                 className={`
                     flex items-center pl-2 pr-2 py-1.5 cursor-pointer hover-trail rounded-lg
                     ${isDragTarget
-                        ? 'bg-white/20 text-white'
+                        ? 'bg-overlay/20 text-text-primary'
                         : isActive
-                            ? 'bg-white/10 text-white'
+                            ? 'bg-overlay/10 text-text-primary'
                             : isInteracting
-                                ? 'bg-white/5 text-white'
-                                : 'text-text-secondary hover:text-white hover:bg-white/5'
+                                ? 'bg-overlay/5 text-text-primary'
+                                : 'text-text-secondary hover:text-text-primary hover:bg-overlay/5'
                     }
                 `}
             >
                 {/* Icon Wrapper */}
                 <div className="mr-1 shrink-0 flex items-center justify-center w-4">
                     {isTrash ? (
-                        <Trash2 size={14} className={`${isActive ? 'text-white' : 'text-gray-400'} translate-y-[-2px]`} />
+                        <Trash2 size={14} className={`${isActive ? 'text-text-primary' : 'text-text-secondary'} translate-y-[-2px]`} />
                     ) : (
                         <div
                             ref={colorPickerRef}
@@ -165,14 +165,14 @@ export const TrendNicheItem: React.FC<TrendNicheItemProps> = ({
                                     setIsColorPickerOpen(!isColorPickerOpen);
                                     setIsMenuOpen(false);
                                 }}
-                                className="w-2.5 h-2.5 rounded-full transition-all hover:scale-125 hover:ring-2 hover:ring-white/20 cursor-pointer"
+                                className="w-2.5 h-2.5 rounded-full transition-all hover:scale-125 hover:ring-2 hover:ring-overlay/20 cursor-pointer"
                                 style={{ backgroundColor: niche.color }}
                             />
 
                             {/* Color Picker */}
                             {isColorPickerOpen && (
                                 <div
-                                    className="absolute left-0 top-6 z-50 bg-[#1a1a1a] border border-white/10 rounded-xl p-3 shadow-xl animate-fade-in"
+                                    className="absolute left-0 top-6 z-50 bg-surface-primary border border-overlay/10 rounded-xl p-3 shadow-xl animate-fade-in"
                                     onClick={(e) => e.stopPropagation()}
                                 >
                                     <div
@@ -187,7 +187,7 @@ export const TrendNicheItem: React.FC<TrendNicheItemProps> = ({
                                                     updateNiche(niche.id, { color });
                                                     setIsColorPickerOpen(false);
                                                 }}
-                                                className="w-6 h-6 rounded-full transition-shadow relative hover:ring-2 hover:ring-white/50 ring-offset-1 ring-offset-[#1a1a1a]"
+                                                className="w-6 h-6 rounded-full transition-shadow relative hover:ring-2 hover:ring-overlay/50 ring-offset-1 ring-offset-surface-primary"
                                                 style={{ backgroundColor: color }}
                                             >
                                                 {niche.color === color && (
@@ -238,7 +238,7 @@ export const TrendNicheItem: React.FC<TrendNicheItemProps> = ({
                             onBlur={handleNameSubmit}
                             onKeyDown={handleKeyDown}
                             onClick={(e) => e.stopPropagation()}
-                            className="absolute inset-y-0 left-0 right-0 text-xs bg-[#1a1a1a] border-0 border-b border-white/40 outline-none text-white z-10"
+                            className="absolute inset-y-0 left-0 right-0 text-xs bg-surface-primary border-0 border-b border-overlay/40 outline-none text-text-primary z-10"
                         />
                     )}
                 </div>
@@ -246,7 +246,7 @@ export const TrendNicheItem: React.FC<TrendNicheItemProps> = ({
                 {/* Portal Tooltip */}
                 {((isNameHovered && !isDragging) || isDragTarget) && !isEditing && createPortal(
                     <div
-                        className="fixed z-popover px-2 py-1 bg-[#1a1a1a] border border-white/10 rounded-md shadow-xl text-xs text-white whitespace-nowrap pointer-events-none animate-fade-in"
+                        className="fixed z-popover px-2 py-1 bg-tooltip-bg border border-white/10 rounded-md shadow-xl text-xs text-tooltip-text whitespace-nowrap pointer-events-none animate-fade-in"
                         style={{ left: tooltipPos.x, top: tooltipPos.y, transform: 'translateY(-100%)' }}
                     >
                         {niche.name}
@@ -282,7 +282,7 @@ export const TrendNicheItem: React.FC<TrendNicheItemProps> = ({
                                 className={`
                                     p-0.5 rounded-full transition-opacity
                                     ${isInteracting ? 'opacity-100' : 'opacity-0 group-hover/niche:opacity-100'}
-                                    ${isMenuOpen ? 'opacity-100 bg-white/10' : 'hover:bg-white/10'}
+                                    ${isMenuOpen ? 'opacity-100 bg-overlay/10' : 'hover:bg-overlay/10'}
                                     relative after:absolute after:-inset-2 after:content-['']
                                 `}
                             >

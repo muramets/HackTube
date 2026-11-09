@@ -108,14 +108,13 @@ export const SidebarVideoPreview: React.FC<SidebarVideoPreviewProps> = ({
                 <PortalTooltip
                     content={title}
                     enterDelay={300}
-                    className="!bg-[#5A5A5A] !max-w-[280px] !whitespace-normal"
+                    className="!bg-tooltip-bg !text-tooltip-text !max-w-[280px] !whitespace-normal"
                     triggerClassName="block w-full"
                 >
                     <div
                         title=""
-                        className="text-sm mt-1 cursor-default"
+                        className="text-sm mt-1 cursor-default text-text-secondary"
                         style={{
-                            color: '#9B9B9B',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             whiteSpace: 'nowrap',

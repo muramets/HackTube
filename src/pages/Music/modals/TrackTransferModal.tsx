@@ -102,7 +102,7 @@ export const TrackTransferModal: React.FC<TrackTransferModalProps> = ({ isOpen, 
                     {state !== 'running' && (
                         <button
                             onClick={handleClose}
-                            className="p-1 rounded-full text-text-secondary hover:text-text-primary hover:bg-white/10 transition-colors"
+                            className="p-1 rounded-full text-text-secondary hover:text-text-primary hover:bg-overlay/10 transition-colors"
                         >
                             <X size={20} />
                         </button>
@@ -110,7 +110,7 @@ export const TrackTransferModal: React.FC<TrackTransferModalProps> = ({ isOpen, 
                 </div>
 
                 <div className="p-6">
-                    <div className="flex items-center gap-3 p-3 rounded-lg bg-white/5 mb-4">
+                    <div className="flex items-center gap-3 p-3 rounded-lg bg-overlay/5 mb-4">
                         {track.coverUrl ? (
                             <img
                                 src={track.coverUrl}
@@ -119,7 +119,7 @@ export const TrackTransferModal: React.FC<TrackTransferModalProps> = ({ isOpen, 
                                 referrerPolicy="no-referrer"
                             />
                         ) : (
-                            <div className="w-12 h-12 rounded bg-white/10 shrink-0 flex items-center justify-center">
+                            <div className="w-12 h-12 rounded bg-overlay/10 shrink-0 flex items-center justify-center">
                                 <Music size={20} className="text-text-tertiary" />
                             </div>
                         )}
@@ -234,7 +234,7 @@ const ChannelOption: React.FC<{
         onClick={onClick}
         className={`w-full flex items-center gap-3 p-3 rounded-lg border transition-all cursor-pointer ${isSelected
             ? 'border-amber-500 bg-amber-500/10'
-            : 'border-border bg-white/5 hover:bg-white/10'
+            : 'border-border bg-overlay/5 hover:bg-overlay/10'
             }`}
     >
         <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center overflow-hidden shrink-0">

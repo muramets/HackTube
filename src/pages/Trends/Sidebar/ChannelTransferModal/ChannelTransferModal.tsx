@@ -74,12 +74,12 @@ export const ChannelTransferModal: React.FC<ChannelTransferModalProps> = ({
                 {/* Header */}
                 <div className="px-6 py-4 flex items-center justify-between border-b border-border">
                     <div className="flex items-center gap-3">
-                        <Icon size={20} className="text-[#3ea6ff]" />
+                        <Icon size={20} className="text-brand-blue" />
                         <h2 className="text-lg font-bold text-text-primary m-0">{title}</h2>
                     </div>
                     <button
                         onClick={handleClose}
-                        className="p-1 rounded-full text-text-secondary hover:text-text-primary hover:bg-white/10 transition-colors"
+                        className="p-1 rounded-full text-text-secondary hover:text-text-primary hover:bg-overlay/10 transition-colors"
                     >
                         <X size={20} />
                     </button>
@@ -88,7 +88,7 @@ export const ChannelTransferModal: React.FC<ChannelTransferModalProps> = ({
                 {/* Content */}
                 <div className="p-6">
                     {/* Source Channel Info */}
-                    <div className="flex items-center gap-3 p-3 rounded-lg bg-white/5 mb-4">
+                    <div className="flex items-center gap-3 p-3 rounded-lg bg-overlay/5 mb-4">
                         <img
                             src={trendChannel.avatarUrl}
                             alt={trendChannel.title}
@@ -183,7 +183,7 @@ export const ChannelTransferModal: React.FC<ChannelTransferModalProps> = ({
                     {/* State: Running */}
                     {state === 'running' && (
                         <div className="flex flex-col items-center justify-center py-8">
-                            <Loader2 size={32} className="text-[#3ea6ff] animate-spin mb-3" />
+                            <Loader2 size={32} className="text-brand-blue animate-spin mb-3" />
                             <div className="text-text-secondary">
                                 {isMove ? 'Moving data...' : 'Copying data...'}
                             </div>
@@ -240,7 +240,7 @@ export const ChannelTransferModal: React.FC<ChannelTransferModalProps> = ({
                             <button
                                 onClick={checkAndExecute}
                                 disabled={!targetChannelId || availableTargets.length === 0}
-                                className={`px-4 py-2 rounded-lg font-bold text-white transition-colors border-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${isMove ? 'bg-amber-600 hover:bg-amber-700' : 'bg-[#3ea6ff] hover:bg-[#3ea6ff]/90'}`}
+                                className={`px-4 py-2 rounded-lg font-bold text-white transition-colors border-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${isMove ? 'bg-amber-600 hover:bg-amber-700' : 'bg-brand-blue hover:bg-brand-blue/90'}`}
                             >
                                 {ctaLabel}
                             </button>
@@ -258,7 +258,7 @@ export const ChannelTransferModal: React.FC<ChannelTransferModalProps> = ({
                         {state === 'error' && (
                             <button
                                 onClick={reset}
-                                className="px-4 py-2 rounded-lg font-bold text-white bg-[#3ea6ff] hover:bg-[#3ea6ff]/90 transition-colors border-none cursor-pointer"
+                                className="px-4 py-2 rounded-lg font-bold text-white bg-brand-blue hover:bg-brand-blue/90 transition-colors border-none cursor-pointer"
                             >
                                 Try Again
                             </button>
@@ -288,8 +288,8 @@ const ChannelOption: React.FC<{
     <button
         onClick={onClick}
         className={`w-full flex items-center gap-3 p-3 rounded-lg border transition-all cursor-pointer ${isSelected
-            ? 'border-[#3ea6ff] bg-[#3ea6ff]/10'
-            : 'border-border bg-white/5 hover:bg-white/10'
+            ? 'border-brand-blue bg-brand-blue/10'
+            : 'border-border bg-overlay/5 hover:bg-overlay/10'
             }`}
     >
         <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center overflow-hidden shrink-0">
@@ -300,6 +300,6 @@ const ChannelOption: React.FC<{
             )}
         </div>
         <span className="text-text-primary truncate flex-1 text-left">{channel.name}</span>
-        {isSelected && <Check size={16} className="text-[#3ea6ff] shrink-0" />}
+        {isSelected && <Check size={16} className="text-brand-blue shrink-0" />}
     </button>
 );

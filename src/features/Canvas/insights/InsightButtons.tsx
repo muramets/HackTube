@@ -167,7 +167,7 @@ const InsightButtonsInner: React.FC<Props> = ({ nodeId, data, nodeWidth, isHover
                     backdrop-blur-md shadow-md
                     transition-all duration-200
                     ${isOpen
-                        ? 'text-text-primary brightness-125 ring-1 ring-white/20'
+                        ? 'text-text-primary brightness-125 ring-1 ring-overlay/20'
                         : activeColors.length > 0
                             ? 'text-white hover:brightness-125 ring-1 ring-white/10'
                             : 'bg-bg-secondary/90 text-text-tertiary hover:text-text-secondary'
@@ -225,7 +225,7 @@ const InsightButtonsInner: React.FC<Props> = ({ nodeId, data, nodeWidth, isHover
                                 bg-bg-secondary/90 backdrop-blur-md border shadow-lg
                                 transition-all duration-200 select-none
                                 ${isActive || hasFill
-                                    ? 'border-white/20 brightness-110'
+                                    ? 'border-overlay/20 brightness-110'
                                     : 'border-border text-text-secondary hover:brightness-125'
                                 }
                             `}

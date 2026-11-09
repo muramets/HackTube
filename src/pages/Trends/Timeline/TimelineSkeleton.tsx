@@ -64,7 +64,7 @@ export const TimelineSkeleton: React.FC = () => {
                         className={`flex-1 relative overflow-hidden ${i % 2 === 0 ? 'bg-black/5 dark:bg-white/5' : 'bg-transparent'}`}
                     >
                         {i % 2 === 0 && (
-                            <div className="absolute inset-0 animate-shimmer bg-gradient-to-r from-transparent via-white/5 to-transparent" style={{ backgroundSize: '200% 100%' }} />
+                            <div className="absolute inset-0 animate-shimmer bg-gradient-to-r from-transparent via-overlay/5 to-transparent" style={{ backgroundSize: '200% 100%' }} />
                         )}
                     </div>
                 ))}

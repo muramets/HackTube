@@ -31,13 +31,13 @@ export const PickTheWinnerBar: React.FC<PickTheWinnerBarProps> = ({
             <div className="mx-6 mb-3 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500/10 via-yellow-500/10 to-orange-500/10 border border-amber-500/20 flex items-center justify-between animate-fade-in">
                 <div className="flex items-center gap-3">
                     <Trophy size={18} className="text-amber-400" />
-                    <span className="text-sm font-semibold text-white">
+                    <span className="text-sm font-semibold text-text-primary">
                         Pick the Winner
                     </span>
                     <span className="text-sm text-text-secondary">
                         {ranked}/{total} ranked
                     </span>
-                    <div className="h-1.5 w-24 bg-white/10 rounded-full overflow-hidden">
+                    <div className="h-1.5 w-24 bg-overlay/10 rounded-full overflow-hidden">
                         <div
                             className="h-full bg-gradient-to-r from-amber-400 to-orange-400 rounded-full transition-all duration-300"
                             style={{ width: `${total > 0 ? (ranked / total) * 100 : 0}%` }}
@@ -50,7 +50,7 @@ export const PickTheWinnerBar: React.FC<PickTheWinnerBarProps> = ({
                         disabled={!canSave}
                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border-none cursor-pointer ${canSave
                             ? 'bg-amber-500 text-black hover:bg-amber-400'
-                            : 'bg-white/5 text-text-tertiary cursor-not-allowed'
+                            : 'bg-overlay/5 text-text-tertiary cursor-not-allowed'
                             }`}
                     >
                         <Save size={14} />
@@ -58,7 +58,7 @@ export const PickTheWinnerBar: React.FC<PickTheWinnerBarProps> = ({
                     </button>
                     <button
                         onClick={onDiscard}
-                        className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/5 text-text-secondary hover:bg-white/10 hover:text-white transition-colors border-none cursor-pointer"
+                        className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-overlay/5 text-text-secondary hover:bg-overlay/10 hover:text-text-primary transition-colors border-none cursor-pointer"
                     >
                         <X size={14} />
                         Discard
@@ -81,7 +81,7 @@ export const PickTheWinnerBar: React.FC<PickTheWinnerBarProps> = ({
                                 <Trophy size={20} className="text-amber-400" />
                             </div>
                             <div>
-                                <h3 className="text-base font-bold text-white m-0">Save Ranking</h3>
+                                <h3 className="text-base font-bold text-text-primary m-0">Save Ranking</h3>
                                 <p className="text-xs text-text-secondary m-0">This ranking will appear in the sort menu</p>
                             </div>
                         </div>
@@ -95,12 +95,12 @@ export const PickTheWinnerBar: React.FC<PickTheWinnerBarProps> = ({
                                 if (e.key === 'Enter') handleSave();
                                 if (e.key === 'Escape') setShowModal(false);
                             }}
-                            className="w-full bg-bg-primary text-white text-sm px-4 py-3 rounded-xl border border-white/10 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500/50 placeholder:text-text-secondary mb-4"
+                            className="w-full bg-bg-primary text-text-primary text-sm px-4 py-3 rounded-xl border border-overlay/10 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500/50 placeholder:text-text-secondary mb-4"
                         />
                         <div className="flex justify-end gap-2">
                             <button
                                 onClick={() => setShowModal(false)}
-                                className="px-4 py-2 rounded-lg text-sm font-medium bg-white/5 text-text-secondary hover:bg-white/10 hover:text-white transition-colors border-none cursor-pointer"
+                                className="px-4 py-2 rounded-lg text-sm font-medium bg-overlay/5 text-text-secondary hover:bg-overlay/10 hover:text-text-primary transition-colors border-none cursor-pointer"
                             >
                                 Cancel
                             </button>

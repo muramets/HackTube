@@ -214,7 +214,7 @@ export const CompactFilterBar: React.FC<CompactFilterBarProps> = ({
                                     onClick={() => setGenreFilter(genreFilter === genre.id ? null : genre.id)}
                                     className={`text-[10px] px-2 py-0.5 rounded-md flex items-center gap-1 transition-all cursor-pointer border-none font-medium ${genreFilter === genre.id
                                         ? 'bg-text-primary text-bg-primary'
-                                        : 'bg-white/[0.08] text-text-primary hover:bg-hover-bg'
+                                        : 'bg-overlay/[0.08] text-text-primary hover:bg-hover-bg'
                                         }`}
                                 >
                                     <span
@@ -234,7 +234,7 @@ export const CompactFilterBar: React.FC<CompactFilterBarProps> = ({
                                         onClick={() => toggleTagFilter(tag.id)}
                                         className={`text-[10px] px-2 py-0.5 rounded-md transition-all cursor-pointer border-none font-medium ${active
                                             ? 'bg-text-primary text-bg-primary'
-                                            : 'bg-white/[0.08] text-text-primary hover:bg-hover-bg'
+                                            : 'bg-overlay/[0.08] text-text-primary hover:bg-hover-bg'
                                             }`}
                                     >
                                         {tag.name}

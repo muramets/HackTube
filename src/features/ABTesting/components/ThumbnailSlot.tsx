@@ -53,12 +53,12 @@ export const ThumbnailSlot: React.FC<ThumbnailSlotProps> = ({
         <button
             onClick={onUpload}
             className={`rounded-xl border border-dashed 
-                hover:border-[#AAAAAA] transition-colors flex flex-col items-center justify-center gap-2
+                hover:border-text-secondary transition-colors flex flex-col items-center justify-center gap-2
                 bg-modal-input-bg group ${borderClassName}`}
             style={{ width: '265px', height: '148px' }}
         >
-            <Plus size={32} className="text-[#5F5F5F] group-hover:text-[#AAAAAA] transition-colors" />
-            <span className="text-base text-[#5F5F5F] group-hover:text-[#AAAAAA] transition-colors text-center px-2">
+            <Plus size={32} className="text-text-tertiary group-hover:text-text-secondary transition-colors" />
+            <span className="text-base text-text-tertiary group-hover:text-text-secondary transition-colors text-center px-2">
                 Add thumbnail
             </span>
         </button>

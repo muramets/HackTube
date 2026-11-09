@@ -110,7 +110,7 @@ const VideoCardNodeInner: React.FC<VideoCardNodeProps> = ({ data, nodeId }) => {
     const footerExtra = (
         <div className="relative shrink-0" style={{ pointerEvents: 'auto' }}>
             <button
-                className="w-3.5 h-3.5 rounded-full border border-white/20 cursor-pointer transition-transform hover:scale-125"
+                className="w-3.5 h-3.5 rounded-full border border-overlay/20 cursor-pointer transition-transform hover:scale-125"
                 style={{ backgroundColor: nodeColor, borderStyle: 'solid' }}
                 onMouseDown={(e) => e.stopPropagation()}
                 onClick={(e) => {

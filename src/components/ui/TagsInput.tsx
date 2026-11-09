@@ -132,7 +132,7 @@ export const TagsInput: React.FC<TagsInputProps> = ({ tags, onChange, onShowToas
                         onKeyDown={handleKeyDown}
                         onPaste={handlePaste}
                         onBlur={addTag}
-                        className="bg-transparent border-none outline-none text-text-primary flex-1 min-w-[120px] h-[32px] placeholder-[#717171]"
+                        className="bg-transparent border-none outline-none text-text-primary flex-1 min-w-[120px] h-[32px] placeholder:text-text-tertiary"
                         placeholder={tags.length === 0 ? "Add tags..." : ""}
                     />
                 )}

@@ -42,7 +42,7 @@ export const VideoSelectionFloatingBar: React.FC<VideoSelectionFloatingBarProps>
                     <>
                         <button
                             onClick={() => setShowPlaylistModal(true)}
-                            className="p-2 hover:bg-white/10 rounded-full text-text-primary transition-colors border-none cursor-pointer flex items-center justify-center"
+                            className="p-2 hover:bg-overlay/10 rounded-full text-text-primary transition-colors border-none cursor-pointer flex items-center justify-center"
                             title="Save to playlist"
                         >
                             <ListPlus size={20} />
@@ -51,7 +51,7 @@ export const VideoSelectionFloatingBar: React.FC<VideoSelectionFloatingBarProps>
                         {onAddToHome && (
                             <button
                                 onClick={() => onAddToHome(Array.from(selectedIds))}
-                                className="p-2 hover:bg-white/10 rounded-full text-text-primary transition-colors border-none cursor-pointer flex items-center justify-center"
+                                className="p-2 hover:bg-overlay/10 rounded-full text-text-primary transition-colors border-none cursor-pointer flex items-center justify-center"
                                 title="Add to Home"
                             >
                                 <Home size={20} />
@@ -67,7 +67,7 @@ export const VideoSelectionFloatingBar: React.FC<VideoSelectionFloatingBarProps>
                                     onAddToCanvas(Array.from(selectedIds), pageId, pageTitle);
                                     setCanvasMenuOpen(false);
                                 }}
-                                buttonClassName="text-text-primary hover:text-white hover:bg-white/10"
+                                buttonClassName="text-text-primary hover:bg-overlay/10"
                                 selectedVideoIds={Array.from(selectedIds)}
                             />
                         )}
@@ -75,7 +75,7 @@ export const VideoSelectionFloatingBar: React.FC<VideoSelectionFloatingBarProps>
                         {onTransfer && (
                             <button
                                 onClick={() => onTransfer(Array.from(selectedIds))}
-                                className="p-2 hover:bg-white/10 rounded-full text-text-primary transition-colors border-none cursor-pointer flex items-center justify-center"
+                                className="p-2 hover:bg-overlay/10 rounded-full text-text-primary transition-colors border-none cursor-pointer flex items-center justify-center"
                                 title="Transfer to channel"
                             >
                                 <ArrowRightLeft size={20} />
@@ -84,7 +84,7 @@ export const VideoSelectionFloatingBar: React.FC<VideoSelectionFloatingBarProps>
 
                         {onDelete && (
                             <>
-                                <div className="w-px h-6 bg-white/10 mx-1" />
+                                <div className="w-px h-6 bg-overlay/10 mx-1" />
 
                                 <button
                                     onClick={() => onDelete(Array.from(selectedIds))}

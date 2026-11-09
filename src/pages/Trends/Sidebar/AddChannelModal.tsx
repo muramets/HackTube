@@ -115,7 +115,7 @@ export const AddChannelModal: React.FC<AddChannelModalProps> = ({ isOpen, onClos
                 <button
                     onClick={onClose}
                     type="button"
-                    className="absolute top-3 right-3 text-text-secondary hover:text-text-primary transition-colors cursor-pointer rounded-full p-1 hover:bg-white/10"
+                    className="absolute top-3 right-3 text-text-secondary hover:text-text-primary transition-colors cursor-pointer rounded-full p-1 hover:bg-overlay/10"
                     aria-label="Close"
                 >
                     <X size={18} />

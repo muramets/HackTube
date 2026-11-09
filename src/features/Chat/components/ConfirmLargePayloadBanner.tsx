@@ -38,7 +38,7 @@ export const ConfirmLargePayloadBanner: React.FC<ConfirmLargePayloadBannerProps>
                     <button
                         type="button"
                         onClick={onDismiss}
-                        className="px-2.5 py-1 rounded-md text-text-tertiary hover:text-text-secondary hover:bg-white/[0.04] transition-colors duration-150 text-[11px]"
+                        className="px-2.5 py-1 rounded-md text-text-tertiary hover:text-text-secondary hover:bg-overlay/[0.04] transition-colors duration-150 text-[11px]"
                     >
                         Cancel
                     </button>

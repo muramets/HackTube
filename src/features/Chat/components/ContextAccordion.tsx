@@ -105,7 +105,7 @@ export const ContextAccordion: React.FC<ContextAccordionProps> = ({
                     </span>
                     <button
                         type="button"
-                        className="p-1 hover:bg-white/10 rounded-md transition-colors text-text-secondary hover:text-white"
+                        className="p-1 hover:bg-overlay/10 rounded-md transition-colors text-text-secondary hover:text-text-primary"
                         onClick={cancelReferenceSelection}
                     >
                         <X size={14} />

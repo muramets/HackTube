@@ -131,7 +131,7 @@ export const SidebarVersionItem: React.FC<SidebarVersionItemProps> = ({
                             e.stopPropagation();
                             onOpenMenu(e);
                         }}
-                        className="p-1 text-text-secondary hover:text-white hover:bg-white/10 rounded-full transition-colors relative after:absolute after:-inset-2 after:content-['']"
+                        className="p-1 text-text-secondary hover:text-text-primary hover:bg-overlay/10 rounded-full transition-colors relative after:absolute after:-inset-2 after:content-['']"
                     >
                         <MoreVertical size={14} />
                     </button>

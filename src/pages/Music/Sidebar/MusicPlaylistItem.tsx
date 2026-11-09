@@ -179,7 +179,7 @@ export const MusicPlaylistItem: React.FC<MusicPlaylistItemProps> = ({
                                         setIsColorPickerOpen(!isColorPickerOpen);
                                         setIsMenuOpen(false);
                                     }}
-                                    className="w-3.5 h-3.5 rounded-full transition-all hover:scale-125 hover:ring-2 hover:ring-white/20 cursor-pointer"
+                                    className="w-3.5 h-3.5 rounded-full transition-all hover:scale-125 hover:ring-2 hover:ring-overlay/20 cursor-pointer"
                                     style={{ backgroundColor: displayColor }}
                                 />
 

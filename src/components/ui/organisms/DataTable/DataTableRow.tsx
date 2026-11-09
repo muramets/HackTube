@@ -42,7 +42,7 @@ export const DataTableRow = memo<DataTableRowOwnProps>(({
         >
             {/* Selection indicator — blue left border + glow */}
             {isSelected && (
-                <div className="absolute left-0 top-0 bottom-0 w-[4px] bg-[#3EA6FF] z-raised shadow-[2px_0_8px_rgba(62,166,255,0.4)]" />
+                <div className="absolute left-0 top-0 bottom-0 w-[4px] bg-brand-blue z-raised shadow-[2px_0_8px_rgba(62,166,255,0.4)]" />
             )}
             {children}
         </div>

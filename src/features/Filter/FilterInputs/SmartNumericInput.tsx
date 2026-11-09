@@ -45,7 +45,7 @@ export const SmartNumericInput: React.FC<SmartNumericInputProps> = ({
     return (
         <input
             type="text"
-            className={`bg-transparent border-b border-[#737373] focus:border-[#111111] py-1 text-white outline-none transition-colors text-base text-center placeholder-[#555555] ${className}`}
+            className={`bg-transparent border-b border-text-tertiary focus:border-text-primary py-1 text-text-primary outline-none transition-colors text-base text-center placeholder:text-text-tertiary ${className}`}
             placeholder={placeholder}
             value={getDisplayValue()}
             onChange={handleChange}

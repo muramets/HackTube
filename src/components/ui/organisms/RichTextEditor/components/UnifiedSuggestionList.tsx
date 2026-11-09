@@ -154,7 +154,7 @@ function VideoRow({ video }: { video: VideoPreviewData }) {
                 )}
             </div>
             {video.ownership === 'competitor' && (
-                <span className="text-[9px] text-text-tertiary bg-white/[0.06] px-1.5 py-0.5 rounded-full flex-shrink-0">
+                <span className="text-[9px] text-text-tertiary bg-overlay/6 px-1.5 py-0.5 rounded-full flex-shrink-0">
                     Competitor
                 </span>
             )}
@@ -182,7 +182,7 @@ function KiRow({ ki, videoThumbnailMap }: { ki: KiPreviewData; videoThumbnailMap
                 <div className="text-xs text-text-primary truncate">{ki.title}</div>
                 <div className="text-[10px] text-text-tertiary truncate capitalize">{ki.category.replace(/-/g, ' ')}</div>
             </div>
-            <span className="text-[9px] text-text-tertiary bg-white/[0.06] px-1.5 py-0.5 rounded-full flex-shrink-0 capitalize">
+            <span className="text-[9px] text-text-tertiary bg-overlay/6 px-1.5 py-0.5 rounded-full flex-shrink-0 capitalize">
                 {ki.scope}
             </span>
         </>

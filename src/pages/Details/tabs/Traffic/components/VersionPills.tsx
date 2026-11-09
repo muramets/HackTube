@@ -24,7 +24,7 @@ export const VersionPills: React.FC<VersionPillsProps> = ({
                         px-3 py-1.5 rounded-full text-xs font-medium transition-colors flex-shrink-0
                         ${v.version === activeVersion
                             ? 'bg-text-primary text-bg-primary'
-                            : 'bg-transparent border border-white/10 text-text-secondary hover:bg-white/5 hover:text-text-primary'
+                            : 'bg-transparent border border-overlay/10 text-text-secondary hover:bg-overlay/5 hover:text-text-primary'
                         }
                     `}
                 >

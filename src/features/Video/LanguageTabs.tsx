@@ -128,7 +128,7 @@ export const LanguageTabs: React.FC<LanguageTabsProps> = ({
                         {/* Remove Button (only visible on hover or active) */}
                         <button
                             type="button"
-                            className={`p-0.5 rounded-full hover:bg-white/20 hover:text-red-500 ${activeLanguage === code ? 'text-bg-primary' : 'text-text-secondary'
+                            className={`p-0.5 rounded-full hover:bg-overlay/20 hover:text-red-500 ${activeLanguage === code ? 'text-bg-primary' : 'text-text-secondary'
                                 } opacity-0 group-hover:opacity-100 transition-all mr-1`}
                             onMouseDown={(e) => e.stopPropagation()}
                             onClick={(e) => {

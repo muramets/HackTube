@@ -123,7 +123,7 @@ export const SmartDurationInput: React.FC<SmartDurationInputProps> = memo(({
     return (
         <input
             type="text"
-            className={`w-full bg-transparent border-b border-[#737373] focus:border-[#111111] py-1 text-white outline-none transition-colors text-base placeholder-[#555555] ${className}`}
+            className={`w-full bg-transparent border-b border-text-tertiary focus:border-text-primary py-1 text-text-primary outline-none transition-colors text-base placeholder:text-text-tertiary ${className}`}
             placeholder={placeholder}
             value={formatDisplay(digits)}
             onChange={handleChange}

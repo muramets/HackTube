@@ -287,7 +287,7 @@ export const PackagingTab: React.FC<PackagingTabProps> = ({ video, versionState,
                                     onRestoreVersion(versionState.viewingVersion);
                                 }
                             }}
-                            className="bg-[#3ea6ff]/20 hover:bg-[#3ea6ff]/30"
+                            className="bg-brand-blue/20 hover:bg-brand-blue/30"
                         >
                             Restore this version
                         </Button>

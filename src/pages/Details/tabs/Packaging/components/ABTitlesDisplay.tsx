@@ -52,7 +52,7 @@ export const ABTitlesDisplay: React.FC<ABTitlesDisplayProps> = ({
                         <div key={index} className="flex flex-col gap-2">
                             {/* Title with Badge */}
                             <div className="flex items-center gap-2">
-                                <span className={`text-sm ${isWinner ? 'text-white font-medium' : 'text-text-primary'}`}>
+                                <span className={`text-sm ${isWinner ? 'text-text-primary font-medium' : 'text-text-primary'}`}>
                                     {title}
                                 </span>
                                 {badgeProps && (
@@ -70,7 +70,7 @@ export const ABTitlesDisplay: React.FC<ABTitlesDisplayProps> = ({
                                             <div
                                                 className={`h-full rounded-full transition-all duration-500 ${isWinner
                                                     ? 'bg-gradient-to-r from-blue-500 to-indigo-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]'
-                                                    : 'bg-[#3F3F3F]'
+                                                    : 'bg-border'
                                                     }`}
                                                 style={{ width: `${percentage}%` }}
                                             />
@@ -97,7 +97,7 @@ export const ABTitlesDisplay: React.FC<ABTitlesDisplayProps> = ({
                 <button
                     onClick={onEditClick}
                     className="self-start flex items-center gap-2 px-3 py-1.5 mt-2
-                        bg-[#3F3F3F] hover:bg-[#535353] rounded-full text-sm font-medium text-text-primary 
+                        bg-button-secondary-bg hover:bg-button-secondary-hover rounded-full text-sm font-medium text-text-primary 
                         transition-colors"
                 >
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">

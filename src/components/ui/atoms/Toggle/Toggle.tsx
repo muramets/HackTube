@@ -34,9 +34,9 @@ export const Toggle: React.FC<ToggleProps> = ({
             className={`
                 relative inline-flex items-center rounded-full transition-colors duration-200 ease-in-out border-2 border-transparent
                 ${s.width} ${s.height}
-                ${checked ? 'bg-blue-600' : 'bg-white/20'}
+                ${checked ? 'bg-blue-600' : 'bg-overlay/20'}
                 ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
-                ${!checked && !disabled ? 'hover:bg-white/30' : ''}
+                ${!checked && !disabled ? 'hover:bg-overlay/30' : ''}
                 ${className}
             `}
         >

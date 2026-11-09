@@ -261,7 +261,7 @@ export const TimelineTrackItem: React.FC<TimelineTrackItemProps> = ({ track, wid
                         </div>
                         <div className="flex flex-wrap gap-1">
                             {names.map(name => (
-                                <span key={name} className="text-[9px] bg-white/10 px-2 py-0.5 rounded-full text-text-secondary">
+                                <span key={name} className="text-[9px] bg-overlay/10 px-2 py-0.5 rounded-full text-text-secondary">
                                     {name}
                                 </span>
                             ))}

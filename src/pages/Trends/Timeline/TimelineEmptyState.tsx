@@ -104,7 +104,7 @@ const VARIANT_CONFIG: Record<EmptyStateVariant, { title: string; showFilterIcon:
 };
 
 const CLICKABLE_LINK_CLASSES =
-    'text-text-primary opacity-80 hover:opacity-100 hover:text-white transition-opacity cursor-pointer hover:underline';
+    'text-text-primary opacity-80 hover:opacity-100 hover:text-text-primary transition-opacity cursor-pointer hover:underline';
 
 export const TimelineEmptyState: React.FC<TimelineEmptyStateProps> = ({
     variant,

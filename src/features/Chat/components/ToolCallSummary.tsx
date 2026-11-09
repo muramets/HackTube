@@ -89,7 +89,7 @@ const GroupPill: React.FC<{
         : group.allResolved
             ? colorClass
             : stopped
-                ? 'bg-white/[0.04] text-text-tertiary'
+                ? 'bg-overlay/[0.04] text-text-tertiary'
                 : 'bg-blue-400/[0.06] text-blue-400';
 
     // Status icon — specialized icons per tool when resolved, fallback to status indicators
@@ -172,7 +172,7 @@ const GroupPill: React.FC<{
                                         loading="lazy"
                                     />
                                 ) : (
-                                    <div className="w-14 h-8 rounded bg-white/[0.06] flex-shrink-0" />
+                                    <div className="w-14 h-8 rounded bg-overlay/[0.06] flex-shrink-0" />
                                 )}
                                 <div className="min-w-0 flex flex-col gap-0.5">
                                     <span className="text-text-primary truncate leading-tight">

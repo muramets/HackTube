@@ -156,7 +156,7 @@ export const AddCustomVideoModal: React.FC<AddCustomVideoModalProps> = (props) =
                     </div>
 
                     {/* Tabs */}
-                    <div className="flex items-center gap-2 px-6 pt-4 border-b border-white/5 flex-shrink-0">
+                    <div className="flex items-center gap-2 px-6 pt-4 border-b border-overlay/5 flex-shrink-0">
                         <button
                             onClick={() => setActiveTab('details')}
                             className={`px-4 pb-3 text-sm font-medium transition-all relative ${activeTab === 'details' ? 'text-text-primary' : 'text-text-secondary hover:text-text-primary'}`}

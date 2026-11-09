@@ -93,7 +93,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose }) =
                             onDragLeave={handleDragLeave}
                             className={`
                                 w-[100px] h-[100px] rounded-full bg-bg-primary flex items-center justify-center cursor-pointer relative overflow-hidden
-                                border-2 ${isDragging ? 'border-[#3ea6ff]' : 'border-border'}
+                                border-2 ${isDragging ? 'border-brand-blue' : 'border-border'}
                             `}
                         >
                             {previewUrl ? (
@@ -137,7 +137,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose }) =
                         </button>
                         <button
                             onClick={handleSave}
-                            className="px-4 py-2 rounded-full border-none bg-[#3ea6ff] text-black cursor-pointer font-bold hover:bg-[#3ea6ff]/90 transition-colors"
+                            className="px-4 py-2 rounded-full border-none bg-brand-blue text-black cursor-pointer font-bold hover:bg-brand-blue/90 transition-colors"
                         >
                             Save
                         </button>

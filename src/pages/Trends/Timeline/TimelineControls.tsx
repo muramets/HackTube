@@ -89,7 +89,7 @@ export const TimelineControls: React.FC<TimelineControlsProps> = ({
                                 </button>
                                 {!isLoading && (
                                     <div className="absolute bottom-full right-0 mb-3 opacity-0 group-hover/reset:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
-                                        <div className="bg-black/90 backdrop-blur text-white text-[10px] px-2 py-1 rounded shadow-xl border border-white/10">
+                                        <div className="bg-tooltip-bg backdrop-blur text-tooltip-text text-[10px] px-2 py-1 rounded shadow-xl border border-white/10">
                                             reset scale (z)
                                         </div>
                                     </div>

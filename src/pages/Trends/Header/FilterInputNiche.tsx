@@ -162,7 +162,7 @@ export const FilterInputNiche: React.FC<FilterInputNicheProps> = ({
                 {/* Select All Icon */}
                 <button
                     onClick={handleSelectAll}
-                    className="p-1.5 text-text-tertiary hover:text-text-primary hover:bg-white/5 rounded transition-colors"
+                    className="p-1.5 text-text-tertiary hover:text-text-primary hover:bg-overlay/5 rounded transition-colors"
                     title="Select all visible"
                 >
                     <CheckCheck size={16} />
@@ -174,7 +174,7 @@ export const FilterInputNiche: React.FC<FilterInputNicheProps> = ({
                 {showUnassigned && (
                     <div
                         onClick={() => toggleNiche(UNASSIGNED_NICHE_ID)}
-                        className="px-3 py-2 flex items-center gap-3 cursor-pointer transition-colors rounded-lg text-text-primary text-sm hover:bg-hover-bg group border-b border-white/20 mb-1"
+                        className="px-3 py-2 flex items-center gap-3 cursor-pointer transition-colors rounded-lg text-text-primary text-sm hover:bg-hover-bg group border-b border-overlay/20 mb-1"
                     >
                         {/* Checkbox */}
                         <div

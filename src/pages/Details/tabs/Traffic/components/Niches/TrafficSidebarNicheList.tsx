@@ -60,7 +60,7 @@ export const TrafficSidebarNicheList: React.FC<TrafficSidebarNicheListProps> = (
         <div className="mt-1">
             <button
                 onClick={() => setIsExpanded(!isExpanded)}
-                className="w-full flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-text-secondary hover:text-white hover:bg-white/5 rounded-lg transition-colors group"
+                className="w-full flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-text-secondary hover:text-text-primary hover:bg-overlay/5 rounded-lg transition-colors group"
             >
                 {isExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
                 <Hash size={14} className="text-text-tertiary" />

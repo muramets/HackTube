@@ -52,10 +52,10 @@ export const VideoCardChip: React.FC<VideoCardChipProps> = React.memo(({ video, 
             className={`
                 group/chip flex flex-col rounded-lg overflow-hidden transition-all duration-200 relative
                 ${compact
-                    ? 'bg-white/[0.04] w-[140px]'
-                    : 'bg-white/[0.05] w-[160px] hover:bg-purple-500/[0.06]'
+                    ? 'bg-overlay/[0.04] w-[140px]'
+                    : 'bg-overlay/[0.05] w-[160px] hover:bg-purple-500/[0.06]'
                 }
-                ${onSelect ? 'cursor-pointer hover:border-accent-primary hover:bg-white/10 transition-colors' : ''}
+                ${onSelect ? 'cursor-pointer hover:border-accent-primary hover:bg-overlay/10 transition-colors' : ''}
             `}
             onPointerEnter={handlePointerEnter}
             onClick={onSelect}

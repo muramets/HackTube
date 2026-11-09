@@ -217,7 +217,7 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({ video, p
                 onClick={handleVideoClick}
             >
                 {/* Hover Substrate */}
-                <div className={`absolute inset-0 rounded-lg transition-opacity duration-200 pointer-events-none ${isTooltipOpen ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'} ${viewMode === 'youtube' ? 'bg-[#FF0033]/10 dark:bg-[#FF0033]/20 border-2 border-[#FF0033]/30' : (video.isCloned ? 'bg-indigo-500/10 dark:bg-indigo-500/20 border-2 border-indigo-500/30' : (video.isCustom ? (video.publishedVideoId ? 'bg-green-500/10 dark:bg-green-500/20 border-2 border-green-500/30' : 'bg-orange-500/10 dark:bg-orange-500/20 border-2 border-orange-500/30') : 'bg-bg-secondary'))} `} />
+                <div className={`absolute inset-0 rounded-lg transition-opacity duration-200 pointer-events-none ${isTooltipOpen ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'} ${viewMode === 'youtube' ? 'bg-brand-red/10 dark:bg-brand-red/20 border-2 border-brand-red/30' : (video.isCloned ? 'bg-indigo-500/10 dark:bg-indigo-500/20 border-2 border-indigo-500/30' : (video.isCustom ? (video.publishedVideoId ? 'bg-green-500/10 dark:bg-green-500/20 border-2 border-green-500/30' : 'bg-orange-500/10 dark:bg-orange-500/20 border-2 border-orange-500/30') : 'bg-bg-secondary'))} `} />
                 {/* Thumbnail Container */}
                 <div className="relative w-[168px] h-[94px] flex-shrink-0 bg-bg-secondary rounded-lg overflow-hidden">
                     <img

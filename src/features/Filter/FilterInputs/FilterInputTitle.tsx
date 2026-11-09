@@ -9,12 +9,12 @@ export const FilterInputTitle: React.FC<FilterInputTitleProps> = ({ value, onApp
     const [inputValue, setInputValue] = useState(value || '');
 
     return (
-        <div className="p-3 w-full bg-[#1F1F1F]">
-            <div className="mb-2 text-sm text-[#AAAAAA]">contains</div>
+        <div className="p-3 w-full bg-card-bg">
+            <div className="mb-2 text-sm text-text-secondary">contains</div>
             <input
                 type="text"
                 autoFocus
-                className="w-full bg-transparent border-b border-[#737373] focus:border-[#111111] py-1 text-white outline-none transition-colors text-base"
+                className="w-full bg-transparent border-b border-text-tertiary focus:border-text-primary py-1 text-text-primary outline-none transition-colors text-base"
                 placeholder="Value"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
@@ -27,7 +27,7 @@ export const FilterInputTitle: React.FC<FilterInputTitleProps> = ({ value, onApp
             <div className="flex justify-end mt-4">
                 <button
                     onClick={() => onApply(inputValue)}
-                    className="bg-[#333333] text-white font-medium px-4 py-2 rounded-full text-sm hover:bg-[#444444] transition-colors"
+                    className="bg-menu-item-active-bg text-text-primary font-medium px-4 py-2 rounded-full text-sm hover:bg-button-secondary-hover transition-colors"
                 >
                     Apply
                 </button>

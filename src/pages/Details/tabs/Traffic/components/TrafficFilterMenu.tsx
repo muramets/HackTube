@@ -100,17 +100,17 @@ export const TrafficFilterMenu: React.FC<TrafficFilterMenuProps> = ({
         <div className="flex flex-col w-[280px]">
             {/* Header for Submenus */}
             {activeView !== 'main' && (
-                <div className="flex items-center justify-between px-2 py-2 border-b border-[#333333]">
+                <div className="flex items-center justify-between px-2 py-2 border-b border-border">
                     <button
                         onClick={() => setActiveView('main')}
-                        className="p-2 hover:bg-[#333333] rounded-full text-text-secondary hover:text-text-primary transition-colors"
+                        className="p-2 hover:bg-menu-item-active-bg rounded-full text-text-secondary hover:text-text-primary transition-colors"
                     >
                         <ChevronLeft size={20} />
                     </button>
                     <span className="text-sm font-bold text-text-primary">{getTitleForView(activeView)}</span>
                     <button
                         onClick={onClose}
-                        className="p-2 hover:bg-[#333333] rounded-full text-text-secondary hover:text-text-primary transition-colors"
+                        className="p-2 hover:bg-menu-item-active-bg rounded-full text-text-secondary hover:text-text-primary transition-colors"
                     >
                         <X size={20} />
                     </button>
@@ -149,7 +149,7 @@ export const TrafficFilterMenu: React.FC<TrafficFilterMenuProps> = ({
                                 </div>
 
                                 {/* Separator */}
-                                <div className="h-px bg-[#2a2a2a] mx-4 mb-1.5" />
+                                <div className="h-px bg-surface-secondary mx-4 mb-1.5" />
 
                                 {/* Add Filter Section - COMPACT SPACING */}
                                 <div className="px-4 pt-1.5 pb-0">
@@ -168,7 +168,7 @@ export const TrafficFilterMenu: React.FC<TrafficFilterMenuProps> = ({
                                         <button
                                             key={type}
                                             onClick={() => setActiveView(type)}
-                                            className="w-full text-left px-4 py-2.5 text-sm font-medium flex items-center justify-between gap-8 transition-colors border-none cursor-pointer text-text-primary hover:bg-[#161616] bg-transparent group"
+                                            className="w-full text-left px-4 py-2.5 text-sm font-medium flex items-center justify-between gap-8 transition-colors border-none cursor-pointer text-text-primary hover:bg-menu-item-hover-bg bg-transparent group"
                                         >
                                             <div className="flex items-center gap-3">
                                                 <Icon size={16} className={`transition-colors ${isActive ? 'text-accent-blue' : 'text-text-secondary group-hover:text-text-primary'}`} />
@@ -259,7 +259,7 @@ export const TrafficFilterMenu: React.FC<TrafficFilterMenuProps> = ({
                                                         });
                                                     }
                                                 }}
-                                                className="px-3 py-2 flex items-center gap-3 cursor-pointer transition-colors rounded-lg text-text-primary text-sm hover:bg-[#2a2a2a] group"
+                                                className="px-3 py-2 flex items-center gap-3 cursor-pointer transition-colors rounded-lg text-text-primary text-sm hover:bg-surface-secondary group"
                                             >
                                                 <div
                                                     className={`w-[16px] h-[16px] rounded border flex items-center justify-center flex-shrink-0 transition-colors ${isSelected
@@ -339,7 +339,7 @@ export const TrafficFilterMenu: React.FC<TrafficFilterMenuProps> = ({
                                                         });
                                                     }
                                                 }}
-                                                className="px-3 py-2 flex items-center gap-3 cursor-pointer transition-colors rounded-lg text-text-primary text-sm hover:bg-[#2a2a2a] group"
+                                                className="px-3 py-2 flex items-center gap-3 cursor-pointer transition-colors rounded-lg text-text-primary text-sm hover:bg-surface-secondary group"
                                             >
                                                 <Checkbox checked={isSelected} onChange={() => { }} className="flex-shrink-0" />
 
@@ -401,7 +401,7 @@ export const TrafficFilterMenu: React.FC<TrafficFilterMenuProps> = ({
                                                         });
                                                     }
                                                 }}
-                                                className="px-3 py-2 flex items-center gap-3 cursor-pointer transition-colors rounded-lg text-text-primary text-sm hover:bg-[#2a2a2a] group"
+                                                className="px-3 py-2 flex items-center gap-3 cursor-pointer transition-colors rounded-lg text-text-primary text-sm hover:bg-surface-secondary group"
                                             >
                                                 <Checkbox checked={isSelected} onChange={() => { }} className="flex-shrink-0" />
 

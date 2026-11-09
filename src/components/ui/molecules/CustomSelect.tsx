@@ -77,27 +77,27 @@ export const CustomSelect = <T extends string | number>({
                 onClick={() => setIsOpen(!isOpen)}
                 className={`
                     w-full flex items-center justify-between
-                    bg-transparent border-b border-[#333333] hover:border-[#555555]
+                    bg-transparent border-b border-border hover:border-text-tertiary
                     py-1 cursor-pointer transition-colors
-                    text-base text-white
-                    ${isOpen ? 'border-[#3EA6FF]' : ''}
+                    text-base text-text-primary
+                    ${isOpen ? 'border-brand-blue' : ''}
                 `}
             >
                 <div className="flex-1 text-center">
-                    <span className={selectedOption ? 'text-white' : 'text-[#AAAAAA]'}>
+                    <span className={selectedOption ? 'text-text-primary' : 'text-text-secondary'}>
                         {selectedOption ? selectedOption.label : placeholder}
                     </span>
                 </div>
                 <ChevronDown
                     size={14}
-                    className={`text-[#AAAAAA] transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+                    className={`text-text-secondary transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
                 />
             </div>
 
             {isOpen && createPortal(
                 <div
                     id="custom-select-dropdown"
-                    className="fixed z-popover bg-[#222222] border border-[#333333] rounded-md shadow-xl ignore-filter-click-outside"
+                    className="fixed z-popover bg-card-bg border border-border rounded-md shadow-xl ignore-filter-click-outside"
                     style={{
                         top: position.top,
                         left: position.left,
@@ -111,8 +111,8 @@ export const CustomSelect = <T extends string | number>({
                             onClick={() => handleSelect(option.value)}
                             className={`
                                 flex items-center justify-center relative px-3 py-2 cursor-pointer
-                                hover:bg-[#333333] transition-colors text-center
-                                ${option.value === value ? 'bg-[#333333] text-white' : 'text-[#AAAAAA] hover:text-white'}
+                                hover:bg-menu-item-active-bg transition-colors text-center
+                                ${option.value === value ? 'bg-menu-item-active-bg text-text-primary' : 'text-text-secondary hover:text-text-primary'}
                             `}
                         >
                             <span className="text-sm">{option.label}</span>

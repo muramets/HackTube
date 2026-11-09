@@ -63,7 +63,7 @@ export const TrafficRowBadges: React.FC<TrafficRowBadgesProps> = ({
                             color={suggested.color}
                             className={`
                                 !px-1.5 !py-0.5 !opacity-50 hover:!opacity-100 
-                                transition-opacity cursor-pointer border-dashed border-white/40
+                                transition-opacity cursor-pointer border-dashed border-overlay/40
                                 ${isTrendsSuggestion ? '!pl-1' : ''}
                             `}
                             disableTooltip={true} // Disable internal tooltip because we wrap it in PortalTooltip

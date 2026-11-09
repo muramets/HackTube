@@ -120,8 +120,8 @@ export const TrendsChannelItem: React.FC<TrendsChannelItemProps> = ({
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={handleMouseLeave}
                 className={`flex items-center group cursor-pointer p-2 rounded-lg hover-trail select-none ${isActive
-                    ? 'bg-white/10'
-                    : isMenuOpen ? 'bg-white/5' : 'hover:bg-white/5'
+                    ? 'bg-overlay/10'
+                    : isMenuOpen ? 'bg-overlay/5' : 'hover:bg-overlay/5'
                     }`}
             >
                 {channel.avatarUrl && !avatarError ? (
@@ -131,11 +131,11 @@ export const TrendsChannelItem: React.FC<TrendsChannelItemProps> = ({
                         referrerPolicy="no-referrer"
                         onError={handleAvatarError}
                         className={`w-6 h-6 rounded-full mr-3 ring-2 transition-all ${!channel.isVisible ? 'grayscale opacity-50' : ''
-                            } ${isActive ? 'ring-white/30' : 'ring-transparent'}`}
+                            } ${isActive ? 'ring-overlay/30' : 'ring-transparent'}`}
                     />
                 ) : (
-                    <div className={`w-6 h-6 rounded-full mr-3 ring-2 flex items-center justify-center bg-white/10 text-text-secondary text-xs font-medium transition-all ${!channel.isVisible ? 'opacity-50' : ''
-                        } ${isActive ? 'ring-white/30' : 'ring-transparent'}`}>
+                    <div className={`w-6 h-6 rounded-full mr-3 ring-2 flex items-center justify-center bg-overlay/10 text-text-secondary text-xs font-medium transition-all ${!channel.isVisible ? 'opacity-50' : ''
+                        } ${isActive ? 'ring-overlay/30' : 'ring-transparent'}`}>
                         {channel.title.charAt(0).toUpperCase()}
                     </div>
                 )}
@@ -147,7 +147,7 @@ export const TrendsChannelItem: React.FC<TrendsChannelItemProps> = ({
                             e.stopPropagation();
                             setIsExpanded(!isExpanded);
                         }}
-                        className="p-2 -m-1.5 mr-0 text-text-tertiary hover:text-white transition-colors"
+                        className="p-2 -m-1.5 mr-0 text-text-tertiary hover:text-text-primary transition-colors"
                     >
                         {isExpanded ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
                     </button>
@@ -169,7 +169,7 @@ export const TrendsChannelItem: React.FC<TrendsChannelItemProps> = ({
                 {/* Portal Tooltip */}
                 {showTooltip && createPortal(
                     <div
-                        className="fixed z-popover px-2 py-1 bg-[#1a1a1a] border border-white/10 rounded-md shadow-xl text-xs text-white whitespace-nowrap pointer-events-none animate-fade-in"
+                        className="fixed z-popover px-2 py-1 bg-tooltip-bg border border-white/10 rounded-md shadow-xl text-xs text-tooltip-text whitespace-nowrap pointer-events-none animate-fade-in"
                         style={{ left: tooltipPos.x, top: tooltipPos.y, transform: 'translateY(-100%)' }}
                     >
                         {channel.title}
@@ -190,7 +190,7 @@ export const TrendsChannelItem: React.FC<TrendsChannelItemProps> = ({
                                 onClick={(e) => onToggleFavorite(e, channel.id, channel.isFavorite ?? false)}
                                 className={`p-0.5 rounded-full transition-all relative after:absolute after:-inset-2 after:content-[''] ${channel.isFavorite
                                     ? 'text-amber-400 hover:text-amber-300 hover:bg-amber-500/10 opacity-100'
-                                    : 'text-text-secondary hover:text-amber-400 hover:bg-white/10 opacity-0 group-hover:opacity-100'
+                                    : 'text-text-secondary hover:text-amber-400 hover:bg-overlay/10 opacity-0 group-hover:opacity-100'
                                     }`}
                                 title={channel.isFavorite ? 'Unpin channel' : 'Pin channel'}
                             >
@@ -204,8 +204,8 @@ export const TrendsChannelItem: React.FC<TrendsChannelItemProps> = ({
                                     onToggleVisibility(e, channel.id, channel.isVisible);
                                 }}
                                 className={`p-0.5 rounded-full transition-all ${channel.isVisible
-                                    ? 'text-text-secondary hover:text-text-primary hover:bg-white/10'
-                                    : 'text-text-tertiary bg-white/5 hover:text-red-400 hover:bg-red-500/10'
+                                    ? 'text-text-secondary hover:text-text-primary hover:bg-overlay/10'
+                                    : 'text-text-tertiary bg-overlay/5 hover:text-red-400 hover:bg-red-500/10'
                                     } relative after:absolute after:-inset-2 after:content-['']`}
                                 title={channel.isVisible ? "Hide channel" : "Show channel"}
                             >
@@ -216,7 +216,7 @@ export const TrendsChannelItem: React.FC<TrendsChannelItemProps> = ({
                                     e.stopPropagation();
                                     onOpenMenu(e, channel.id);
                                 }}
-                                className="p-0.5 text-text-secondary hover:text-white hover:bg-white/10 rounded-full transition-colors relative after:absolute after:-inset-2 after:content-['']"
+                                className="p-0.5 text-text-secondary hover:text-text-primary hover:bg-overlay/10 rounded-full transition-colors relative after:absolute after:-inset-2 after:content-['']"
                                 title="More options"
                             >
                                 <MoreVertical size={14} />

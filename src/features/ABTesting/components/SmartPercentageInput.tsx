@@ -17,7 +17,7 @@ export const SmartPercentageInput: React.FC<SmartPercentageInputProps> = ({
     value,
     onChange,
     max = 100,
-    borderClassName = 'border-[#3F3F3F]'
+    borderClassName = 'border-border'
 }) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         // Remove non-digits
@@ -55,7 +55,7 @@ export const SmartPercentageInput: React.FC<SmartPercentageInputProps> = ({
                 inputMode="decimal"
                 value={value > 0 ? value : ''}
                 onChange={handleChange}
-                className={`w-full bg-modal-input-bg text-modal-text-primary text-right text-sm font-medium p-2 pr-7 rounded-lg border focus:border-[#3ea6ff] outline-none transition-colors ${borderClassName}`}
+                className={`w-full bg-modal-input-bg text-modal-text-primary text-right text-sm font-medium p-2 pr-7 rounded-lg border focus:border-brand-blue outline-none transition-colors ${borderClassName}`}
                 placeholder="0"
                 style={{ appearance: 'none' }}
                 disabled={max <= 0 && value === 0}

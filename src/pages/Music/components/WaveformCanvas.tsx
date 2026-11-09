@@ -767,15 +767,15 @@ export const WaveformCanvas: React.FC<WaveformCanvasProps> = ({
                                 {/* Visual bar */}
                                 <div
                                     className="absolute top-0 h-full w-[3px] rounded-full
-                                               bg-white/70 shadow-[0_0_6px_rgba(255,255,255,0.3)]
-                                               group-hover/trim-start:bg-white group-hover/trim-start:shadow-[0_0_10px_rgba(255,255,255,0.5)]
+                                               bg-text-primary/70 shadow-[0_0_6px_rgba(255,255,255,0.3)]
+                                               group-hover/trim-start:bg-text-primary group-hover/trim-start:shadow-[0_0_10px_rgba(255,255,255,0.5)]
                                                transition-all duration-150"
                                     style={{ left: '50%', transform: 'translateX(-50%)' }}
                                 />
                                 {/* Grab dot */}
                                 <div
                                     className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-                                               w-2.5 h-2.5 rounded-full bg-white border border-white/40
+                                               w-2.5 h-2.5 rounded-full bg-text-primary border border-overlay/40
                                                shadow-md opacity-80 group-hover/trim-start:opacity-100
                                                transition-opacity"
                                 />
@@ -793,15 +793,15 @@ export const WaveformCanvas: React.FC<WaveformCanvasProps> = ({
                                 {/* Visual bar */}
                                 <div
                                     className="absolute top-0 h-full w-[3px] rounded-full
-                                               bg-white/70 shadow-[0_0_6px_rgba(255,255,255,0.3)]
-                                               group-hover/trim-end:bg-white group-hover/trim-end:shadow-[0_0_10px_rgba(255,255,255,0.5)]
+                                               bg-text-primary/70 shadow-[0_0_6px_rgba(255,255,255,0.3)]
+                                               group-hover/trim-end:bg-text-primary group-hover/trim-end:shadow-[0_0_10px_rgba(255,255,255,0.5)]
                                                transition-all duration-150"
                                     style={{ left: '50%', transform: 'translateX(-50%)' }}
                                 />
                                 {/* Grab dot */}
                                 <div
                                     className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-                                               w-2.5 h-2.5 rounded-full bg-white border border-white/40
+                                               w-2.5 h-2.5 rounded-full bg-text-primary border border-overlay/40
                                                shadow-md opacity-80 group-hover/trim-end:opacity-100
                                                transition-opacity"
                                 />

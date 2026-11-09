@@ -97,7 +97,7 @@ export const SnapshotContextMenu: React.FC<SnapshotContextMenuProps> = ({
 
             {/* Menu */}
             <div
-                className="fixed z-popover bg-bg-secondary/95 backdrop-blur-md border border-white/10 rounded-lg py-1 shadow-xl animate-fade-in min-w-[160px]"
+                className="fixed z-popover bg-bg-secondary/95 backdrop-blur-md border border-overlay/10 rounded-lg py-1 shadow-xl animate-fade-in min-w-[160px]"
                 style={{
                     left: position.x,
                     top: position.y
@@ -110,7 +110,7 @@ export const SnapshotContextMenu: React.FC<SnapshotContextMenuProps> = ({
                         onRename();
                         onClose();
                     }}
-                    className="w-full text-left px-3 py-1.5 text-xs text-text-secondary hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2"
+                    className="w-full text-left px-3 py-1.5 text-xs text-text-secondary hover:text-text-primary hover:bg-overlay/5 transition-colors flex items-center gap-2"
                 >
                     <Pencil size={10} />
                     Rename
@@ -121,7 +121,7 @@ export const SnapshotContextMenu: React.FC<SnapshotContextMenuProps> = ({
                         onSetActiveDate();
                         onClose();
                     }}
-                    className="w-full text-left px-3 py-1.5 text-xs text-text-secondary hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2"
+                    className="w-full text-left px-3 py-1.5 text-xs text-text-secondary hover:text-text-primary hover:bg-overlay/5 transition-colors flex items-center gap-2"
                 >
                     <CalendarDays size={10} />
                     Set active date
@@ -136,7 +136,7 @@ export const SnapshotContextMenu: React.FC<SnapshotContextMenuProps> = ({
                         onMouseLeave={startSubmenuCloseTimer}
                     >
                         <button
-                            className="w-full text-left px-3 py-1.5 text-xs text-text-secondary hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2"
+                            className="w-full text-left px-3 py-1.5 text-xs text-text-secondary hover:text-text-primary hover:bg-overlay/5 transition-colors flex items-center gap-2"
                         >
                             <ArrowRightLeft size={10} />
                             <span className="flex-1">Move to version</span>
@@ -146,7 +146,7 @@ export const SnapshotContextMenu: React.FC<SnapshotContextMenuProps> = ({
                         {/* Submenu — portal to escape parent stacking context for backdrop-blur */}
                         {showVersionSubmenu && submenuPos && createPortal(
                             <div
-                                className="fixed z-popover bg-bg-secondary/95 backdrop-blur-md border border-white/10 rounded-lg py-1 shadow-xl min-w-[100px] animate-fade-in"
+                                className="fixed z-popover bg-bg-secondary/95 backdrop-blur-md border border-overlay/10 rounded-lg py-1 shadow-xl min-w-[100px] animate-fade-in"
                                 style={submenuPos}
                                 onMouseEnter={clearSubmenuTimer}
                                 onMouseLeave={startSubmenuCloseTimer}
@@ -164,7 +164,7 @@ export const SnapshotContextMenu: React.FC<SnapshotContextMenuProps> = ({
                                         disabled={v === currentVersion}
                                         className={`w-full text-left px-3 py-1.5 text-xs transition-colors flex items-center gap-2 ${v === currentVersion
                                             ? 'text-indigo-400 cursor-default'
-                                            : 'text-text-secondary hover:text-white hover:bg-white/5 cursor-pointer'
+                                            : 'text-text-secondary hover:text-text-primary hover:bg-overlay/5 cursor-pointer'
                                             }`}
                                     >
                                         v.{v}
@@ -181,14 +181,14 @@ export const SnapshotContextMenu: React.FC<SnapshotContextMenuProps> = ({
 
                 {isLatest && canDelete && onDelete && (
                     <>
-                        <div className="border-t border-white/5 my-1" />
+                        <div className="border-t border-overlay/5 my-1" />
                         <button
                             onClick={(e) => {
                                 e.stopPropagation();
                                 onDelete();
                                 onClose();
                             }}
-                            className="w-full text-left px-3 py-1.5 text-xs text-red-400 hover:bg-white/5 transition-colors flex items-center gap-2"
+                            className="w-full text-left px-3 py-1.5 text-xs text-red-400 hover:bg-overlay/5 transition-colors flex items-center gap-2"
                         >
                             <Trash2 size={10} />
                             Remove

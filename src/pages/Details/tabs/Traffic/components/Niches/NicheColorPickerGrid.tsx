@@ -26,7 +26,7 @@ export const NicheColorPickerGrid: React.FC<NicheColorPickerGridProps> = ({
                         }}
                         className={`
                             relative w-5 h-5 rounded-full transition-transform hover:scale-110 focus:outline-none
-                            ${isSelected ? 'ring-2 ring-white ring-offset-2 ring-offset-[#1a1a1a]' : 'hover:ring-2 hover:ring-white/20 hover:ring-offset-1 hover:ring-offset-[#1a1a1a]'}
+                            ${isSelected ? 'ring-2 ring-text-primary ring-offset-2 ring-offset-surface-primary' : 'hover:ring-2 hover:ring-overlay/20 hover:ring-offset-1 hover:ring-offset-surface-primary'}
                         `}
                         style={{ backgroundColor: color }}
                         title={color}

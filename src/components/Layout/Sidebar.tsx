@@ -64,7 +64,7 @@ export const SidebarDivider: React.FC = () => (
 );
 
 const AVATAR_CLASSES = 'w-8 h-8 rounded-full object-cover transition-all duration-300 hover:shadow-[0_0_15px_rgba(255,255,255,0.4)] hover:scale-110 cursor-pointer';
-const AVATAR_FALLBACK_CLASSES = 'w-8 h-8 rounded-full flex items-center justify-center bg-white/10 text-white/80 text-[10px] font-bold transition-all duration-300 hover:shadow-[0_0_15px_rgba(255,255,255,0.4)] hover:scale-110 cursor-pointer';
+const AVATAR_FALLBACK_CLASSES = 'w-8 h-8 rounded-full flex items-center justify-center bg-overlay/10 text-text-primary/80 text-[10px] font-bold transition-all duration-300 hover:shadow-[0_0_15px_rgba(255,255,255,0.4)] hover:scale-110 cursor-pointer';
 
 export const TrendsCollapsedGroup: React.FC<{
   isActive: boolean;

@@ -179,14 +179,14 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({ notification
                     {/* Tooltip via Portal to avoid clipping */}
                     {showMessageTooltip && createPortal(
                         <div
-                            className="fixed z-max px-3 py-2 bg-[#1a1a1a] border border-white/10 rounded-md shadow-xl pointer-events-none max-w-[300px] animate-in fade-in zoom-in-95 duration-100"
+                            className="fixed z-max px-3 py-2 bg-tooltip-bg border border-white/10 rounded-md shadow-xl pointer-events-none max-w-[300px] animate-in fade-in zoom-in-95 duration-100"
                             style={{
                                 top: messageTooltipPos.top,
                                 left: messageTooltipPos.left,
                                 transform: 'translateY(-100%)'
                             }}
                         >
-                            <p className="text-xs text-white whitespace-normal break-words leading-relaxed">{notification.message}</p>
+                            <p className="text-xs text-tooltip-text whitespace-normal break-words leading-relaxed">{notification.message}</p>
                         </div>,
                         document.body
                     )}
@@ -213,7 +213,7 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({ notification
                         {/* Quota Breakdown Tooltip - Portal */}
                         {notification.quotaBreakdown && showTooltip && createPortal(
                             <div
-                                className="fixed z-popover p-2 bg-[#1a1a1a] border border-white/10 rounded-md shadow-xl pointer-events-none min-w-[120px] animate-in fade-in zoom-in-95 duration-100"
+                                className="fixed z-popover p-2 bg-tooltip-bg border border-white/10 rounded-md shadow-xl pointer-events-none min-w-[120px] animate-in fade-in zoom-in-95 duration-100"
                                 style={{
                                     top: tooltipPos.top,
                                     left: tooltipPos.left,
@@ -223,19 +223,19 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({ notification
                                     {notification.quotaBreakdown.search && (
                                         <div className="flex justify-between items-center gap-4">
                                             <span className="text-[10px] text-text-tertiary">Search:</span>
-                                            <span className="text-[10px] text-white font-mono">{notification.quotaBreakdown.search}</span>
+                                            <span className="text-[10px] text-tooltip-text font-mono">{notification.quotaBreakdown.search}</span>
                                         </div>
                                     )}
                                     {notification.quotaBreakdown.list && (
                                         <div className="flex justify-between items-center gap-4">
                                             <span className="text-[10px] text-text-tertiary">Video List:</span>
-                                            <span className="text-[10px] text-white font-mono">{notification.quotaBreakdown.list}</span>
+                                            <span className="text-[10px] text-tooltip-text font-mono">{notification.quotaBreakdown.list}</span>
                                         </div>
                                     )}
                                     {notification.quotaBreakdown.details && (
                                         <div className="flex justify-between items-center gap-4">
                                             <span className="text-[10px] text-text-tertiary">Video Details:</span>
-                                            <span className="text-[10px] text-white font-mono">{notification.quotaBreakdown.details}</span>
+                                            <span className="text-[10px] text-tooltip-text font-mono">{notification.quotaBreakdown.details}</span>
                                         </div>
                                     )}
                                 </div>

@@ -177,7 +177,7 @@ export const SplitButton: React.FC<SplitButtonProps> = ({
                     className={`
                         absolute top-full mt-1 z-dropdown
                         bg-bg-secondary/95 backdrop-blur-xl
-                        border border-white/10 rounded-xl
+                        border border-overlay/10 rounded-xl
                         shadow-2xl overflow-hidden
                         animate-scale-in origin-top-right
                         min-w-[180px]

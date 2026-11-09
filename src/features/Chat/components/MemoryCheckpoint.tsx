@@ -106,7 +106,7 @@ export const MemoryCheckpoint: React.FC<MemoryCheckpointProps> = ({ memory, onUp
                 onClick={() => setIsExpanded(v => !v)}
             >
                 <div className="flex-1 h-px bg-accent/25" />
-                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] transition-colors group-hover:bg-white/[0.03]"
+                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] transition-colors group-hover:bg-overlay/[0.03]"
                     style={{ color: 'var(--accent)' }}
                 >
                     <Brain size={12} />
@@ -142,14 +142,14 @@ export const MemoryCheckpoint: React.FC<MemoryCheckpointProps> = ({ memory, onUp
                             />
                             <div className="flex items-center justify-end gap-1.5 mt-2">
                                 <button
-                                    className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] text-text-tertiary bg-transparent border-none cursor-pointer hover:text-text-secondary hover:bg-white/[0.05] transition-colors"
+                                    className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] text-text-tertiary bg-transparent border-none cursor-pointer hover:text-text-secondary hover:bg-overlay/[0.05] transition-colors"
                                     onClick={handleCancel}
                                     disabled={isSaving}
                                 >
                                     <X size={12} /> Cancel
                                 </button>
                                 <button
-                                    className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] bg-transparent border-none cursor-pointer hover:bg-white/[0.05] transition-colors disabled:opacity-50"
+                                    className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] bg-transparent border-none cursor-pointer hover:bg-overlay/[0.05] transition-colors disabled:opacity-50"
                                     style={{ color: 'var(--accent)' }}
                                     onClick={handleSave}
                                     disabled={isSaving}
@@ -180,7 +180,7 @@ export const MemoryCheckpoint: React.FC<MemoryCheckpointProps> = ({ memory, onUp
                             </div>
                             <div className="flex items-center justify-end gap-1 mt-2">
                                 <button
-                                    className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] text-text-tertiary bg-transparent border-none cursor-pointer hover:text-text-secondary hover:bg-white/[0.05] transition-colors"
+                                    className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] text-text-tertiary bg-transparent border-none cursor-pointer hover:text-text-secondary hover:bg-overlay/[0.05] transition-colors"
                                     onClick={() => {
                                         setIsEditing(true);
                                         requestAnimationFrame(() => {

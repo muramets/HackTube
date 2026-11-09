@@ -233,7 +233,7 @@ export const TrafficSourceTab = React.memo<TrafficSourceTabProps>(({
 
             {/* Error banner */}
             {(parseError || loaderError) && (
-                <div className="flex items-center gap-2 px-6 py-2 bg-red-400/5 text-red-400 text-xs border-b border-white/5">
+                <div className="flex items-center gap-2 px-6 py-2 bg-red-400/5 text-red-400 text-xs border-b border-overlay/5">
                     <AlertCircle size={14} />
                     {parseError || loaderError}
                     {loaderError && (

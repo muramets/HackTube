@@ -39,7 +39,7 @@ const SharedLibraryTab: React.FC<{
             <button
                 onClick={onClick}
                 className={`w-full px-2 py-1 rounded-md text-[10px] font-medium transition-all flex items-center justify-center gap-1 ${isActive
-                    ? 'bg-white/[0.1] text-text-primary shadow-sm'
+                    ? 'bg-overlay/[0.1] text-text-primary shadow-sm'
                     : 'text-text-secondary hover:text-text-primary'
                     }`}
             >
@@ -168,11 +168,11 @@ export const TrackBrowser: React.FC = () => {
             >
                 <div style={{ overflow: 'hidden' }}>
                     <div className="flex items-center gap-1 px-3 pt-2.5 pb-1">
-                        <div className="flex items-center gap-0.5 p-0.5 bg-white/[0.04] rounded-lg w-full">
+                        <div className="flex items-center gap-0.5 p-0.5 bg-overlay/[0.04] rounded-lg w-full">
                             <button
                                 onClick={() => setLibrarySource(null)}
                                 className={`flex-1 min-w-0 px-2 py-1 rounded-md text-[10px] font-medium transition-all truncate ${!effectiveSource
-                                    ? 'bg-white/[0.1] text-text-primary shadow-sm'
+                                    ? 'bg-overlay/[0.1] text-text-primary shadow-sm'
                                     : 'text-text-secondary hover:text-text-primary'
                                     }`}
                             >

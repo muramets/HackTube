@@ -110,20 +110,20 @@ export const MergeNichesModal: React.FC<MergeNichesModalProps> = ({
             onClick={onClose}
         >
             <div
-                className="bg-bg-secondary border border-white/10 rounded-xl shadow-2xl w-full max-w-md mx-4 animate-scale-up"
+                className="bg-bg-secondary border border-overlay/10 rounded-xl shadow-2xl w-full max-w-md mx-4 animate-scale-up"
                 onClick={e => e.stopPropagation()}
             >
                 {/* Header */}
-                <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
+                <div className="flex items-center justify-between px-5 py-4 border-b border-overlay/10">
                     <div className="flex items-center gap-3">
                         <div className="p-2 bg-blue-500/20 rounded-lg">
                             <Globe size={18} className="text-blue-400" />
                         </div>
-                        <h2 className="text-base font-semibold text-white">Make "{sourceNiche.name}" global</h2>
+                        <h2 className="text-base font-semibold text-text-primary">Make "{sourceNiche.name}" global</h2>
                     </div>
                     <button
                         onClick={onClose}
-                        className="p-1.5 hover:bg-white/10 rounded-lg transition-colors text-text-secondary hover:text-white"
+                        className="p-1.5 hover:bg-overlay/10 rounded-lg transition-colors text-text-secondary hover:text-text-primary"
                     >
                         <X size={18} />
                     </button>
@@ -135,7 +135,7 @@ export const MergeNichesModal: React.FC<MergeNichesModalProps> = ({
                         // Quick Actions View
                         <div className="space-y-4">
                             <p className="text-sm text-text-secondary">
-                                Found <span className="text-white font-medium">{matchingNiches.length} other local niches</span> with this name ({totalMatchingVideos} videos total).
+                                Found <span className="text-text-primary font-medium">{matchingNiches.length} other local niches</span> with this name ({totalMatchingVideos} videos total).
                             </p>
 
                             <div className="space-y-2">
@@ -146,7 +146,7 @@ export const MergeNichesModal: React.FC<MergeNichesModalProps> = ({
                                     className="w-full flex items-center justify-between px-4 py-3 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 rounded-lg transition-colors text-left group disabled:opacity-50"
                                 >
                                     <div>
-                                        <div className="text-sm text-white font-medium flex items-center gap-2">
+                                        <div className="text-sm text-text-primary font-medium flex items-center gap-2">
                                             <Merge size={14} className="text-blue-400" />
                                             Merge all {matchingNiches.length + 1} niches
                                         </div>
@@ -160,10 +160,10 @@ export const MergeNichesModal: React.FC<MergeNichesModalProps> = ({
                                 <button
                                     onClick={handleThisOnly}
                                     disabled={isProcessing}
-                                    className="w-full flex items-center justify-between px-4 py-3 bg-white/5 hover:bg-white/10 rounded-lg transition-colors text-left group disabled:opacity-50"
+                                    className="w-full flex items-center justify-between px-4 py-3 bg-overlay/5 hover:bg-overlay/10 rounded-lg transition-colors text-left group disabled:opacity-50"
                                 >
                                     <div>
-                                        <div className="text-sm text-white font-medium flex items-center gap-2">
+                                        <div className="text-sm text-text-primary font-medium flex items-center gap-2">
                                             <Globe size={14} className="text-text-secondary" />
                                             Make global (this only)
                                         </div>
@@ -177,10 +177,10 @@ export const MergeNichesModal: React.FC<MergeNichesModalProps> = ({
                                 <button
                                     onClick={() => setShowCustom(true)}
                                     disabled={isProcessing}
-                                    className="w-full flex items-center justify-between px-4 py-3 bg-white/5 hover:bg-white/10 rounded-lg transition-colors text-left group disabled:opacity-50"
+                                    className="w-full flex items-center justify-between px-4 py-3 bg-overlay/5 hover:bg-overlay/10 rounded-lg transition-colors text-left group disabled:opacity-50"
                                 >
                                     <div>
-                                        <div className="text-sm text-white font-medium flex items-center gap-2">
+                                        <div className="text-sm text-text-primary font-medium flex items-center gap-2">
                                             <Settings size={14} className="text-text-secondary" />
                                             Custom selection...
                                         </div>
@@ -197,7 +197,7 @@ export const MergeNichesModal: React.FC<MergeNichesModalProps> = ({
                             <div className="flex items-center justify-between">
                                 <button
                                     onClick={() => setShowCustom(false)}
-                                    className="text-sm text-text-secondary hover:text-white transition-colors"
+                                    className="text-sm text-text-secondary hover:text-text-primary transition-colors"
                                 >
                                     ← Back
                                 </button>
@@ -218,17 +218,17 @@ export const MergeNichesModal: React.FC<MergeNichesModalProps> = ({
                                 {matchingNiches.map(m => (
                                     <label
                                         key={m.niche.id}
-                                        className={`flex items-center justify-between px-3 py-2.5 rounded-lg cursor-pointer transition-colors ${selectedIds.has(m.niche.id) ? 'bg-blue-500/10 border border-blue-500/20' : 'bg-white/5 hover:bg-white/10 border border-transparent'
+                                        className={`flex items-center justify-between px-3 py-2.5 rounded-lg cursor-pointer transition-colors ${selectedIds.has(m.niche.id) ? 'bg-blue-500/10 border border-blue-500/20' : 'bg-overlay/5 hover:bg-overlay/10 border border-transparent'
                                             }`}
                                     >
                                         <div className="flex items-center gap-3">
                                             <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${selectedIds.has(m.niche.id)
                                                 ? 'bg-blue-500 border-blue-500'
-                                                : 'border-white/30'
+                                                : 'border-overlay/30'
                                                 }`}>
                                                 {selectedIds.has(m.niche.id) && <Check size={12} className="text-white" />}
                                             </div>
-                                            <span className="text-sm text-white truncate">{m.channelTitle}</span>
+                                            <span className="text-sm text-text-primary truncate">{m.channelTitle}</span>
                                         </div>
                                         <span className="text-xs text-text-secondary whitespace-nowrap ml-2">
                                             {m.videoCount} videos
@@ -244,7 +244,7 @@ export const MergeNichesModal: React.FC<MergeNichesModalProps> = ({
                             </div>
 
                             {/* Preview */}
-                            <div className="px-3 py-2 bg-white/5 rounded-lg text-xs text-text-secondary">
+                            <div className="px-3 py-2 bg-overlay/5 rounded-lg text-xs text-text-secondary">
                                 Result: Global "{sourceNiche.name}" with {selectedVideosTotal} videos
                             </div>
 

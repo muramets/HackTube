@@ -289,7 +289,7 @@ const RenderJobRow: React.FC<RenderJobRowProps> = ({ job, onCancel, onRetry, onD
                             target="_blank"
                             rel="noopener noreferrer"
                             download={fileName || 'render.mp4'}
-                            className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[10px] font-medium text-[#3ea6ff] hover:bg-[#3ea6ff]/10 transition-colors"
+                            className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[10px] font-medium text-brand-blue hover:bg-brand-blue/10 transition-colors"
                         >
                             <Download size={10} />
                             Save

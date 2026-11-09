@@ -276,7 +276,7 @@ export const TrendsSidebarSection: React.FC<{ expanded: boolean }> = ({ expanded
                                         e.stopPropagation();
                                         setIsContentExpanded(!isContentExpanded);
                                     }}
-                                    className="p-1 hover:bg-white/10 rounded-full transition-colors cursor-pointer text-text-secondary hover:text-text-primary"
+                                    className="p-1 hover:bg-overlay/10 rounded-full transition-colors cursor-pointer text-text-secondary hover:text-text-primary"
                                 >
                                     {isContentExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
                                 </button>
@@ -287,7 +287,7 @@ export const TrendsSidebarSection: React.FC<{ expanded: boolean }> = ({ expanded
                                         e.stopPropagation();
                                         setAddChannelModalOpen(true);
                                     }}
-                                    className="p-1 hover:bg-white/10 rounded-full transition-colors cursor-pointer text-text-secondary hover:text-text-primary"
+                                    className="p-1 hover:bg-overlay/10 rounded-full transition-colors cursor-pointer text-text-secondary hover:text-text-primary"
                                     title="Add channel"
                                 >
                                     <Plus size={16} />
@@ -370,7 +370,7 @@ export const TrendsSidebarSection: React.FC<{ expanded: boolean }> = ({ expanded
                         <div className="p-1 space-y-0.5">
                             <button
                                 onClick={handleSyncChannel}
-                                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-text-primary hover:bg-white/5 rounded cursor-pointer transition-colors text-left"
+                                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-text-primary hover:bg-overlay/5 rounded cursor-pointer transition-colors text-left"
                             >
                                 <RefreshCw size={14} />
                                 <span>Sync</span>
@@ -381,7 +381,7 @@ export const TrendsSidebarSection: React.FC<{ expanded: boolean }> = ({ expanded
                                     if (channel) setChannelToTransfer(channel);
                                     setMenuState({ anchorEl: null, channelId: null });
                                 }}
-                                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-text-primary hover:bg-white/5 rounded cursor-pointer transition-colors text-left"
+                                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-text-primary hover:bg-overlay/5 rounded cursor-pointer transition-colors text-left"
                             >
                                 <ArrowRightLeft size={14} />
                                 <span>Transfer to channel...</span>
@@ -392,7 +392,7 @@ export const TrendsSidebarSection: React.FC<{ expanded: boolean }> = ({ expanded
                                     if (channel) setChannelToDelete(channel);
                                     setMenuState({ anchorEl: null, channelId: null });
                                 }}
-                                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-500 hover:bg-white/5 rounded cursor-pointer transition-colors text-left"
+                                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-500 hover:bg-overlay/5 rounded cursor-pointer transition-colors text-left"
                             >
                                 <Trash2 size={14} />
                                 <span>Remove channel</span>

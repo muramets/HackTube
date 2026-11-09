@@ -90,7 +90,7 @@ export const getABTestRank = (value: number, results: number[]): ABTestRank => {
  */
 export const getRankBorderClass = (
     rank: ABTestRank,
-    defaultClass = 'border-[#5F5F5F]'
+    defaultClass = 'border-border'
 ): string => {
     switch (rank) {
         case 'winner':

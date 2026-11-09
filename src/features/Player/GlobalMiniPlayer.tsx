@@ -35,7 +35,7 @@ export const GlobalMiniPlayer: React.FC = () => {
         >
             {/* Header — draggable */}
             <div
-                className={`flex items-center justify-between px-3 py-2 bg-[#0F0F0F] w-full h-8 shrink-0 select-none ${isInteracting ? 'cursor-grabbing' : 'cursor-grab'}`}
+                className={`flex items-center justify-between px-3 py-2 bg-bg-primary w-full h-8 shrink-0 select-none ${isInteracting ? 'cursor-grabbing' : 'cursor-grab'}`}
                 onMouseDown={handleDragStart}
             >
                 <div className="text-[11px] font-medium text-text-primary truncate pr-2 pointer-events-none">
@@ -43,7 +43,7 @@ export const GlobalMiniPlayer: React.FC = () => {
                 </div>
                 <button
                     onClick={close}
-                    className="text-text-tertiary hover:text-white transition-colors"
+                    className="text-text-tertiary hover:text-text-primary transition-colors"
                 >
                     <X size={14} />
                 </button>

@@ -189,7 +189,7 @@ export const KnowledgePage: React.FC = () => {
             <div className="flex-shrink-0 px-6 pt-6 pb-4">
                 <div className="flex items-center justify-between mb-5">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-white/[0.06] flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-xl bg-overlay/6 flex items-center justify-center">
                             <BookOpen size={20} className="text-accent" />
                         </div>
                         <div>

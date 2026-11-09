@@ -110,7 +110,7 @@ export const TagSection: React.FC<TagSectionProps> = ({
                                             onClick={() => toggleTag(tag.id)}
                                             className={`text-xs px-3 py-1.5 rounded-lg transition-all cursor-pointer border-none font-medium ${isSelected
                                                 ? 'bg-text-primary text-bg-primary'
-                                                : 'bg-[#F2F2F2]/10 text-text-primary hover:bg-[#F2F2F2]/20'
+                                                : 'bg-overlay/10 text-text-primary hover:bg-overlay/20'
                                                 }`}
                                         >
                                             {tag.name}
@@ -145,7 +145,7 @@ export const TagSection: React.FC<TagSectionProps> = ({
                                                 }
                                             }}
                                             placeholder="Tag name..."
-                                            className="text-xs px-2 py-1 rounded-lg bg-[#F2F2F2]/10 border border-border text-text-primary w-24 outline-none focus:border-text-secondary"
+                                            className="text-xs px-2 py-1 rounded-lg bg-overlay/10 border border-border text-text-primary w-24 outline-none focus:border-text-secondary"
                                             autoFocus
                                         />
                                         <button
@@ -158,7 +158,7 @@ export const TagSection: React.FC<TagSectionProps> = ({
                                 ) : (
                                     <button
                                         onClick={() => { setAddingTagCategory(category); setNewTagName(''); }}
-                                        className="text-xs px-2.5 py-1.5 rounded-lg bg-[#F2F2F2]/5 text-text-tertiary hover:text-text-primary hover:bg-[#F2F2F2]/10 transition-colors flex items-center gap-1 border-none cursor-pointer"
+                                        className="text-xs px-2.5 py-1.5 rounded-lg bg-overlay/5 text-text-tertiary hover:text-text-primary hover:bg-overlay/10 transition-colors flex items-center gap-1 border-none cursor-pointer"
                                     >
                                         <Plus size={11} />
                                     </button>
@@ -189,7 +189,7 @@ export const TagSection: React.FC<TagSectionProps> = ({
                                 }
                             }}
                             placeholder="Category name..."
-                            className="text-xs px-2 py-1 rounded-lg bg-[#F2F2F2]/10 border border-border text-text-primary w-32 outline-none focus:border-text-secondary"
+                            className="text-xs px-2 py-1 rounded-lg bg-overlay/10 border border-border text-text-primary w-32 outline-none focus:border-text-secondary"
                             autoFocus
                         />
                         <button

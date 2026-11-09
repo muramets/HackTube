@@ -202,7 +202,7 @@ export const CanvasPageTabs: React.FC<CanvasPageTabsProps> = ({
                 <button
                     onClick={onAdd}
                     className="relative z-10 flex items-center justify-center w-7 h-7 rounded-md
-                        text-text-tertiary hover:text-text-secondary hover:bg-white/5
+                        text-text-tertiary hover:text-text-secondary hover:bg-overlay/5
                         transition-colors duration-150 border-none bg-transparent cursor-pointer"
                     title="New page"
                 >

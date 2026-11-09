@@ -370,7 +370,7 @@ export const TimelineAverageLine: React.FC<TimelineAverageLineProps> = ({
                             top: hoveredPoint.screenY,
                         }}
                     >
-                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-2 py-1 rounded bg-black/80 backdrop-blur text-[10px] text-white whitespace-nowrap border border-white/10 shadow-xl">
+                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-2 py-1 rounded bg-tooltip-bg backdrop-blur text-[10px] text-tooltip-text whitespace-nowrap border border-white/10 shadow-xl">
                             {formatViews(hoveredPoint.value)} views
                         </div>
                     </div>,

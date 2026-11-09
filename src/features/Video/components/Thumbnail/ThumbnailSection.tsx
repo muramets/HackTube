@@ -202,7 +202,7 @@ export const ThumbnailSection: React.FC<ThumbnailSectionProps> = ({
                                                         setShowDropdown(false);
                                                         onABTestClick();
                                                     }}
-                                                    className="w-full px-4 py-2 text-left text-sm text-text-primary hover:bg-white/5 flex items-center gap-2"
+                                                    className="w-full px-4 py-2 text-left text-sm text-text-primary hover:bg-overlay/5 flex items-center gap-2"
                                                 >
                                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                                                         <path d="M12 1a1 1 0 011 1v20a1 1 0 11-2 0V2a1 1 0 011-1Zm-2 4H3v14h7v2H3a2 2 0 01-1.99-1.796L1 19V5a2 2 0 012-2h7v2Zm11-2a2 2 0 012 2v14a2 2 0 01-2 2h-7v-4h4.132a1 1 0 00.832-1.555L14 8V3h7Zm-11 8.604L7.736 15H10v2H5.868a1 1 0 01-.832-1.555L10 8v3.606Z" />
@@ -216,7 +216,7 @@ export const ThumbnailSection: React.FC<ThumbnailSectionProps> = ({
                                                         setShowDropdown(false);
                                                         setHistoryModalOpen(true);
                                                     }}
-                                                    className="w-full px-4 py-2 text-left text-sm text-text-primary hover:bg-white/5 flex items-center gap-2"
+                                                    className="w-full px-4 py-2 text-left text-sm text-text-primary hover:bg-overlay/5 flex items-center gap-2"
                                                 >
                                                     <History size={16} />
                                                     Version History
@@ -224,7 +224,7 @@ export const ThumbnailSection: React.FC<ThumbnailSectionProps> = ({
                                             )}
                                             <button
                                                 onClick={handleRemove}
-                                                className="w-full px-4 py-2 text-left text-sm text-text-primary hover:bg-white/5 flex items-center gap-2"
+                                                className="w-full px-4 py-2 text-left text-sm text-text-primary hover:bg-overlay/5 flex items-center gap-2"
                                             >
                                                 <Trash2 size={16} />
                                                 Remove
@@ -300,7 +300,7 @@ export const ThumbnailSection: React.FC<ThumbnailSectionProps> = ({
                                                         setShowDropdown(false);
                                                         onABTestClick();
                                                     }}
-                                                    className="w-full px-4 py-2 text-left text-sm text-text-primary hover:bg-white/5 flex items-center gap-2"
+                                                    className="w-full px-4 py-2 text-left text-sm text-text-primary hover:bg-overlay/5 flex items-center gap-2"
                                                 >
                                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                                                         <path d="M12 1a1 1 0 011 1v20a1 1 0 11-2 0V2a1 1 0 011-1Zm-2 4H3v14h7v2H3a2 2 0 01-1.99-1.796L1 19V5a2 2 0 012-2h7v2Zm11-2a2 2 0 012 2v14a2 2 0 01-2 2h-7v-4h4.132a1 1 0 00.832-1.555L14 8V3h7Zm-11 8.604L7.736 15H10v2H5.868a1 1 0 01-.832-1.555L10 8v3.606Z" />
@@ -313,7 +313,7 @@ export const ThumbnailSection: React.FC<ThumbnailSectionProps> = ({
                                                     setShowDropdown(false);
                                                     setHistoryModalOpen(true);
                                                 }}
-                                                className="w-full px-4 py-2 text-left text-sm text-text-primary hover:bg-white/5 flex items-center gap-2"
+                                                className="w-full px-4 py-2 text-left text-sm text-text-primary hover:bg-overlay/5 flex items-center gap-2"
                                             >
                                                 <History size={16} />
                                                 Version History

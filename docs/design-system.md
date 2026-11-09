@@ -51,6 +51,19 @@ src/components/ui/      → Компоненты системы
 | `--surface-secondary` | #ebebeb (light) / #2a2a2a (dark) | Вложенные блоки внутри панелей |
 | `--reference-highlight` | #818cf8 (light) / #a5b4fc (dark) | @mention в чате |
 
+### Overlay, меню и theme-invariant цвета
+
+| Токен Tailwind | Light | Dark | Использование |
+|---|---|---|---|
+| `bg-overlay/N`, `border-overlay/N`, `ring-overlay/N` | чёрный | белый | **Только с прозрачностью.** Лёгкое затемнение (light) / осветление (dark) поверх любой поверхности: hover, разделители, тонкие рамки. Замена `bg-white/10`, `border-white/10` |
+| `bg-menu-item-hover-bg` | #f2f2f2 | #161616 | Hover пункта меню / dropdown |
+| `bg-menu-item-active-bg` | #e5e5e5 | #333333 | Выбранный пункт меню / dropdown |
+| `bg-brand-blue` / `text-brand-blue` | #3ea6ff | #3ea6ff | YouTube-синий (выделение, ссылки) |
+| `bg-brand-red` | #ff0033 | #ff0033 | YouTube-красный |
+| `bg-tooltip-bg` + `text-tooltip-text` | #1a1a1a / #fff | #1a1a1a / #fff | Тултипы — тёмные в обеих темах (конвенция YouTube) |
+
+**Когда `text-white` допустим:** только на насыщенном цветном фоне (accent/brand кнопки, бейджи) и поверх медиа (превью, видео, тёмные scrim'ы `bg-black/N`) — там фон тёмный в обеих темах. На поверхностях приложения (страница, меню, карточки, модалки) — только `text-text-primary` / `text-text-secondary`.
+
 ### Токены для модалок
 
 Отдельная группа `--modal-*` для всех модальных окон.
@@ -244,7 +257,7 @@ import { SegmentedControl } from '@/components/ui/molecules/SegmentedControl';
 
 ## Правила использования
 
-1. **Никогда не хардкодить цвета.** Даже `#ffffff` — только `--bg-primary` или `text-bg-primary`.
+1. **Никогда не хардкодить цвета.** Даже `#ffffff` — только `--bg-primary` или `text-bg-primary`. Не использовать `text-white` / `bg-white/N` / `bg-[#333333]` на поверхностях приложения — это ломает светлую тему (белое на белом). Используй `text-text-primary`, `bg-overlay/N`, `bg-menu-item-*`.
 2. **Никогда не хардкодить z-index числами.** Только именованные классы из шкалы.
 3. **Модальные окна** — только `--modal-*` токены, не основная палитра.
 4. **Все тексты в UI — на английском** (это продукт для международного рынка).

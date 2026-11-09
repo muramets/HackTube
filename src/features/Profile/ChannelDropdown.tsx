@@ -44,7 +44,7 @@ const TargetNicheBadge: React.FC<{ nicheName: string }> = ({ nicheName }) => {
             <span className="truncate">{nicheName}</span>
             {showTooltip && createPortal(
                 <div
-                    className="fixed z-popover px-2 py-1 bg-[#1a1a1a] border border-white/10 rounded-md shadow-xl text-[10px] text-white whitespace-nowrap pointer-events-none animate-fade-in"
+                    className="fixed z-popover px-2 py-1 bg-tooltip-bg border border-white/10 rounded-md shadow-xl text-[10px] text-tooltip-text whitespace-nowrap pointer-events-none animate-fade-in"
                     style={{ left: tooltipPos.x, top: tooltipPos.y, transform: 'translateY(-100%)' }}
                 >
                     {nicheName}
@@ -128,7 +128,7 @@ const SortableChannelItem: React.FC<SortableChannelItemProps> = ({
                     e.stopPropagation();
                     onEdit(channel);
                 }}
-                className="p-1 rounded-full text-text-secondary flex items-center justify-center hover:bg-[#3f3f3f] hover:text-white transition-colors"
+                className="p-1 rounded-full text-text-secondary flex items-center justify-center hover:bg-hover-bg hover:text-text-primary transition-colors"
             >
                 <Settings size={16} />
             </div>
@@ -283,11 +283,11 @@ export const ChannelDropdown: React.FC<ChannelDropdownProps> = ({ onClose, ancho
                 <>
                     {/* User Account Header */}
                     <div className="px-4 py-4 border-b border-border flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-[#333] flex items-center justify-center overflow-hidden shrink-0">
+                        <div className="w-10 h-10 rounded-full bg-menu-item-active-bg flex items-center justify-center overflow-hidden shrink-0">
                             {user?.photoURL ? (
                                 <img src={user.photoURL} alt={user.displayName || 'User'} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                             ) : (
-                                <User size={24} color="white" />
+                                <User size={24} className="text-text-primary" />
                             )}
                         </div>
                         <div className="flex flex-col overflow-hidden">

@@ -171,13 +171,13 @@ export const TrafficNicheItem: React.FC<TrafficNicheItemProps> = ({
             <div
                 className={`
                     group relative w-full text-left px-3 py-1.5 text-xs rounded-lg flex items-center justify-between transition-colors gap-3 select-none
-                    ${isAssigned ? 'text-white' : ''}
+                    ${isAssigned ? 'text-text-primary' : ''}
                     ${isInteracting
-                        ? 'bg-white/5 z-20 text-text-primary'
+                        ? 'bg-overlay/5 z-20 text-text-primary'
                         : isSelected
                             ? 'bg-sidebar-active text-text-primary font-medium'
                             : isHighlighted
-                                ? 'bg-white/10 text-white' // Highlight style
+                                ? 'bg-overlay/10 text-text-primary' // Highlight style
                                 : 'text-text-tertiary hover:text-text-secondary hover:bg-sidebar-hover'
                     }
                 `}
@@ -187,19 +187,19 @@ export const TrafficNicheItem: React.FC<TrafficNicheItemProps> = ({
                     {/* Color Dot / Picker Trigger */}
                     <div ref={colorPickerRef} className="relative shrink-0 flex items-center w-4 justify-center">
                         {isTrash ? (
-                            <Trash2 size={12} className={`${isSelected ? 'text-white' : 'text-text-secondary group-hover:text-white'}`} />
+                            <Trash2 size={12} className={`${isSelected ? 'text-text-primary' : 'text-text-secondary group-hover:text-text-primary'}`} />
                         ) : (
                             <>
                                 <div
                                     role="button"
                                     onClick={handleColorClick}
-                                    className="w-2 h-2 rounded-full cursor-pointer hover:scale-125 transition-transform hover:ring-2 hover:ring-white/20"
+                                    className="w-2 h-2 rounded-full cursor-pointer hover:scale-125 transition-transform hover:ring-2 hover:ring-overlay/20"
                                     style={{ backgroundColor: niche.color }}
                                 />
                                 {isColorPickerOpen && createPortal(
                                     <div
                                         ref={colorPickerPortalRef}
-                                        className="fixed z-popover bg-[#1a1a1a] border border-white/10 rounded-xl p-3 shadow-xl animate-fade-in w-[240px]"
+                                        className="fixed z-popover bg-surface-primary border border-overlay/10 rounded-xl p-3 shadow-xl animate-fade-in w-[240px]"
                                         style={{
                                             left: pickerPosition?.left || 0,
                                             top: pickerPosition?.top || 0,
@@ -241,7 +241,7 @@ export const TrafficNicheItem: React.FC<TrafficNicheItemProps> = ({
                                 }
                             }}
                             onClick={(e) => e.stopPropagation()}
-                            className="bg-transparent border-b border-white/40 outline-none text-white w-full"
+                            className="bg-transparent border-b border-overlay/40 outline-none text-text-primary w-full"
                         />
                     ) : (
                         <span
@@ -264,7 +264,7 @@ export const TrafficNicheItem: React.FC<TrafficNicheItemProps> = ({
                 {/* Name Tooltip (Only if truncated) */}
                 {isNameHovered && isTruncated && !isEditing && createPortal(
                     <div
-                        className="fixed z-popover px-2 py-1 bg-[#1a1a1a] rounded-md shadow-xl text-xs text-white whitespace-nowrap pointer-events-none animate-fade-in"
+                        className="fixed z-popover px-2 py-1 bg-tooltip-bg rounded-md shadow-xl text-xs text-tooltip-text whitespace-nowrap pointer-events-none animate-fade-in"
                         style={{ left: tooltipPos.x, top: tooltipPos.y, transform: 'translateY(-100%)' }}
                     >
                         {niche.name}
@@ -280,7 +280,7 @@ export const TrafficNicheItem: React.FC<TrafficNicheItemProps> = ({
                                 {formatNumber(impressions)}
                             </span>
                             {/* Simple tooltip for stats */}
-                            <div className="absolute bottom-full right-0 mb-1 px-2 py-1 bg-[#1a1a1a] rounded text-[10px] text-white opacity-0 group-hover/impressions:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
+                            <div className="absolute bottom-full right-0 mb-1 px-2 py-1 bg-tooltip-bg rounded text-[10px] text-tooltip-text opacity-0 group-hover/impressions:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
                                 {metricType.charAt(0).toUpperCase() + metricType.slice(1)}
                             </div>
                         </div>
@@ -312,7 +312,7 @@ export const TrafficNicheItem: React.FC<TrafficNicheItemProps> = ({
                                 className={`
                                     p-1 rounded ml-1 transition-opacity
                                     ${isInteracting ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}
-                                    ${isActive ? 'bg-white/10' : 'hover:bg-white/10'}
+                                    ${isActive ? 'bg-overlay/10' : 'hover:bg-overlay/10'}
                                 `}
                             >
                                 <MoreVertical size={12} />

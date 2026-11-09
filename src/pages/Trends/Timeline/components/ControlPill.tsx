@@ -56,7 +56,7 @@ export const ControlPill: React.FC<ControlPillProps> = ({
                 bg-bg-secondary/90 backdrop-blur-md border border-border rounded-full shadow-lg
                 select-none transition-all duration-200
                 ${isDragging
-                    ? 'ring-1 ring-white/30 brightness-110 text-white'
+                    ? 'ring-1 ring-overlay/30 brightness-110 text-text-primary'
                     : 'text-text-secondary hover:brightness-125'
                 }
                 ${onMouseDown && !isLoading ? (isVertical ? 'cursor-ns-resize' : 'cursor-ew-resize') : 'cursor-default'}
@@ -83,7 +83,7 @@ export const ControlPill: React.FC<ControlPillProps> = ({
             {/* 3. Icon Wrapper (Standardized p-1.5) */}
             <div className={`
                 flex items-center justify-center p-1.5
-                ${!isDragging ? 'text-text-tertiary group-hover/pill:text-text-primary' : 'text-white'}
+                ${!isDragging ? 'text-text-tertiary group-hover/pill:text-text-primary' : 'text-text-primary'}
             `}>
                 {icon}
             </div>

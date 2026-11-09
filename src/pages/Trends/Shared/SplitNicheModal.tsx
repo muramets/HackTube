@@ -69,20 +69,20 @@ export const SplitNicheModal: React.FC<SplitNicheModalProps> = ({
             onClick={onClose}
         >
             <div
-                className="bg-bg-secondary border border-white/10 rounded-xl shadow-2xl w-full max-w-md mx-4 animate-scale-up"
+                className="bg-bg-secondary border border-overlay/10 rounded-xl shadow-2xl w-full max-w-md mx-4 animate-scale-up"
                 onClick={e => e.stopPropagation()}
             >
                 {/* Header */}
-                <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
+                <div className="flex items-center justify-between px-5 py-4 border-b border-overlay/10">
                     <div className="flex items-center gap-3">
                         <div className="p-2 bg-yellow-500/20 rounded-lg">
                             <AlertTriangle size={18} className="text-yellow-400" />
                         </div>
-                        <h2 className="text-base font-semibold text-white">Cannot convert directly</h2>
+                        <h2 className="text-base font-semibold text-text-primary">Cannot convert directly</h2>
                     </div>
                     <button
                         onClick={onClose}
-                        className="p-1.5 hover:bg-white/10 rounded-lg transition-colors text-text-secondary hover:text-white"
+                        className="p-1.5 hover:bg-overlay/10 rounded-lg transition-colors text-text-secondary hover:text-text-primary"
                     >
                         <X size={18} />
                     </button>
@@ -91,7 +91,7 @@ export const SplitNicheModal: React.FC<SplitNicheModalProps> = ({
                 {/* Body */}
                 <div className="px-5 py-4 space-y-4">
                     <p className="text-sm text-text-secondary">
-                        "<span className="text-white font-medium">{niche.name}</span>" contains <span className="text-white font-medium">{totalVideos} videos</span> from <span className="text-white font-medium">{sortedStats.length} channels</span>:
+                        "<span className="text-text-primary font-medium">{niche.name}</span>" contains <span className="text-text-primary font-medium">{totalVideos} videos</span> from <span className="text-text-primary font-medium">{sortedStats.length} channels</span>:
                     </p>
 
                     {/* Channel List */}
@@ -99,10 +99,10 @@ export const SplitNicheModal: React.FC<SplitNicheModalProps> = ({
                         {sortedStats.map((stat, index) => (
                             <div
                                 key={stat.channelId}
-                                className={`flex items-center justify-between px-3 py-2 rounded-lg ${index === 0 ? 'bg-white/10' : 'bg-white/5'
+                                className={`flex items-center justify-between px-3 py-2 rounded-lg ${index === 0 ? 'bg-overlay/10' : 'bg-overlay/5'
                                     }`}
                             >
-                                <span className="text-sm text-white truncate flex-1 mr-2">
+                                <span className="text-sm text-text-primary truncate flex-1 mr-2">
                                     {stat.channelTitle}
                                 </span>
                                 <span className="text-xs text-text-secondary whitespace-nowrap">
@@ -115,15 +115,15 @@ export const SplitNicheModal: React.FC<SplitNicheModalProps> = ({
                 </div>
 
                 {/* Actions */}
-                <div className="px-5 py-4 border-t border-white/10 space-y-2">
+                <div className="px-5 py-4 border-t border-overlay/10 space-y-2">
                     {/* Option 1: Remove from other channels */}
                     <button
                         onClick={handleRemoveOthers}
                         disabled={isProcessing}
-                        className="w-full flex items-center justify-between px-4 py-3 bg-white/5 hover:bg-white/10 rounded-lg transition-colors text-left group disabled:opacity-50"
+                        className="w-full flex items-center justify-between px-4 py-3 bg-overlay/5 hover:bg-overlay/10 rounded-lg transition-colors text-left group disabled:opacity-50"
                     >
                         <div>
-                            <div className="text-sm text-white font-medium">Remove from other channels</div>
+                            <div className="text-sm text-text-primary font-medium">Remove from other channels</div>
                             <div className="text-xs text-text-secondary mt-0.5">
                                 Keep {primaryChannel?.videoCount || 0} videos from {primaryChannel?.channelTitle || 'primary channel'}
                             </div>
@@ -135,10 +135,10 @@ export const SplitNicheModal: React.FC<SplitNicheModalProps> = ({
                     <button
                         onClick={handleSplitToLocal}
                         disabled={isProcessing}
-                        className="w-full flex items-center justify-between px-4 py-3 bg-white/5 hover:bg-white/10 rounded-lg transition-colors text-left group disabled:opacity-50"
+                        className="w-full flex items-center justify-between px-4 py-3 bg-overlay/5 hover:bg-overlay/10 rounded-lg transition-colors text-left group disabled:opacity-50"
                     >
                         <div>
-                            <div className="text-sm text-white font-medium">Convert to {sortedStats.length} local niches</div>
+                            <div className="text-sm text-text-primary font-medium">Convert to {sortedStats.length} local niches</div>
                             <div className="text-xs text-text-secondary mt-0.5">
                                 Create a separate "{niche.name}" for each channel
                             </div>

@@ -44,7 +44,7 @@ const DroppableSourceItem: React.FC<{
         <div
             ref={setNodeRef}
             className={`transition-all rounded-lg ${isOver
-                ? 'bg-white/10'
+                ? 'bg-overlay/10'
                 : ''
                 }`}
         >
@@ -151,7 +151,7 @@ export const GalleryNav: React.FC<GalleryNavProps> = ({
                     <div className="relative">
                         <Image size={24} />
                         {itemCount > 0 && (
-                            <span className="absolute -top-1 -right-2 min-w-[18px] h-[18px] px-1 flex items-center justify-center text-[10px] font-medium bg-[#3ea6ff] text-white rounded-full">
+                            <span className="absolute -top-1 -right-2 min-w-[18px] h-[18px] px-1 flex items-center justify-center text-[10px] font-medium bg-brand-blue text-white rounded-full">
                                 {itemCount > 99 ? '99+' : itemCount}
                             </span>
                         )}
@@ -221,7 +221,7 @@ export const GalleryNav: React.FC<GalleryNavProps> = ({
                                 }
                                 handleMenuClose();
                             }}
-                            className="w-full flex items-center gap-2 px-3 py-2 text-sm text-text-primary hover:bg-white/5 rounded cursor-pointer transition-colors text-left"
+                            className="w-full flex items-center gap-2 px-3 py-2 text-sm text-text-primary hover:bg-overlay/5 rounded cursor-pointer transition-colors text-left"
                         >
                             <ExternalLink size={14} />
                             <span>Go to source</span>
@@ -230,7 +230,7 @@ export const GalleryNav: React.FC<GalleryNavProps> = ({
 
                     <button
                         onClick={handleEditClick}
-                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-text-primary hover:bg-white/5 rounded cursor-pointer transition-colors text-left"
+                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-text-primary hover:bg-overlay/5 rounded cursor-pointer transition-colors text-left"
                     >
                         <Settings size={14} />
                         <span>Settings</span>
@@ -239,7 +239,7 @@ export const GalleryNav: React.FC<GalleryNavProps> = ({
                     {menuState.sourceId !== DEFAULT_SOURCE_ID && (
                         <button
                             onClick={handleDeleteClick}
-                            className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-500 hover:bg-white/5 rounded cursor-pointer transition-colors text-left"
+                            className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-500 hover:bg-overlay/5 rounded cursor-pointer transition-colors text-left"
                         >
                             <Trash2 size={14} />
                             <span>Delete</span>

@@ -138,18 +138,18 @@ export const PlaylistDetailPage: React.FC = () => {
     // Custom section for SortButton
     const sortCustomSection = useMemo(() => (
         <>
-            <div className="border-t border-[#333333] mt-1 pt-1">
+            <div className="border-t border-border mt-1 pt-1">
                 <button
                     onClick={() => handleSortChange('pick-winner')}
-                    className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors border-none cursor-pointer ${picker.isActive ? 'bg-amber-500/20 text-amber-300' : 'text-[#AAAAAA] hover:bg-[#161616] hover:text-white bg-transparent'}`}
+                    className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors border-none cursor-pointer ${picker.isActive ? 'bg-amber-500/20 text-amber-300' : 'text-text-secondary hover:bg-menu-item-hover-bg hover:text-text-primary bg-transparent'}`}
                 >
                     <Trophy size={14} />
                     Pick the Winner
                 </button>
             </div>
             {rankings.length > 0 && (
-                <div className="border-t border-[#333333] mt-1 pt-1">
-                    <div className="px-3 py-1.5 text-xs font-bold text-[#666666] uppercase tracking-wider">
+                <div className="border-t border-border mt-1 pt-1">
+                    <div className="px-3 py-1.5 text-xs font-bold text-text-tertiary uppercase tracking-wider">
                         Saved Rankings
                     </div>
                     {rankings.map(ranking => (
@@ -157,8 +157,8 @@ export const PlaylistDetailPage: React.FC = () => {
                             key={ranking.id}
                             onClick={() => handleSortChange(ranking.id)}
                             className={`group/ranking w-full text-left px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors border-none cursor-pointer ${playlistVideoSortBy === ranking.id
-                                ? 'bg-[#333333] text-white'
-                                : 'text-[#AAAAAA] hover:bg-[#161616] hover:text-white bg-transparent'
+                                ? 'bg-menu-item-active-bg text-text-primary'
+                                : 'text-text-secondary hover:bg-menu-item-hover-bg hover:text-text-primary bg-transparent'
                                 }`}
                         >
                             <Trophy size={14} className="text-amber-400 flex-shrink-0" />
@@ -548,7 +548,7 @@ export const PlaylistDetailPage: React.FC = () => {
                                         onClick={() => setHideLosers(prev => !prev)}
                                         className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors border-none cursor-pointer flex items-center gap-1.5 ${hideLosers
                                             ? 'bg-amber-500/20 text-amber-300'
-                                            : 'bg-white/10 hover:bg-white/20 text-white'
+                                            : 'bg-overlay/10 hover:bg-overlay/20 text-text-primary'
                                             }`}
                                     >
                                         {hideLosers ? <EyeOff size={14} /> : <Eye size={14} />}
@@ -636,7 +636,7 @@ export const PlaylistDetailPage: React.FC = () => {
                                 {activeFilters.map(filter => (
                                     <div
                                         key={filter.id}
-                                        className="flex items-center gap-2 bg-[#F2F2F2]/10 hover:bg-[#F2F2F2]/20 border-none rounded-lg px-3 py-1.5 text-sm font-medium text-text-primary whitespace-nowrap animate-scale-in group transition-colors"
+                                        className="flex items-center gap-2 bg-overlay/10 hover:bg-overlay/20 border-none rounded-lg px-3 py-1.5 text-sm font-medium text-text-primary whitespace-nowrap animate-scale-in group transition-colors"
                                     >
                                         <span>{filter.label}</span>
                                         <button

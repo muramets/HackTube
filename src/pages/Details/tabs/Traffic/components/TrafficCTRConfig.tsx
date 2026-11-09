@@ -56,10 +56,10 @@ export const TrafficCTRConfig: React.FC<TrafficCTRConfigProps> = ({ isOpen, onCl
         <div
             ref={popupRef}
             style={{ top: position.top, left: position.left }}
-            className="fixed z-dropdown w-[280px] bg-[#1F1F1F] rounded-xl shadow-2xl flex flex-col animate-in fade-in zoom-in-95 duration-200 overflow-hidden"
+            className="fixed z-dropdown w-[280px] bg-card-bg rounded-xl shadow-2xl flex flex-col animate-in fade-in zoom-in-95 duration-200 overflow-hidden"
         >
             {/* Header */}
-            <div className="px-4 py-3 border-b border-[#2a2a2a] flex justify-between items-center">
+            <div className="px-4 py-3 border-b border-border flex justify-between items-center">
                 <span className="text-[11px] font-medium text-text-tertiary uppercase tracking-wider">
                     CTR Color Rules
                 </span>
@@ -82,10 +82,10 @@ export const TrafficCTRConfig: React.FC<TrafficCTRConfigProps> = ({ isOpen, onCl
             </div>
 
             {/* Footer - Add Rule Button */}
-            <div className="p-2 border-t border-[#2a2a2a]">
+            <div className="p-2 border-t border-border">
                 <button
                     onClick={addRule}
-                    className="w-full flex items-center justify-center gap-2 py-2 bg-white/5 hover:bg-white/10 text-xs font-medium text-text-secondary hover:text-text-primary rounded-lg transition-colors"
+                    className="w-full flex items-center justify-center gap-2 py-2 bg-overlay/5 hover:bg-overlay/10 text-xs font-medium text-text-secondary hover:text-text-primary rounded-lg transition-colors"
                 >
                     <Plus size={14} />
                     Add Rule

@@ -63,7 +63,7 @@ export const SubTabs: React.FC<SubTabsProps> = ({
             {showLeftGradient && (
                 <button
                     onClick={() => scroll('left')}
-                    className="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-6 h-6 flex items-center justify-center rounded-full bg-[#1F1F1F] text-white shadow-lg hover:bg-white/10 transition-colors opacity-0 group-hover:opacity-100"
+                    className="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-6 h-6 flex items-center justify-center rounded-full bg-card-bg text-text-primary shadow-lg hover:bg-overlay/10 transition-colors opacity-0 group-hover:opacity-100"
                 >
                     <ChevronLeft size={14} />
                 </button>
@@ -90,7 +90,7 @@ export const SubTabs: React.FC<SubTabsProps> = ({
                             className={`
                                 relative flex items-center gap-2 px-4 py-2 text-xs font-medium transition-all whitespace-nowrap select-none
                                 ${isActive
-                                    ? 'text-text-primary bg-white/5'
+                                    ? 'text-text-primary bg-overlay/5'
                                     : 'text-text-secondary hover:text-text-primary'
                                 }
                             `}
@@ -122,7 +122,7 @@ export const SubTabs: React.FC<SubTabsProps> = ({
                             {tab.count !== undefined && (
                                 <span className={`
                                     ml-1 text-[10px] px-1.5 py-0.5 rounded-full font-bold
-                                    ${isActive ? 'bg-white/10 text-white' : 'bg-white/5 text-text-secondary'}
+                                    ${isActive ? 'bg-overlay/10 text-text-primary' : 'bg-overlay/5 text-text-secondary'}
                                 `}>
                                     {tab.count}
                                 </span>
@@ -136,7 +136,7 @@ export const SubTabs: React.FC<SubTabsProps> = ({
                                         e.stopPropagation();
                                         tab.onDelete?.();
                                     }}
-                                    className="ml-1 p-1 rounded-full text-text-secondary hover:text-red-500 hover:bg-white/10 transition-colors opacity-0 group-hover:opacity-100"
+                                    className="ml-1 p-1 rounded-full text-text-secondary hover:text-red-500 hover:bg-overlay/10 transition-colors opacity-0 group-hover:opacity-100"
                                 >
                                     <Trash2 size={12} />
                                 </div>
@@ -153,7 +153,7 @@ export const SubTabs: React.FC<SubTabsProps> = ({
             {showRightGradient && (
                 <button
                     onClick={() => scroll('right')}
-                    className="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-6 h-6 flex items-center justify-center rounded-full bg-[#1F1F1F] text-white shadow-lg hover:bg-white/10 transition-colors opacity-0 group-hover:opacity-100"
+                    className="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-6 h-6 flex items-center justify-center rounded-full bg-card-bg text-text-primary shadow-lg hover:bg-overlay/10 transition-colors opacity-0 group-hover:opacity-100"
                 >
                     <ChevronRight size={14} />
                 </button>

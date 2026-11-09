@@ -147,7 +147,7 @@ export const RenderPresetsPanel: React.FC<RenderPresetsPanelProps> = ({ videoId 
                 onClick={handleToggle}
                 className="flex items-center gap-1.5 px-2 py-1 rounded-lg
                            text-text-tertiary hover:text-text-secondary
-                           hover:bg-white/[0.04] transition-colors text-xs"
+                           hover:bg-overlay/[0.04] transition-colors text-xs"
             >
                 <History size={12} />
                 <span>Use from recent render</span>
@@ -282,8 +282,8 @@ export const RenderPresetsPanel: React.FC<RenderPresetsPanelProps> = ({ videoId 
                                                                    ${isApplied
                                                                 ? 'bg-green-500/15 text-green-400'
                                                                 : allUnavailable
-                                                                    ? 'bg-white/[0.03] text-text-tertiary cursor-not-allowed'
-                                                                    : 'bg-white/[0.06] text-text-secondary hover:bg-white/[0.12] hover:text-text-primary'
+                                                                    ? 'bg-overlay/[0.03] text-text-tertiary cursor-not-allowed'
+                                                                    : 'bg-overlay/[0.06] text-text-secondary hover:bg-overlay/[0.12] hover:text-text-primary'
                                                             }`}
                                                     >
                                                         {isApplied ? (

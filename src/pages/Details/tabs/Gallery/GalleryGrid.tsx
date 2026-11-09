@@ -177,7 +177,7 @@ export const GalleryGrid: React.FC<GalleryGridProps> = ({
     return (
         <div
             ref={containerRef}
-            className={`relative flex-1 min-h-[400px] rounded-xl transition-all duration-200 ${isDragOver ? 'bg-white/5 ring-2 ring-white/20 ring-dashed' : ''}`}
+            className={`relative flex-1 min-h-[400px] rounded-xl transition-all duration-200 ${isDragOver ? 'bg-overlay/5 ring-2 ring-overlay/20 ring-dashed' : ''}`}
             onDragOver={handleFileDragOver}
             onDragLeave={handleFileDragLeave}
             onDrop={handleFileDrop}
@@ -191,19 +191,19 @@ export const GalleryGrid: React.FC<GalleryGridProps> = ({
                     {uploadingFiles.map(uploadingFile => (
                         <div key={uploadingFile.id} className="group relative flex flex-col gap-2 p-[6px] rounded-xl isolate">
                             {/* Hover Substrate - always visible for upload card */}
-                            <div className="absolute inset-0 rounded-xl -z-10 pointer-events-none bg-white/10 border-2 border-white/20 animate-pulse" />
+                            <div className="absolute inset-0 rounded-xl -z-10 pointer-events-none bg-overlay/10 border-2 border-overlay/20 animate-pulse" />
 
                             {/* Thumbnail placeholder */}
-                            <div className="relative aspect-video rounded-xl overflow-hidden bg-[#1a1a1a] flex items-center justify-center">
+                            <div className="relative aspect-video rounded-xl overflow-hidden bg-surface-primary flex items-center justify-center">
                                 <div className="flex flex-col items-center gap-2">
-                                    <Loader2 size={32} className="text-white/60 animate-spin" />
+                                    <Loader2 size={32} className="text-text-tertiary animate-spin" />
                                 </div>
                             </div>
 
                             {/* File info - matching GalleryCard structure */}
                             <div className="flex items-start gap-3 px-1">
                                 {/* Channel avatar */}
-                                <div className="w-9 h-9 rounded-full bg-[#2a2a2a] flex-shrink-0 overflow-hidden">
+                                <div className="w-9 h-9 rounded-full bg-surface-secondary flex-shrink-0 overflow-hidden">
                                     {channelAvatar && (
                                         <img src={channelAvatar} alt="" className="w-full h-full object-cover" />
                                     )}

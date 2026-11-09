@@ -478,9 +478,9 @@ export const MusicSidebarSection: React.FC<{ expanded: boolean }> = ({ expanded 
                                                 // Only toggle collapse — never activate the library on header click
                                                 toggleGroup(`shared:${lib.ownerChannelId}`);
                                             }}
-                                            className={`flex items-center cursor-pointer p-2 rounded-lg transition-all duration-200 select-none hover:bg-white/5`}
+                                            className={`flex items-center cursor-pointer p-2 rounded-lg transition-all duration-200 select-none hover:bg-overlay/5`}
                                         >
-                                            <div className="w-6 h-6 rounded-full mr-3 flex items-center justify-center bg-white/5">
+                                            <div className="w-6 h-6 rounded-full mr-3 flex items-center justify-center bg-overlay/5">
                                                 <Share2 size={12} className="text-text-tertiary" />
                                             </div>
                                             <span className="text-sm flex-1 overflow-hidden whitespace-nowrap truncate transition-colors text-text-secondary">

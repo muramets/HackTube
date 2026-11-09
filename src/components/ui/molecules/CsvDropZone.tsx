@@ -117,7 +117,7 @@ export const CsvDropZone: React.FC<CsvDropZoneProps> = ({
                     </>
                 ) : (
                     <>
-                        <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-text-secondary transition-colors group-hover:bg-white/10">
+                        <div className="w-12 h-12 rounded-full bg-overlay/5 flex items-center justify-center text-text-secondary transition-colors group-hover:bg-overlay/10">
                             <FileText size={24} />
                         </div>
 

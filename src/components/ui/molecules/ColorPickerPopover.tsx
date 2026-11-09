@@ -41,7 +41,7 @@ export const ColorPickerPopover: React.FC<ColorPickerPopoverProps> = ({
     return (
         <div
             ref={ref}
-            className="absolute left-0 top-7 z-50 bg-[#1a1a1a] border border-white/10 rounded-xl p-3 shadow-xl animate-fade-in"
+            className="absolute left-0 top-7 z-50 bg-surface-primary border border-overlay/10 rounded-xl p-3 shadow-xl animate-fade-in"
             onClick={(e) => e.stopPropagation()}
         >
             <div
@@ -55,7 +55,7 @@ export const ColorPickerPopover: React.FC<ColorPickerPopoverProps> = ({
                             e.stopPropagation();
                             onColorChange(c);
                         }}
-                        className="w-6 h-6 rounded-full transition-shadow relative hover:ring-2 hover:ring-white/50 ring-offset-1 ring-offset-[#1a1a1a] border-none cursor-pointer"
+                        className="w-6 h-6 rounded-full transition-shadow relative hover:ring-2 hover:ring-overlay/50 ring-offset-1 ring-offset-surface-primary border-none cursor-pointer"
                         style={{ backgroundColor: c }}
                     >
                         {currentColor === c && (

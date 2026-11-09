@@ -77,7 +77,7 @@ export const GalleryUploadZone: React.FC<GalleryUploadZoneProps> = ({
                 border rounded-xl
                 ${isBusy
                     ? 'border-transparent bg-bg-secondary/50 cursor-wait'
-                    : `cursor-pointer border-dashed ${isDragging ? 'border-accent-blue bg-accent-blue/5' : 'border-white/10 hover:border-white bg-transparent'}`
+                    : `cursor-pointer border-dashed ${isDragging ? 'border-accent-blue bg-accent-blue/5' : 'border-overlay/10 hover:border-text-primary bg-transparent'}`
                 }
             `}
             onDragOver={handleDragOver}
@@ -111,7 +111,7 @@ export const GalleryUploadZone: React.FC<GalleryUploadZoneProps> = ({
                     </>
                 ) : (
                     <>
-                        <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-text-secondary transition-colors group-hover:bg-white/10">
+                        <div className="w-12 h-12 rounded-full bg-overlay/5 flex items-center justify-center text-text-secondary transition-colors group-hover:bg-overlay/10">
                             <Image size={24} />
                         </div>
 

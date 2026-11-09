@@ -110,7 +110,7 @@ const ResolutionDropdown: React.FC<ResolutionDropdownProps> = ({ resolution, ima
                                     ${exceeds
                                         ? 'text-text-tertiary cursor-not-allowed opacity-40'
                                         : isSelected
-                                            ? 'text-text-primary font-semibold bg-white/[0.06]'
+                                            ? 'text-text-primary font-semibold bg-overlay/[0.06]'
                                             : 'text-text-secondary hover:bg-hover hover:text-text-primary'
                                     }`}
                             >

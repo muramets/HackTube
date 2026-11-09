@@ -154,7 +154,7 @@ export const TrafficSourceNav = React.memo<TrafficSourceNavProps>(({
                                                 onKeyDown={handleRenameKeyDown}
                                                 onClick={(e) => e.stopPropagation()}
                                                 placeholder={snap.autoLabel}
-                                                className="w-full bg-transparent border-none outline-none text-xs text-text-primary placeholder:text-white/20 py-0 caret-blue-400"
+                                                className="w-full bg-transparent border-none outline-none text-xs text-text-primary placeholder:text-overlay/20 py-0 caret-blue-400"
                                             />
                                         ) : (
                                             <>
@@ -172,8 +172,8 @@ export const TrafficSourceNav = React.memo<TrafficSourceNavProps>(({
                                         className={`
                                             p-0.5 rounded-full transition-all flex-shrink-0
                                             ${isMenuOpen
-                                                ? 'opacity-100 bg-white/10'
-                                                : 'opacity-0 group-hover/snapshot:opacity-100 hover:bg-white/10 text-text-tertiary hover:text-white'
+                                                ? 'opacity-100 bg-overlay/10'
+                                                : 'opacity-0 group-hover/snapshot:opacity-100 hover:bg-overlay/10 text-text-tertiary hover:text-text-primary'
                                             }
                                         `}
                                     >
@@ -196,7 +196,7 @@ export const TrafficSourceNav = React.memo<TrafficSourceNavProps>(({
                     />
                     {/* Menu */}
                     <div
-                        className="fixed z-popover bg-bg-secondary/95 backdrop-blur-md border border-white/10 rounded-lg py-1 shadow-xl animate-fade-in min-w-[140px]"
+                        className="fixed z-popover bg-bg-secondary/95 backdrop-blur-md border border-overlay/10 rounded-lg py-1 shadow-xl animate-fade-in min-w-[140px]"
                         style={{ left: menuState.position.x, top: menuState.position.y }}
                         onClick={(e) => e.stopPropagation()}
                     >
@@ -211,7 +211,7 @@ export const TrafficSourceNav = React.memo<TrafficSourceNavProps>(({
                                     }
                                     closeMenu();
                                 }}
-                                className="w-full text-left px-3 py-1.5 text-xs text-text-secondary hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2"
+                                className="w-full text-left px-3 py-1.5 text-xs text-text-secondary hover:text-text-primary hover:bg-overlay/5 transition-colors flex items-center gap-2"
                             >
                                 <Pencil size={10} />
                                 Rename
@@ -219,14 +219,14 @@ export const TrafficSourceNav = React.memo<TrafficSourceNavProps>(({
                         )}
                         {onDeleteSnapshot && menuState.snapshotId === latestId && (
                             <>
-                                <div className="border-t border-white/5 my-1" />
+                                <div className="border-t border-overlay/5 my-1" />
                                 <button
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         setDeleteTarget(menuState.snapshotId);
                                         closeMenu();
                                     }}
-                                    className="w-full text-left px-3 py-1.5 text-xs text-red-400 hover:bg-white/5 transition-colors flex items-center gap-2"
+                                    className="w-full text-left px-3 py-1.5 text-xs text-red-400 hover:bg-overlay/5 transition-colors flex items-center gap-2"
                                 >
                                     <Trash2 size={10} />
                                     Remove

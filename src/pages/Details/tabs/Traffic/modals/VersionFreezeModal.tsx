@@ -23,7 +23,7 @@ export const VersionFreezeModal: React.FC<VersionFreezeModalProps> = ({
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-            <div className="bg-bg-secondary border border-white/10 rounded-2xl w-full max-w-lg text-text-primary shadow-2xl flex flex-col">
+            <div className="bg-bg-secondary border border-overlay/10 rounded-2xl w-full max-w-lg text-text-primary shadow-2xl flex flex-col">
                 <div className="p-6">
                     <div className="flex items-start gap-4 mb-6">
                         <div className="w-10 h-10 rounded-full bg-accent-blue/10 flex items-center justify-center text-accent-blue flex-shrink-0">

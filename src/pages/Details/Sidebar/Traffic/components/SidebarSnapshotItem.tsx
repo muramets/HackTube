@@ -175,7 +175,7 @@ export const SidebarSnapshotItem: React.FC<SidebarSnapshotItemProps> = ({
                                     onKeyDown={handleRenameKeyDown}
                                     onClick={(e) => e.stopPropagation()}
                                     placeholder={displayDate}
-                                    className="w-full bg-transparent border-none outline-none text-xs text-text-primary placeholder:text-white/20 py-0 caret-blue-400"
+                                    className="w-full bg-transparent border-none outline-none text-xs text-text-primary placeholder:text-overlay/20 py-0 caret-blue-400"
                                 />
                             ) : (
                                 <>
@@ -200,8 +200,8 @@ export const SidebarSnapshotItem: React.FC<SidebarSnapshotItemProps> = ({
                                     className={`
                                         p-0.5 rounded-full transition-all flex-shrink-0
                                         ${menuOpenSnapshotId === id
-                                            ? 'opacity-100 bg-white/10'
-                                            : 'opacity-0 group-hover/snapshot:opacity-100 hover:bg-white/10 text-text-tertiary hover:text-white'
+                                            ? 'opacity-100 bg-overlay/10'
+                                            : 'opacity-0 group-hover/snapshot:opacity-100 hover:bg-overlay/10 text-text-tertiary hover:text-text-primary'
                                         }
                                     `}
                                 >
@@ -229,7 +229,7 @@ export const SidebarSnapshotItem: React.FC<SidebarSnapshotItemProps> = ({
                         onClick={() => onStopSettingActiveDate?.()}
                     />
                     <div
-                        className="fixed z-popover rounded-xl overflow-hidden shadow-2xl border border-white/10"
+                        className="fixed z-popover rounded-xl overflow-hidden shadow-2xl border border-overlay/10"
                         style={{ left: popoverPosition.x, top: popoverPosition.y }}
                     >
                         <DateRangePicker

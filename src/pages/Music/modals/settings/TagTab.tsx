@@ -126,7 +126,7 @@ const SortableTagChip: React.FC<{
             ) : (
                 <span
                     onClick={() => onStartEdit(tag)}
-                    className="cursor-text hover:text-white transition-colors"
+                    className="cursor-text hover:text-text-primary transition-colors"
                 >
                     {tag.name}
                 </span>

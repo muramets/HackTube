@@ -224,7 +224,7 @@ export const TrafficPlaylistSelector: React.FC<TrafficPlaylistSelectorProps> = (
                     ref={buttonRef}
                     onMouseDown={(e) => e.stopPropagation()}
                     onClick={onToggle}
-                    className={`p-1.5 rounded-full transition-colors ${isOpen ? 'bg-white text-black' : 'text-text-secondary hover:text-white hover:bg-white/10'}`}
+                    className={`p-1.5 rounded-full transition-colors ${isOpen ? 'bg-text-primary text-bg-primary' : 'text-text-secondary hover:text-text-primary hover:bg-overlay/10'}`}
                 >
                     {isProcessing ? (
                         <Loader2 size={16} className="animate-spin text-text-secondary" />
@@ -254,7 +254,7 @@ export const TrafficPlaylistSelector: React.FC<TrafficPlaylistSelectorProps> = (
                                         <button
                                             key={playlist.id}
                                             onClick={() => handlePlaylistToggle(playlist.id, playlist.name, isChecked)}
-                                            className={`w-full text-left px-3 py-2 text-xs hover:bg-white/5 rounded-lg flex items-center gap-2 transition-colors justify-between shrink-0 ${isChecked ? 'text-white' : 'text-text-secondary hover:text-white'
+                                            className={`w-full text-left px-3 py-2 text-xs hover:bg-overlay/5 rounded-lg flex items-center gap-2 transition-colors justify-between shrink-0 ${isChecked ? 'text-text-primary' : 'text-text-secondary hover:text-text-primary'
                                                 }`}
                                         >
                                             <div className="flex items-center gap-2 truncate">
@@ -274,13 +274,13 @@ export const TrafficPlaylistSelector: React.FC<TrafficPlaylistSelectorProps> = (
                         </div>
 
                         {/* Input Section (Now Last/Bottom) */}
-                        <div className="p-2 border-t border-white/10 bg-white/5 shrink-0 z-10">
+                        <div className="p-2 border-t border-overlay/10 bg-overlay/5 shrink-0 z-10">
                             <form onSubmit={handleCreatePlaylist} className="relative">
                                 <input
                                     ref={inputRef}
                                     type="text"
                                     placeholder="Create playlist..."
-                                    className="w-full bg-bg-primary text-white text-xs px-3 py-2 pl-8 rounded-lg focus:outline-none focus:ring-1 focus:ring-white/20 placeholder:text-text-secondary"
+                                    className="w-full bg-bg-primary text-text-primary text-xs px-3 py-2 pl-8 rounded-lg focus:outline-none focus:ring-1 focus:ring-overlay/20 placeholder:text-text-secondary"
                                     value={newPlaylistName}
                                     onChange={(e) => setNewPlaylistName(e.target.value)}
                                     onKeyDown={(e) => {
@@ -293,7 +293,7 @@ export const TrafficPlaylistSelector: React.FC<TrafficPlaylistSelectorProps> = (
                                 />
                                 <button
                                     type="submit"
-                                    className="absolute left-1 top-1/2 -translate-y-1/2 p-1.5 text-text-secondary hover:text-white transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="absolute left-1 top-1/2 -translate-y-1/2 p-1.5 text-text-secondary hover:text-text-primary transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                                     disabled={!newPlaylistName.trim()}
                                     title="Create playlist"
                                 >

@@ -29,10 +29,10 @@ export const SuggestedTrafficChip: React.FC<SuggestedTrafficChipProps> = React.m
             className={`
                 group/chip flex flex-col rounded-lg overflow-hidden transition-all duration-200 relative shrink-0
                 ${compact
-                    ? 'bg-white/[0.04] w-[180px]'
-                    : 'bg-white/[0.05] w-[200px] hover:bg-emerald-500/[0.06]'
+                    ? 'bg-overlay/[0.04] w-[180px]'
+                    : 'bg-overlay/[0.05] w-[200px] hover:bg-emerald-500/[0.06]'
                 }
-                ${onSelect ? 'cursor-pointer ring-1 ring-inset ring-transparent hover:ring-accent-primary hover:bg-white/10' : ''}
+                ${onSelect ? 'cursor-pointer ring-1 ring-inset ring-transparent hover:ring-accent-primary hover:bg-overlay/10' : ''}
             `}
             onClick={onSelect}
         >

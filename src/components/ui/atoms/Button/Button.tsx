@@ -216,8 +216,7 @@ const variantStyles: Record<ButtonVariant, string> = {
      * Цвет обводки: #3ea6ff (YouTube Studio accent blue)
      * 
      * 🔧 Чтобы изменить цвет:
-     *    Пока используется hardcoded #3ea6ff (стандартный YouTube accent).
-     *    Если нужно — можно добавить CSS Variable --accent-blue в index.css
+     *    Используется токен brand-blue (--color-brand-blue в index.css).
      * 
      * Стили:
      *   - Прозрачный фон
@@ -227,10 +226,10 @@ const variantStyles: Record<ButtonVariant, string> = {
      */
     outline: `
         bg-transparent
-        border border-[#3ea6ff]
-        text-[#3ea6ff]
-        hover:bg-[#3ea6ff]/10
-        focus-visible:ring-[#3ea6ff]
+        border border-brand-blue
+        text-brand-blue
+        hover:bg-brand-blue/10
+        focus-visible:ring-brand-blue
     `,
 
     /**

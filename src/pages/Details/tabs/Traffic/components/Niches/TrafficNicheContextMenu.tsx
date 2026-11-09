@@ -65,7 +65,7 @@ export const TrafficNicheContextMenu: React.FC<TrafficNicheContextMenuProps> = (
             <button
                 key="rename"
                 onClick={() => onRename()}
-                className="w-full text-left px-3 py-1.5 text-xs text-text-primary hover:bg-white/5 transition-colors flex items-center gap-2 rounded-md"
+                className="w-full text-left px-3 py-1.5 text-xs text-text-primary hover:bg-overlay/5 transition-colors flex items-center gap-2 rounded-md"
             >
                 <Pencil size={12} className="text-text-secondary" />
                 Rename
@@ -74,18 +74,18 @@ export const TrafficNicheContextMenu: React.FC<TrafficNicheContextMenuProps> = (
             <button
                 key="set-type"
                 onClick={() => setView('properties')}
-                className="w-full text-left px-3 py-1.5 text-xs text-text-primary hover:bg-white/5 transition-colors flex items-center gap-2 rounded-md"
+                className="w-full text-left px-3 py-1.5 text-xs text-text-primary hover:bg-overlay/5 transition-colors flex items-center gap-2 rounded-md"
             >
                 <Tag size={12} className="text-text-secondary" />
                 Set Type
             </button>
 
-            <div className="h-px bg-white/10 my-1 mx-2" />
+            <div className="h-px bg-overlay/10 my-1 mx-2" />
 
             <button
                 key="delete"
                 onClick={onDelete}
-                className="w-full text-left px-3 py-1.5 text-xs text-red-400 hover:bg-white/5 transition-colors flex items-center gap-2 rounded-md"
+                className="w-full text-left px-3 py-1.5 text-xs text-red-400 hover:bg-overlay/5 transition-colors flex items-center gap-2 rounded-md"
             >
                 <Trash2 size={12} />
                 Delete
@@ -95,10 +95,10 @@ export const TrafficNicheContextMenu: React.FC<TrafficNicheContextMenuProps> = (
 
     const renderPropertiesView = () => (
         <>
-            <div className="flex items-center gap-1 px-2 py-1 mb-1 border-b border-white/5">
+            <div className="flex items-center gap-1 px-2 py-1 mb-1 border-b border-overlay/5">
                 <button
                     onClick={() => setView('main')}
-                    className="p-1 -ml-1 hover:bg-white/10 rounded-md text-text-secondary hover:text-white transition-colors"
+                    className="p-1 -ml-1 hover:bg-overlay/10 rounded-md text-text-secondary hover:text-text-primary transition-colors"
                 >
                     <ChevronLeft size={12} />
                 </button>
@@ -110,48 +110,48 @@ export const TrafficNicheContextMenu: React.FC<TrafficNicheContextMenuProps> = (
             <button
                 key="unrelated"
                 onClick={() => { onUpdateProperty('unrelated'); onClose(); }}
-                className="w-full text-left px-3 py-1.5 text-xs text-text-primary hover:bg-white/5 transition-colors flex items-center gap-2 rounded-md group"
+                className="w-full text-left px-3 py-1.5 text-xs text-text-primary hover:bg-overlay/5 transition-colors flex items-center gap-2 rounded-md group"
             >
                 <CircleOff size={12} className={`transition-colors ${niche.property === 'unrelated' ? 'text-red-400' : 'text-text-secondary group-hover:text-red-400'}`} />
-                <span className={niche.property === 'unrelated' ? 'text-white font-medium' : ''}>Unrelated</span>
+                <span className={niche.property === 'unrelated' ? 'text-text-primary font-medium' : ''}>Unrelated</span>
             </button>
 
             <button
                 key="adjacent"
                 onClick={() => { onUpdateProperty('adjacent'); onClose(); }}
-                className="w-full text-left px-3 py-1.5 text-xs text-text-primary hover:bg-white/5 transition-colors flex items-center gap-2 rounded-md group"
+                className="w-full text-left px-3 py-1.5 text-xs text-text-primary hover:bg-overlay/5 transition-colors flex items-center gap-2 rounded-md group"
             >
                 <Layers size={12} className={`transition-colors ${niche.property === 'adjacent' ? 'text-blue-400' : 'text-text-secondary group-hover:text-blue-400'}`} />
-                <span className={niche.property === 'adjacent' ? 'text-white font-medium' : ''}>Adjacent</span>
+                <span className={niche.property === 'adjacent' ? 'text-text-primary font-medium' : ''}>Adjacent</span>
             </button>
 
             <button
                 key="targeted"
                 onClick={() => { onUpdateProperty('targeted'); onClose(); }}
-                className="w-full text-left px-3 py-1.5 text-xs text-text-primary hover:bg-white/5 transition-colors flex items-center gap-2 rounded-md group"
+                className="w-full text-left px-3 py-1.5 text-xs text-text-primary hover:bg-overlay/5 transition-colors flex items-center gap-2 rounded-md group"
             >
                 <Target size={12} className={`transition-all ${niche.property === 'targeted' ? 'text-yellow-400' : 'text-text-secondary group-hover:text-yellow-400'}`} />
-                <span className={niche.property === 'targeted' ? 'text-white font-medium' : ''}>Targeted</span>
+                <span className={niche.property === 'targeted' ? 'text-text-primary font-medium' : ''}>Targeted</span>
             </button>
 
             <button
                 key="desired"
                 onClick={() => { onUpdateProperty('desired'); onClose(); }}
-                className="w-full text-left px-3 py-1.5 text-xs text-text-primary hover:bg-white/5 transition-colors flex items-center gap-2 rounded-md group"
+                className="w-full text-left px-3 py-1.5 text-xs text-text-primary hover:bg-overlay/5 transition-colors flex items-center gap-2 rounded-md group"
             >
                 <Flag size={12} className={`transition-colors ${niche.property === 'desired' ? 'text-emerald-400' : 'text-text-secondary group-hover:text-emerald-400'}`} />
-                <span className={niche.property === 'desired' ? 'text-white font-medium' : ''}>Desired</span>
+                <span className={niche.property === 'desired' ? 'text-text-primary font-medium' : ''}>Desired</span>
             </button>
 
-            <div className="h-px bg-white/10 my-1 mx-2" />
+            <div className="h-px bg-overlay/10 my-1 mx-2" />
 
             <button
                 key="no-type"
                 onClick={() => { onUpdateProperty(undefined as unknown as TrafficNicheProperty); onClose(); }}
-                className="w-full text-left px-3 py-1.5 text-xs text-text-primary hover:bg-white/5 transition-colors flex items-center gap-2 rounded-md"
+                className="w-full text-left px-3 py-1.5 text-xs text-text-primary hover:bg-overlay/5 transition-colors flex items-center gap-2 rounded-md"
             >
                 <span className="w-3 h-3 block" />
-                <span className={!niche.property ? 'text-white font-medium' : 'text-text-secondary'}>No Type</span>
+                <span className={!niche.property ? 'text-text-primary font-medium' : 'text-text-secondary'}>No Type</span>
             </button>
         </>
     );
@@ -159,7 +159,7 @@ export const TrafficNicheContextMenu: React.FC<TrafficNicheContextMenuProps> = (
     const content = (
         <div
             ref={menuRef}
-            className="fixed z-popover bg-bg-secondary/95 backdrop-blur-md border border-white/10 rounded-lg p-1 shadow-xl animate-fade-in min-w-[160px]"
+            className="fixed z-popover bg-bg-secondary/95 backdrop-blur-md border border-overlay/10 rounded-lg p-1 shadow-xl animate-fade-in min-w-[160px]"
             style={adjustedStyle}
             onClick={(e) => e.stopPropagation()}
         >

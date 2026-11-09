@@ -51,7 +51,7 @@ export const TrafficSidebarNicheList: React.FC<TrafficSidebarNicheListProps> = (
         <ul className="space-y-0.5">
             {visibleNiches.map((niche, index) => (
                 <li key={niche.id} className="relative">
-                    <div className={niche.name.trim().toLowerCase() === 'trash' && index > 0 ? 'mt-2 border-t border-white/10 pt-2' : ''}>
+                    <div className={niche.name.trim().toLowerCase() === 'trash' && index > 0 ? 'mt-2 border-t border-overlay/10 pt-2' : ''}>
                         <TrafficNicheItem
                             niche={{
                                 id: niche.id,

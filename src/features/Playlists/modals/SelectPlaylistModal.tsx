@@ -137,7 +137,7 @@ export const SelectPlaylistModal: React.FC<SelectPlaylistModalProps> = ({
                                 <button
                                     type="submit"
                                     disabled={!newPlaylistName.trim()}
-                                    className={`bg-transparent border-none font-bold cursor-pointer transition-opacity ${!newPlaylistName.trim() ? 'text-gray-500 cursor-not-allowed' : 'text-[#3ea6ff] hover:opacity-80'}`}
+                                    className={`bg-transparent border-none font-bold cursor-pointer transition-opacity ${!newPlaylistName.trim() ? 'text-gray-500 cursor-not-allowed' : 'text-brand-blue hover:opacity-80'}`}
                                 >
                                     Create
                                 </button>

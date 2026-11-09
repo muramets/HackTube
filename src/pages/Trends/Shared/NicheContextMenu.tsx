@@ -152,7 +152,7 @@ export const NicheContextMenu: React.FC<NicheContextMenuProps> = ({
 
     const content = (
         <div
-            className="fixed z-popover bg-bg-secondary/95 backdrop-blur-md border border-white/10 rounded-lg py-1 shadow-xl animate-fade-in min-w-[140px]"
+            className="fixed z-popover bg-bg-secondary/95 backdrop-blur-md border border-overlay/10 rounded-lg py-1 shadow-xl animate-fade-in min-w-[140px]"
             style={position ? { left: position.x, top: position.y } : undefined}
             onClick={(e) => e.stopPropagation()}
         >
@@ -163,7 +163,7 @@ export const NicheContextMenu: React.FC<NicheContextMenuProps> = ({
                         e.stopPropagation();
                         handleFilterByNiche();
                     }}
-                    className="w-full text-left px-3 py-1.5 text-xs text-text-primary hover:bg-white/5 transition-colors flex items-center gap-2"
+                    className="w-full text-left px-3 py-1.5 text-xs text-text-primary hover:bg-overlay/5 transition-colors flex items-center gap-2"
                 >
                     <Filter size={10} />
                     Filter by this niche
@@ -187,10 +187,10 @@ export const NicheContextMenu: React.FC<NicheContextMenuProps> = ({
                             disabled={isDisabled}
                             className={`w-full text-left px-3 py-1.5 text-xs transition-colors flex items-center gap-2 whitespace-nowrap
                                 ${isTargeted
-                                    ? 'text-emerald-400 hover:bg-white/5'
+                                    ? 'text-emerald-400 hover:bg-overlay/5'
                                     : isDisabled
                                         ? 'text-text-tertiary cursor-not-allowed'
-                                        : 'text-text-primary hover:bg-white/5'
+                                        : 'text-text-primary hover:bg-overlay/5'
                                 }`}
                         >
                             <Target size={10} />
@@ -200,7 +200,7 @@ export const NicheContextMenu: React.FC<NicheContextMenuProps> = ({
                     {/* Tooltip for max targets reached */}
                     {showMaxTooltip && createPortal(
                         <div
-                            className="fixed z-[301] px-2 py-1 bg-[#1a1a1a] border border-white/10 rounded-md shadow-xl text-[10px] text-white whitespace-nowrap pointer-events-none animate-fade-in"
+                            className="fixed z-[301] px-2 py-1 bg-tooltip-bg border border-white/10 rounded-md shadow-xl text-[10px] text-tooltip-text whitespace-nowrap pointer-events-none animate-fade-in"
                             style={{ left: tooltipPos.x, top: tooltipPos.y, transform: 'translate(-50%, -100%)' }}
                         >
                             Max 2 targets. Remove one to add new.
@@ -216,7 +216,7 @@ export const NicheContextMenu: React.FC<NicheContextMenuProps> = ({
                     e.stopPropagation();
                     handleToggleType();
                 }}
-                className="w-full text-left px-3 py-1.5 text-xs text-text-primary hover:bg-white/5 transition-colors flex items-center gap-2 whitespace-nowrap"
+                className="w-full text-left px-3 py-1.5 text-xs text-text-primary hover:bg-overlay/5 transition-colors flex items-center gap-2 whitespace-nowrap"
             >
                 {niche.type === 'global' ? <Home size={10} /> : <Globe size={10} />}
                 {niche.type === 'global' ? 'Make local' : 'Make global'}
@@ -227,7 +227,7 @@ export const NicheContextMenu: React.FC<NicheContextMenuProps> = ({
                     e.stopPropagation();
                     onRename();
                 }}
-                className="w-full text-left px-3 py-1.5 text-xs text-text-primary hover:bg-white/5 transition-colors flex items-center gap-2"
+                className="w-full text-left px-3 py-1.5 text-xs text-text-primary hover:bg-overlay/5 transition-colors flex items-center gap-2"
             >
                 <Pencil size={10} />
                 Rename
@@ -238,7 +238,7 @@ export const NicheContextMenu: React.FC<NicheContextMenuProps> = ({
                     e.stopPropagation();
                     onDelete();
                 }}
-                className="w-full text-left px-3 py-1.5 text-xs text-red-400 hover:bg-white/5 transition-colors flex items-center gap-2"
+                className="w-full text-left px-3 py-1.5 text-xs text-red-400 hover:bg-overlay/5 transition-colors flex items-center gap-2"
             >
                 <Trash2 size={10} />
                 Delete

@@ -35,7 +35,7 @@ export const CanvasPageSelector: React.FC<CanvasPageSelectorProps> = ({
     openAbove,
     onToggle,
     onSelectPage,
-    buttonClassName = 'text-text-secondary hover:text-white hover:bg-white/10',
+    buttonClassName = 'text-text-secondary hover:text-text-primary hover:bg-overlay/10',
     selectedVideoIds = [],
 }) => {
     const { pages, activePageId, addPage, subscribeMeta, nodes, userId, channelId } = useCanvasStore(
@@ -182,7 +182,7 @@ export const CanvasPageSelector: React.FC<CanvasPageSelectorProps> = ({
                     ref={buttonRef}
                     onMouseDown={(e) => e.stopPropagation()}
                     onClick={handleButtonClick}
-                    className={`p-1.5 rounded-full transition-colors duration-150 ${isOpen ? 'bg-white text-black' : buttonClassName
+                    className={`p-1.5 rounded-full transition-colors duration-150 ${isOpen ? 'bg-text-primary text-bg-primary' : buttonClassName
                         }`}
                 >
                     <LayoutGrid size={16} />
@@ -206,12 +206,12 @@ export const CanvasPageSelector: React.FC<CanvasPageSelectorProps> = ({
                                 <button
                                     key={page.id}
                                     onClick={() => handleSelectPage(page.id, page.title)}
-                                    className={`w-full text-left px-3 py-2 text-xs hover:bg-white/5 rounded-lg flex items-center gap-2 transition-colors justify-between shrink-0 ${isActive ? 'text-white' : 'text-text-secondary hover:text-white'
+                                    className={`w-full text-left px-3 py-2 text-xs hover:bg-overlay/5 rounded-lg flex items-center gap-2 transition-colors justify-between shrink-0 ${isActive ? 'text-text-primary' : 'text-text-secondary hover:text-text-primary'
                                         }`}
                                 >
                                     <div className="flex items-center gap-2 truncate">
                                         <div
-                                            className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${isActive ? 'bg-green-400' : 'bg-white/25'
+                                            className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${isActive ? 'bg-green-400' : 'bg-overlay/25'
                                                 }`}
                                         />
                                         <span className="truncate">{page.title}</span>
@@ -223,13 +223,13 @@ export const CanvasPageSelector: React.FC<CanvasPageSelectorProps> = ({
                     </div>
 
                     {/* Create New Page Input */}
-                    <div className="p-2 border-t border-white/10 bg-white/5 shrink-0 z-10">
+                    <div className="p-2 border-t border-overlay/10 bg-overlay/5 shrink-0 z-10">
                         <form onSubmit={handleCreatePage} className="relative">
                             <input
                                 ref={inputRef}
                                 type="text"
                                 placeholder="New page..."
-                                className="w-full bg-bg-primary text-white text-xs px-3 py-2 pl-8 rounded-lg focus:outline-none focus:ring-1 focus:ring-white/20 placeholder:text-text-secondary"
+                                className="w-full bg-bg-primary text-text-primary text-xs px-3 py-2 pl-8 rounded-lg focus:outline-none focus:ring-1 focus:ring-overlay/20 placeholder:text-text-secondary"
                                 value={newPageName}
                                 onChange={(e) => setNewPageName(e.target.value)}
                                 onKeyDown={(e) => {
@@ -242,7 +242,7 @@ export const CanvasPageSelector: React.FC<CanvasPageSelectorProps> = ({
                             />
                             <button
                                 type="submit"
-                                className="absolute left-1 top-1/2 -translate-y-1/2 p-1.5 text-text-secondary hover:text-white transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="absolute left-1 top-1/2 -translate-y-1/2 p-1.5 text-text-secondary hover:text-text-primary transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                                 disabled={!newPageName.trim()}
                                 title="Create page"
                             >

@@ -64,6 +64,16 @@
   --color-tag-hover: var(--tag-hover);
   --color-surface-primary: var(--surface-primary);
   --color-surface-secondary: var(--surface-secondary);
+  --color-overlay: var(--overlay);
+  --color-modal-overlay: var(--modal-overlay);
+  --color-menu-item-hover-bg: var(--menu-item-hover-bg);
+  --color-menu-item-active-bg: var(--menu-item-active-bg);
+
+  /* Theme-invariant colors (identical in light & dark) */
+  --color-brand-blue: #3ea6ff;     /* YouTube link/selection blue */
+  --color-brand-red: #ff0033;      /* YouTube brand red */
+  --color-tooltip-bg: #1a1a1a;     /* tooltips stay dark in both themes (YouTube convention) */
+  --color-tooltip-text: #ffffff;
 
   /* ---------------------------------------------------------------------------
      Z-index scale
@@ -332,6 +342,12 @@
    --border-rgb: 229, 229, 229;
    --hover: #f2f2f2;
    --hover-bg: #f2f2f2;
+   /* Theme-aware overlay base: use with opacity (bg-overlay/10, border-overlay/10).
+      Darkens surfaces in light theme, lightens them in dark theme. */
+   --overlay: #000000;
+   /* Menu / dropdown / list items */
+   --menu-item-hover-bg: #f2f2f2;
+   --menu-item-active-bg: #e5e5e5;
 
    /* ---------------------------------------------------------------------------
      Semantic Colors
@@ -486,6 +502,9 @@
    --border-rgb: 63, 63, 63;
    --hover: #3f3f3f;
    --hover-bg: #3f3f3f;
+   --overlay: #ffffff;
+   --menu-item-hover-bg: #161616;
+   --menu-item-active-bg: #333333;
    --danger-hover: #f87171;
 
    /* ---------------------------------------------------------------------------

@@ -93,10 +93,10 @@ export const CanvasSelectionChip: React.FC<CanvasSelectionChipProps> = React.mem
                     key={`note-${i}`}
                     className={`canvas-note-chip flex items-center gap-1.5 px-2 py-1 rounded-md text-xs text-text-secondary max-w-[280px] transition-colors duration-150
                         ${compact
-                            ? 'bg-white/[0.04] w-[180px]'
-                            : 'bg-white/[0.05] w-[200px] hover:bg-emerald-500/[0.06]'
+                            ? 'bg-overlay/[0.04] w-[180px]'
+                            : 'bg-overlay/[0.05] w-[200px] hover:bg-emerald-500/[0.06]'
                         }
-                        ${onSelect ? 'cursor-pointer ring-1 ring-inset ring-transparent hover:ring-accent-primary hover:bg-white/10' : ''}
+                        ${onSelect ? 'cursor-pointer ring-1 ring-inset ring-transparent hover:ring-accent-primary hover:bg-overlay/10' : ''}
                     `}
                     style={{ '--note-tint': NOTE_DOT_COLORS[note.noteColor || 'yellow'] || NOTE_DOT_COLORS.yellow } as React.CSSProperties}
                     onClick={onSelect}
@@ -114,7 +114,7 @@ export const CanvasSelectionChip: React.FC<CanvasSelectionChipProps> = React.mem
             {images.map((img, i) => (
                 <div
                     key={`img-${i}`}
-                    className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-white/[0.05] text-xs text-text-secondary max-w-[280px]"
+                    className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-overlay/[0.05] text-xs text-text-secondary max-w-[280px]"
                 >
                     {img.imageUrl ? (
                         <img

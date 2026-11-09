@@ -278,7 +278,7 @@ export function useABTestingModalState({
 
     // Get border color based on ranking
     const getBorderColor = (value: number, allValues: number[], hasContent: boolean) => {
-        if (!showResults || !isValid || !hasContent) return 'border-[#5F5F5F]';
+        if (!showResults || !isValid || !hasContent) return 'border-border';
 
         const rank = getABTestRank(value, allValues);
         return getRankBorderClass(rank);

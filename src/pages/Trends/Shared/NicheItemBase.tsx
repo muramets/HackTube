@@ -100,12 +100,12 @@ export const NicheItemBase: React.FC<NicheItemBaseProps> = ({
                 className={`
                     flex items-center pl-2 pr-2 py-1.5 cursor-pointer transition-all rounded-lg
                     ${isDragTarget
-                        ? 'bg-white/20 text-white'
+                        ? 'bg-overlay/20 text-text-primary'
                         : isActive
-                            ? 'bg-white/10 text-white'
+                            ? 'bg-overlay/10 text-text-primary'
                             : (isActive || isColorPickerOpen)
-                                ? 'bg-white/5 text-white'
-                                : 'text-text-secondary hover:text-white hover:bg-white/5'
+                                ? 'bg-overlay/5 text-text-primary'
+                                : 'text-text-secondary hover:text-text-primary hover:bg-overlay/5'
                     }
                 `}
             >
@@ -115,7 +115,7 @@ export const NicheItemBase: React.FC<NicheItemBaseProps> = ({
                     {startIcon ? (
                         startIcon
                     ) : isTrash ? (
-                        <Trash2 size={14} className={`${isActive ? 'text-white' : 'text-gray-400'} translate-y-[-2px]`} />
+                        <Trash2 size={14} className={`${isActive ? 'text-text-primary' : 'text-text-secondary'} translate-y-[-2px]`} />
                     ) : (
                         <div
                             ref={colorPickerRef}
@@ -127,7 +127,7 @@ export const NicheItemBase: React.FC<NicheItemBaseProps> = ({
                                     e.stopPropagation();
                                     onColorClick?.(e);
                                 }}
-                                className={`w-2.5 h-2.5 rounded-full transition-all hover:scale-125 hover:ring-2 hover:ring-white/20 cursor-pointer`}
+                                className={`w-2.5 h-2.5 rounded-full transition-all hover:scale-125 hover:ring-2 hover:ring-overlay/20 cursor-pointer`}
                                 style={{ backgroundColor: color }}
                             />
                             {isColorPickerOpen && renderColorPicker?.()}
@@ -169,7 +169,7 @@ export const NicheItemBase: React.FC<NicheItemBaseProps> = ({
                             onBlur={onEditNameSubmit}
                             onKeyDown={onEditKeyDown}
                             onClick={(e) => e.stopPropagation()}
-                            className="absolute inset-y-0 left-0 right-0 text-xs bg-[#1a1a1a] border-0 border-b border-white/40 outline-none text-white z-10"
+                            className="absolute inset-y-0 left-0 right-0 text-xs bg-surface-primary border-0 border-b border-overlay/40 outline-none text-text-primary z-10"
                             autoFocus
                         />
                     )}
@@ -178,7 +178,7 @@ export const NicheItemBase: React.FC<NicheItemBaseProps> = ({
                 {/* Portal Tooltip */}
                 {((isNameHovered && !isEditing) || isDragTarget) && createPortal(
                     <div
-                        className="fixed z-popover px-2 py-1 bg-[#1a1a1a] border border-white/10 rounded-md shadow-xl text-xs text-white whitespace-nowrap pointer-events-none animate-fade-in"
+                        className="fixed z-popover px-2 py-1 bg-tooltip-bg border border-white/10 rounded-md shadow-xl text-xs text-tooltip-text whitespace-nowrap pointer-events-none animate-fade-in"
                         style={{ left: tooltipPos.x, top: tooltipPos.y, transform: 'translateY(-100%)' }}
                     >
                         {name}
@@ -215,7 +215,7 @@ export const NicheItemBase: React.FC<NicheItemBaseProps> = ({
                                 className={`
                                     p-0.5 rounded-full transition-opacity
                                     ${(isActive || isColorPickerOpen) ? 'opacity-100' : 'opacity-0 group-hover/niche:opacity-100'}
-                                    ${isActive ? 'opacity-100 bg-white/10' : 'hover:bg-white/10'}
+                                    ${isActive ? 'opacity-100 bg-overlay/10' : 'hover:bg-overlay/10'}
                                 `}
                             >
                                 <MoreVertical size={12} />

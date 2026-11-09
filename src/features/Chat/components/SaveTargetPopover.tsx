@@ -160,7 +160,7 @@ export const SaveTargetPopover: React.FC<SaveTargetPopoverProps> = ({
                                 disabled={savedId === v.videoId}
                                 className={`flex items-center gap-2 w-full px-3 py-1.5 bg-transparent border-none text-left text-text-primary text-xs font-medium transition-colors ${savedId === v.videoId
                                     ? 'cursor-default opacity-60'
-                                    : 'cursor-pointer hover:bg-white/5'
+                                    : 'cursor-pointer hover:bg-overlay/5'
                                     }`}
                             >
                                 {v.thumbnailUrl ? (
@@ -204,7 +204,7 @@ export const SaveTargetPopover: React.FC<SaveTargetPopoverProps> = ({
                                 disabled={savedId === page.id}
                                 className={`flex items-center gap-2 w-full px-3 py-1.5 bg-transparent border-none text-left text-text-primary text-xs font-medium transition-colors ${savedId === page.id
                                     ? 'cursor-default opacity-60'
-                                    : 'cursor-pointer hover:bg-white/5'
+                                    : 'cursor-pointer hover:bg-overlay/5'
                                     }`}
                             >
                                 <span className="flex-1 min-w-0">{page.title}</span>

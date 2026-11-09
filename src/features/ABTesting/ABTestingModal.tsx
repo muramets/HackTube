@@ -99,8 +99,8 @@ export const ABTestingModal: React.FC<ABTestingModalProps> = ({
                     className={`
                         w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer shadow-sm
                         ${isCloned
-                            ? 'bg-gray-700 text-gray-400 cursor-default'
-                            : 'bg-modal-button-bg text-modal-text-secondary hover:bg-[#3ea6ff] hover:text-white'}
+                            ? 'bg-hover-bg text-text-tertiary cursor-default'
+                            : 'bg-modal-button-bg text-modal-text-secondary hover:bg-brand-blue hover:text-white'}
                     `}
                     title={isCloned ? "Active clone exists" : "Clone as preview card"}
                 >
@@ -197,7 +197,7 @@ export const ABTestingModal: React.FC<ABTestingModalProps> = ({
                                 onClick={() => setShowResults(!showResults)}
                                 className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-colors
                                     ${showResults
-                                        ? 'bg-[#3ea6ff]/10 text-[#3ea6ff] border border-[#3ea6ff]/20'
+                                        ? 'bg-brand-blue/10 text-brand-blue border border-brand-blue/20'
                                         : 'bg-modal-button-bg text-modal-text-secondary hover:text-modal-text-primary'
                                     }`}
                             >

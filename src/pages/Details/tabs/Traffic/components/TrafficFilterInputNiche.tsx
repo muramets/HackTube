@@ -160,7 +160,7 @@ export const TrafficFilterInputNiche: React.FC<TrafficFilterInputNicheProps> = (
             <div
                 key={id}
                 onClick={() => toggleNiche(id)}
-                className="px-3 py-2 flex items-center gap-3 cursor-pointer transition-colors rounded-lg text-text-primary text-sm hover:bg-[#2a2a2a] group"
+                className="px-3 py-2 flex items-center gap-3 cursor-pointer transition-colors rounded-lg text-text-primary text-sm hover:bg-surface-secondary group"
                 title={`Impressions: ${stats.impressions.toLocaleString()}\nViews: ${stats.views.toLocaleString()}`}
             >
                 {/* Checkbox */}
@@ -205,7 +205,7 @@ export const TrafficFilterInputNiche: React.FC<TrafficFilterInputNicheProps> = (
             style={{ width: fixedWidth ? `${fixedWidth}px` : 'auto', minWidth: '220px' }}
         >
             {/* Search Input Header */}
-            <div className="px-3 py-2 border-b border-[#2a2a2a] sticky top-0 bg-[#1F1F1F] z-10 flex items-center gap-2">
+            <div className="px-3 py-2 border-b border-border sticky top-0 bg-card-bg z-10 flex items-center gap-2">
                 <div className="relative flex-1">
                     <Search size={14} className="absolute left-2 top-1/2 -translate-y-1/2 text-text-tertiary" />
                     <input
@@ -213,13 +213,13 @@ export const TrafficFilterInputNiche: React.FC<TrafficFilterInputNicheProps> = (
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Search niches..."
-                        className="w-full bg-[#161616] border border-transparent focus:border-[#333333] rounded-md py-1.5 pl-8 pr-3 text-xs text-text-primary placeholder-text-tertiary outline-none transition-colors"
+                        className="w-full bg-menu-item-hover-bg border border-transparent focus:border-border rounded-md py-1.5 pl-8 pr-3 text-xs text-text-primary placeholder:text-text-tertiary outline-none transition-colors"
                         autoFocus
                     />
                 </div>
                 <button
                     onClick={handleSelectAll}
-                    className="p-1.5 text-text-tertiary hover:text-text-primary hover:bg-white/5 rounded transition-colors"
+                    className="p-1.5 text-text-tertiary hover:text-text-primary hover:bg-overlay/5 rounded transition-colors"
                     title="Select all visible"
                 >
                     <CheckCheck size={16} />
@@ -250,7 +250,7 @@ export const TrafficFilterInputNiche: React.FC<TrafficFilterInputNicheProps> = (
                             )
                         )}
 
-                        {filteredNiches.length > 0 && <div className="mx-2 my-1 h-px bg-white/5" />}
+                        {filteredNiches.length > 0 && <div className="mx-2 my-1 h-px bg-overlay/5" />}
                     </>
                 )}
 
@@ -266,7 +266,7 @@ export const TrafficFilterInputNiche: React.FC<TrafficFilterInputNicheProps> = (
                 )}
             </div>
 
-            <div className="p-2 border-t border-[#2a2a2a] flex justify-between items-center text-[10px] text-text-tertiary">
+            <div className="p-2 border-t border-border flex justify-between items-center text-[10px] text-text-tertiary">
                 <span>{selectedIds.length} selected</span>
                 {selectedIds.length > 0 && (
                     <button

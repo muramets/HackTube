@@ -26,7 +26,7 @@ export const TitleInputCard: React.FC<TitleInputCardProps> = ({
     return (
         <div
             className={`flex-1 relative bg-modal-surface border rounded-2xl p-4 pt-3
-                hover:border-[#AAAAAA] focus-within:border-[#AAAAAA] transition-colors overflow-hidden ${borderClassName}`}
+                hover:border-text-secondary focus-within:border-text-secondary transition-colors overflow-hidden ${borderClassName}`}
             style={compact ? undefined : { height: '148px' }}
         >
             <div className="flex items-center justify-between text-xs text-modal-text-secondary mb-2 whitespace-nowrap px-1">

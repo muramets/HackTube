@@ -19,7 +19,7 @@ const ColorSelect: React.FC<{ value: string; onChange: (color: string) => void }
             <button
                 ref={setAnchorEl}
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-5 h-5 rounded bg-[#2A2A2A] border border-transparent hover:border-white/20 flex items-center justify-center transition-colors"
+                className="w-5 h-5 rounded bg-surface-secondary border border-transparent hover:border-overlay/20 flex items-center justify-center transition-colors"
                 style={{ backgroundColor: value }}
             >
                 <div className="w-2 h-2 rounded-full" style={{ backgroundColor: value }} />
@@ -41,10 +41,10 @@ const ColorSelect: React.FC<{ value: string; onChange: (color: string) => void }
                                 onChange(color);
                                 setIsOpen(false);
                             }}
-                            className={`w-full h-6 flex items-center justify-center rounded hover:bg-white/10 transition-colors ${value === color ? 'bg-white/5' : ''}`}
+                            className={`w-full h-6 flex items-center justify-center rounded hover:bg-overlay/10 transition-colors ${value === color ? 'bg-overlay/5' : ''}`}
                         >
                             <div
-                                className={`w-3 h-3 rounded-full transition-transform ${value === color ? 'ring-1 ring-white scale-110' : ''}`}
+                                className={`w-3 h-3 rounded-full transition-transform ${value === color ? 'ring-1 ring-text-primary scale-110' : ''}`}
                                 style={{ backgroundColor: color }}
                             />
                         </button>
@@ -73,7 +73,7 @@ const OperatorSelect: React.FC<{ value: string; onChange: (op: CTRRule['operator
             <button
                 ref={setAnchorEl}
                 onClick={() => setIsOpen(!isOpen)}
-                className="h-7 px-2 bg-[#2A2A2A] text-white text-xs rounded flex items-center gap-1 hover:bg-[#333] transition-colors min-w-[40px] justify-center"
+                className="h-7 px-2 bg-surface-secondary text-text-primary text-xs rounded flex items-center gap-1 hover:bg-menu-item-active-bg transition-colors min-w-[40px] justify-center"
             >
                 {value === 'between' ? 'Between' : value}
             </button>
@@ -94,7 +94,7 @@ const OperatorSelect: React.FC<{ value: string; onChange: (op: CTRRule['operator
                                 onChange(opt.value);
                                 setIsOpen(false);
                             }}
-                            className={`w-full text-left px-2 py-1.5 text-xs text-text-primary hover:bg-white/10 rounded transition-colors ${value === opt.value ? 'bg-white/5' : ''}`}
+                            className={`w-full text-left px-2 py-1.5 text-xs text-text-primary hover:bg-overlay/10 rounded transition-colors ${value === opt.value ? 'bg-overlay/5' : ''}`}
                         >
                             {opt.label}
                         </button>
@@ -135,7 +135,7 @@ const SortableRuleItem: React.FC<SortableRuleItemProps> = ({ rule, onUpdate, onR
         <div
             ref={setNodeRef}
             style={style}
-            className={`flex items-center gap-2 px-2 py-1.5 bg-[#252525] rounded-lg group w-full overflow-hidden ${!isDragging ? 'transition-colors' : ''}`}
+            className={`flex items-center gap-2 px-2 py-1.5 bg-overlay/3 rounded-lg group w-full overflow-hidden ${!isDragging ? 'transition-colors' : ''}`}
         >
             {/* Drag Handle */}
             {showHandle && (
@@ -163,7 +163,7 @@ const SortableRuleItem: React.FC<SortableRuleItemProps> = ({ rule, onUpdate, onR
                                 const val = e.target.value.replace(/[^\d.]/g, '');
                                 onUpdate(rule.id, { value: Number(val) });
                             }}
-                            className="w-10 h-7 bg-transparent text-text-primary text-xs font-medium focus:bg-[#2A2A2A] rounded px-1 focus:outline-none text-center transition-colors"
+                            className="w-10 h-7 bg-transparent text-text-primary text-xs font-medium focus:bg-surface-secondary rounded px-1 focus:outline-none text-center transition-colors"
                         />
                         <span className="text-[10px] text-text-tertiary">-</span>
                         <input
@@ -173,7 +173,7 @@ const SortableRuleItem: React.FC<SortableRuleItemProps> = ({ rule, onUpdate, onR
                                 const val = e.target.value.replace(/[^\d.]/g, '');
                                 onUpdate(rule.id, { maxValue: Number(val) });
                             }}
-                            className="w-10 h-7 bg-transparent text-text-primary text-xs font-medium focus:bg-[#2A2A2A] rounded px-1 focus:outline-none text-center transition-colors"
+                            className="w-10 h-7 bg-transparent text-text-primary text-xs font-medium focus:bg-surface-secondary rounded px-1 focus:outline-none text-center transition-colors"
                         />
                     </div>
                 ) : (
@@ -185,7 +185,7 @@ const SortableRuleItem: React.FC<SortableRuleItemProps> = ({ rule, onUpdate, onR
                                 const val = e.target.value.replace(/[^\d.]/g, '');
                                 onUpdate(rule.id, { value: Number(val) });
                             }}
-                            className="w-10 h-7 bg-transparent text-text-primary text-xs font-medium focus:bg-[#2A2A2A] rounded px-1 focus:outline-none text-center transition-colors"
+                            className="w-10 h-7 bg-transparent text-text-primary text-xs font-medium focus:bg-surface-secondary rounded px-1 focus:outline-none text-center transition-colors"
                         />
                         <span className="ml-0.5 text-[10px] text-text-tertiary pointer-events-none">%</span>
                     </div>

@@ -28,7 +28,7 @@ export const TimelineRuler: React.FC<TimelineRulerProps> = ({
 
     return (
         <div
-            className="relative h-5 border-b border-white/[0.06] cursor-crosshair select-none"
+            className="relative h-5 border-b border-overlay/[0.06] cursor-crosshair select-none"
             onClick={onClick}
             onMouseDown={onMouseDown}
         >
@@ -40,8 +40,8 @@ export const TimelineRuler: React.FC<TimelineRulerProps> = ({
                 >
                     <div
                         className={`w-px ${tick.isMajor
-                            ? 'h-full bg-white/[0.10]'
-                            : 'h-2 bg-white/[0.05]'
+                            ? 'h-full bg-overlay/[0.10]'
+                            : 'h-2 bg-overlay/[0.05]'
                             }`}
                     />
                     {tick.label !== null && (

@@ -107,7 +107,7 @@ export const CategoryBar: React.FC = () => {
                     {activeFilters.map(filter => (
                         <div
                             key={filter.id}
-                            className="flex items-center gap-2 bg-[#F2F2F2]/10 hover:bg-[#F2F2F2]/20 border-none rounded-lg px-3 py-1.5 text-sm font-medium text-text-primary whitespace-nowrap animate-scale-in group transition-colors"
+                            className="flex items-center gap-2 bg-overlay/10 hover:bg-overlay/20 border-none rounded-lg px-3 py-1.5 text-sm font-medium text-text-primary whitespace-nowrap animate-scale-in group transition-colors"
                         >
                             <span>{filter.label}</span>
                             <button

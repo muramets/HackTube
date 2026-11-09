@@ -101,7 +101,7 @@ export const AddYouTubeVideoModal: React.FC<AddYouTubeVideoModalProps> = ({
                         <button
                             type="submit"
                             disabled={isLoading || !url.trim()}
-                            className={`px-4 py-2 rounded-lg font-medium text-black transition-colors border-none cursor-pointer ${isLoading || !url.trim() ? 'bg-gray-500 cursor-not-allowed' : 'bg-[#3ea6ff] hover:bg-[#3ea6ff]/90'}`}
+                            className={`px-4 py-2 rounded-lg font-medium text-black transition-colors border-none cursor-pointer ${isLoading || !url.trim() ? 'bg-gray-500 cursor-not-allowed' : 'bg-brand-blue hover:bg-brand-blue/90'}`}
                         >
                             {isLoading ? 'Adding...' : 'Add Video'}
                         </button>

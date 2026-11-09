@@ -118,7 +118,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video, playlistId, onMenuO
     : 'border-transparent';
 
   const hoverBgColor = viewMode === 'youtube'
-    ? 'bg-[#FF0033]/10 dark:bg-[#FF0033]/20'
+    ? 'bg-brand-red/10 dark:bg-brand-red/20'
     : (video.publishedVideoId ? 'bg-green-500/10 dark:bg-green-500/20' : (video.isCloned ? 'bg-indigo-500/10 dark:bg-indigo-500/20' : (video.isCustom ? 'bg-orange-500/10 dark:bg-orange-500/20' : 'bg-hover-bg')));
 
   const handleSwitchView = (e: React.MouseEvent) => {
@@ -516,7 +516,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video, playlistId, onMenuO
           {(displayVideo.duration || (video.notes && video.notes.length > 0) || (video.knowledgeItemCount && video.knowledgeItemCount > 0)) && (
             <div className="absolute bottom-1.5 right-1.5 flex items-center gap-1 z-10">
               {video.knowledgeItemCount && video.knowledgeItemCount > 0 && (
-                <div className="bg-black/60 px-1.5 py-0.5 rounded text-[10px] font-semibold text-white/70 flex items-center gap-1 transition-colors duration-150 hover:text-text-primary hover:bg-black/80">
+                <div className="bg-black/60 px-1.5 py-0.5 rounded text-[10px] font-semibold text-white/70 flex items-center gap-1 transition-colors duration-150 hover:text-white hover:bg-black/80">
                   <BookOpen size={10} />
                   {video.knowledgeItemCount}
                 </div>
@@ -524,7 +524,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video, playlistId, onMenuO
               {video.notes && video.notes.length > 0 && (() => {
                 const hasAiNotes = video.notes!.some(n => n.source === 'ai-chat');
                 return (
-                  <div className="bg-black/60 px-1.5 py-0.5 rounded text-[10px] font-semibold text-white/70 flex items-center gap-1 transition-colors duration-150 hover:text-text-primary hover:bg-black/80">
+                  <div className="bg-black/60 px-1.5 py-0.5 rounded text-[10px] font-semibold text-white/70 flex items-center gap-1 transition-colors duration-150 hover:text-white hover:bg-black/80">
                     {hasAiNotes ? <Sparkles size={10} /> : <MessageSquareText size={10} />}
                     {video.notes!.length}
                   </div>

@@ -110,7 +110,7 @@ export const InsightPopover: React.FC<InsightPopoverProps> = React.memo(({ categ
                     onMouseDown={(e) => e.preventDefault()}
                     className={`flex items-center justify-center w-[22px] h-[22px] rounded-md border-none transition-all duration-150 cursor-pointer ${pinned
                         ? 'hover:brightness-125'
-                        : 'hover:bg-white/10 text-white/40 hover:text-white/80'
+                        : 'hover:bg-overlay/10 text-text-primary/40 hover:text-text-primary/80'
                         }`}
                     style={{
                         background: pinned ? `${meta.color}22` : 'transparent',
@@ -140,8 +140,8 @@ export const InsightPopover: React.FC<InsightPopoverProps> = React.memo(({ categ
                     resize: 'none',
                     border: '1px solid var(--border)',
                     borderRadius: 6,
-                    background: 'rgba(255,255,255,0.05)',
-                    color: '#E2E8F0',
+                    background: 'color-mix(in srgb, var(--overlay) 5%, transparent)',
+                    color: 'var(--text-primary)',
                     fontSize: 12,
                     lineHeight: 1.5,
                     padding: '6px 8px',

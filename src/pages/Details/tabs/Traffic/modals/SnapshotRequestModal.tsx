@@ -77,7 +77,7 @@ export const SnapshotRequestModal: React.FC<SnapshotRequestModalProps> = ({
                     </div>
 
                     {/* Video Info */}
-                    <div className="px-4 py-3 bg-white/5 rounded-lg">
+                    <div className="px-4 py-3 bg-overlay/5 rounded-lg">
                         <p className="text-xs text-text-secondary mb-1">Video</p>
                         <p className="text-sm text-text-primary font-medium truncate">{videoTitle}</p>
                     </div>
@@ -104,14 +104,14 @@ export const SnapshotRequestModal: React.FC<SnapshotRequestModalProps> = ({
                     <button
                         onClick={onSkip}
                         disabled={isUploading}
-                        className="flex-1 px-4 py-2.5 rounded-lg text-sm font-medium bg-white/5 text-text-secondary hover:bg-white/10 hover:text-text-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex-1 px-4 py-2.5 rounded-lg text-sm font-medium bg-overlay/5 text-text-secondary hover:bg-overlay/10 hover:text-text-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         Skip & Restore Anyway
                     </button>
                     <button
                         onClick={onClose}
                         disabled={isUploading}
-                        className="px-4 py-2.5 rounded-lg text-sm font-medium bg-white/5 text-text-secondary hover:bg-white/10 hover:text-text-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-4 py-2.5 rounded-lg text-sm font-medium bg-overlay/5 text-text-secondary hover:bg-overlay/10 hover:text-text-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         Cancel
                     </button>

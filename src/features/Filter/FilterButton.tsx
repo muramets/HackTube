@@ -121,7 +121,7 @@ export const FilterButton: React.FC = () => {
             {isOpen && position && createPortal(
                 <div
                     ref={dropdownRef}
-                    className="fixed z-dropdown bg-[#1F1F1F] rounded-xl shadow-2xl overflow-hidden animate-scale-in flex flex-col"
+                    className="fixed z-dropdown bg-card-bg rounded-xl shadow-2xl overflow-hidden animate-scale-in flex flex-col"
                     style={{
                         top: position.top,
 
@@ -132,17 +132,17 @@ export const FilterButton: React.FC = () => {
                     {/* Header for Submenus */}
                     {/* Header for Submenus */}
                     {activeView !== 'main' && (
-                        <div className="flex items-center justify-between px-2 py-2 border-b border-[#333333]">
+                        <div className="flex items-center justify-between px-2 py-2 border-b border-border">
                             <button
                                 onClick={() => setActiveView('main')}
-                                className="p-2 hover:bg-[#333333] rounded-full text-text-secondary hover:text-text-primary transition-colors"
+                                className="p-2 hover:bg-menu-item-active-bg rounded-full text-text-secondary hover:text-text-primary transition-colors"
                             >
                                 <ChevronLeft size={20} />
                             </button>
                             <span className="text-sm font-bold text-text-primary">{getTitleForView(activeView)}</span>
                             <button
                                 onClick={() => setIsOpen(false)}
-                                className="p-2 hover:bg-[#333333] rounded-full text-text-secondary hover:text-text-primary transition-colors"
+                                className="p-2 hover:bg-menu-item-active-bg rounded-full text-text-secondary hover:text-text-primary transition-colors"
                             >
                                 <X size={20} />
                             </button>
@@ -157,7 +157,7 @@ export const FilterButton: React.FC = () => {
                                     <button
                                         key={type}
                                         onClick={() => setActiveView(type)}
-                                        className="w-full text-left px-4 py-3 text-sm font-medium flex items-center justify-between gap-8 transition-colors border-none cursor-pointer text-text-primary hover:bg-[#161616] bg-transparent"
+                                        className="w-full text-left px-4 py-3 text-sm font-medium flex items-center justify-between gap-8 transition-colors border-none cursor-pointer text-text-primary hover:bg-menu-item-hover-bg bg-transparent"
                                     >
                                         <div className="flex items-center gap-3">
                                             <Icon size={18} className="text-text-secondary" />
