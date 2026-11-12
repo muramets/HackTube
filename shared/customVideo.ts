@@ -118,6 +118,59 @@ export function prependUniqueId(ids: readonly string[], id: string): string[] {
     return [id, ...ids.filter(existing => existing !== id)];
 }
 
+/** Append an id to the end of an ordered id list; an id already present keeps its position. */
+export function appendUniqueId(ids: readonly string[], id: string): string[] {
+    return ids.includes(id) ? [...ids] : [...ids, id];
+}
+
+// ── Playlist membership ──────────────────────────────────────────────────────
+
+export interface PlaylistMembershipInput {
+    /** Playlist ids the video is in right now. */
+    currentPlaylistIds: readonly string[];
+    requestedAddIds: readonly string[];
+    requestedRemoveIds: readonly string[];
+    /** Playlist-only videos are hidden from Home — removing the last playlist makes them invisible. */
+    isPlaylistOnly: boolean;
+}
+
+export interface PlaylistMembershipPlan {
+    toAdd: string[];
+    toRemove: string[];
+    /** Requested additions the video is already in (no-op). */
+    alreadyIn: string[];
+    /** Requested removals the video is not in (no-op). */
+    notIn: string[];
+    finalPlaylistIds: string[];
+}
+
+/** Which playlists to write to, and the membership after the change. Throws on contradictory or orphaning requests. */
+export function planPlaylistMembership(input: PlaylistMembershipInput): PlaylistMembershipPlan {
+    const addIds = [...new Set(input.requestedAddIds)];
+    const removeIds = [...new Set(input.requestedRemoveIds)];
+    const conflicting = addIds.filter(id => removeIds.includes(id));
+    if (conflicting.length > 0) {
+        throw new Error(`Playlist ${conflicting.join(', ')} is both added and removed`);
+    }
+
+    const current = new Set(input.currentPlaylistIds);
+    const toAdd = addIds.filter(id => !current.has(id));
+    const toRemove = removeIds.filter(id => current.has(id));
+    const finalPlaylistIds = [...input.currentPlaylistIds.filter(id => !toRemove.includes(id)), ...toAdd];
+
+    if (input.isPlaylistOnly && finalPlaylistIds.length === 0 && toRemove.length > 0) {
+        throw new Error('This video is hidden from Home (playlist only) — removing its last playlist would make it invisible. '
+            + 'Add it to another playlist in the same command, or show it on Home in the app first.');
+    }
+    return {
+        toAdd,
+        toRemove,
+        alreadyIn: addIds.filter(id => current.has(id)),
+        notIn: removeIds.filter(id => !current.has(id)),
+        finalPlaylistIds,
+    };
+}
+
 // ── Packaging versions ───────────────────────────────────────────────────────
 
 function buildConfigurationSnapshot(content: PackagingContent): DocData {

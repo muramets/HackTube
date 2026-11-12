@@ -20,6 +20,8 @@
 - ✅ Создание видео: обложка, название, описание (в т.ч. из файла), теги; сразу в плейлист и/или как v.1.
 - ✅ Обновление видео: меняются только переданные поля; сохраняется черновиком или новой версией —
   ровно как кнопки «Save draft» / «Save as new version» на вкладке Packaging.
+- ✅ Плейлисты у существующего видео: добавить в один или несколько, убрать, перенести одной командой.
+  Работает и для YouTube-видео (их упаковку CLI не трогает). Новые видео встают в конец плейлиста.
 - ✅ Удаление видео — так же полно, как в приложении: файлы, история, трафик, Home, плейлисты.
 - ✅ Большие обложки уменьшаются автоматически (до 1280px, ≤ 2 MB), оригинал не трогается.
 - ✅ Список каналов и плейлистов по названиям; канал можно не указывать — он находится по плейлисту или видео.
@@ -61,6 +63,8 @@
 - [x] Список каналов и плейлистов; канал определяется по плейлисту или видео.
 - [x] Правила периодов активности версий вынесены в общий модуль (одни для UI и CLI).
 - [x] Удаление видео с предпросмотром того, что будет удалено.
+- [x] Управление плейлистами: добавить/убрать/перенести; добавленное видео встаёт в конец.
+  Защита: видео «только в плейлисте» нельзя убрать из последнего плейлиста — оно бы пропало из интерфейса.
 
 ### Stage 3 — Следующие шаги ← YOU ARE HERE
 
@@ -81,14 +85,16 @@
 - **Режимы и флаги** (полный список — `--help`):
   - `--list [--channel <name|id>]` — каналы и их плейлисты с ID и количеством видео.
   - создание: `--title` + (`--channel` и/или `--playlist`), опционально `--description | --description-file`,
-    `--tags "a,b,c"`, `--thumbnail`, `--playlist-only`, `--save-version`.
-  - обновление: `--video <id>` + любые из полей выше (кроме `--playlist-only`). Только custom-видео.
+    `--tags "a,b,c"`, `--thumbnail`, `--playlist-only`, `--save-version`. `--playlist` можно повторять.
+  - обновление: `--video <id>` + любые из полей выше (кроме `--playlist-only`) + `--remove-playlist` (повторяемый).
+    Поля упаковки — только custom-видео; плейлисты — любое видео.
   - удаление: `--delete --video <id>` (несовместимо с флагами полей). Любое видео, не только custom.
   - `--user <uid>` — определяется автоматически, если в проекте один пользователь.
 - **Чистые функции** (компилируются в `functions/lib/shared/`, CLI импортирует оттуда — single source of truth):
   - `shared/customVideo.ts` — `buildCustomVideoDoc` (создание), `buildCustomVideoUpdate` (обновление),
     `resolveNextVersionNumber`, `needsThumbnailDownscale`, `assertThumbnailWithinLimit`,
-    `resolveThumbnailContentType`, `buildCoverStoragePath`, `parseTagList`, `prependUniqueId`.
+    `resolveThumbnailContentType`, `buildCoverStoragePath`, `parseTagList`, `prependUniqueId` (Home),
+    `appendUniqueId` (плейлист), `planPlaylistMembership` (что добавить/убрать + защита от «невидимого» видео).
   - `shared/packagingPeriods.ts` — `ensureActivePeriods`, `closeAllPeriods`, `addNewActivePeriod`.
     `VersionService` (вкладка Packaging) делегирует сюда.
   - Тесты: `shared/__tests__/customVideo.test.ts`, `shared/__tests__/packagingPeriods.test.ts`.
@@ -102,7 +108,7 @@
     с открытым периодом и снимком итоговых полей (+ A/B, localizations), `activeVersion: N`, `currentPackagingVersion: N+1`.
   - обложка: текущая уходит в `coverHistory` под своим `customImageVersion`, новая получает max+1.
   - `packagingRevision` +1 — открытая вкладка Packaging ловит `VERSION_MISMATCH` вместо тихой перезаписи.
-  - Если переданы только `--playlist` — документ видео не трогается.
+  - Если меняются только плейлисты — документ видео не трогается.
   - Для опубликованных видео предупреждение: Packaging tab попросил бы Suggested Traffic CSV для закрытия
     прошлой версии (`closingSnapshotId`), CLI закрывает без снимка.
 - **Удаление** — порядок как в `VideoService.deleteVideo`: файлы Storage под `videos/{videoId}/` →
@@ -110,7 +116,9 @@
   id из `videoIds` всех плейлистов канала (+ `updatedAt`). Dry-run показывает количество файлов, подколлекции и плейлисты.
 - **Обложка:** путь `users/{uid}/channels/{channelId}/videos/{videoId}/{timestamp}_{fileName}`.
   Если шире 1280px или > 2 MB — копия через macOS `sips` (JPEG, качество 85) во временную папку.
-- **Плейлист:** id в начало `videoIds` + `updatedAt`, в транзакции (как `PlaylistService.addVideosToPlaylist`).
+- **Плейлисты:** текущие находятся через `array-contains` по `videoIds`. Добавление — id в **конец** `videoIds`
+  (уже присутствующий id остаётся на месте), удаление — фильтр; + `updatedAt`, каждый плейлист в своей транзакции
+  (`updateIdListInDoc`). Отличие от UI: `PlaylistService.addVideosToPlaylist` ставит видео в начало.
 - **Порядок записи:** обложка → видео → Home → плейлист. При сбое после записи видео — видео уже есть,
   CLI печатает пройденные шаги, остальное доделывается в UI.
 

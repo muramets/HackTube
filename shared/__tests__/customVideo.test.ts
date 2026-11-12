@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
+    appendUniqueId,
     assertThumbnailWithinLimit,
     buildCoverStoragePath,
     buildCustomVideoDoc,
@@ -7,6 +8,7 @@ import {
     buildCustomVideoUpdate,
     needsThumbnailDownscale,
     parseTagList,
+    planPlaylistMembership,
     prependUniqueId,
     resolveNextVersionNumber,
     resolveThumbnailContentType,
@@ -312,5 +314,59 @@ describe('prependUniqueId', () => {
 
     it('moves an existing id to the front instead of duplicating it', () => {
         expect(prependUniqueId(['a', 'c', 'b'], 'c')).toEqual(['c', 'a', 'b']);
+    });
+});
+
+describe('appendUniqueId', () => {
+    it('puts the id last', () => {
+        expect(appendUniqueId(['a', 'b'], 'c')).toEqual(['a', 'b', 'c']);
+    });
+
+    it('keeps an existing id where it is', () => {
+        expect(appendUniqueId(['a', 'c', 'b'], 'c')).toEqual(['a', 'c', 'b']);
+    });
+
+    it('does not mutate the input', () => {
+        const ids = ['a'];
+        appendUniqueId(ids, 'b');
+        expect(ids).toEqual(['a']);
+    });
+});
+
+describe('planPlaylistMembership', () => {
+    const plan = (overrides: Partial<Parameters<typeof planPlaylistMembership>[0]> = {}) => planPlaylistMembership({
+        currentPlaylistIds: ['p1'],
+        requestedAddIds: [],
+        requestedRemoveIds: [],
+        isPlaylistOnly: false,
+        ...overrides,
+    });
+
+    it('adds and removes in one go', () => {
+        expect(plan({ requestedAddIds: ['p2'], requestedRemoveIds: ['p1'] })).toEqual({
+            toAdd: ['p2'], toRemove: ['p1'], alreadyIn: [], notIn: [], finalPlaylistIds: ['p2'],
+        });
+    });
+
+    it('skips additions the video is already in and removals it is not in', () => {
+        const result = plan({ requestedAddIds: ['p1', 'p2', 'p2'], requestedRemoveIds: ['p9'] });
+        expect(result).toMatchObject({ toAdd: ['p2'], toRemove: [], alreadyIn: ['p1'], notIn: ['p9'] });
+        expect(result.finalPlaylistIds).toEqual(['p1', 'p2']);
+    });
+
+    it('rejects a playlist that is both added and removed', () => {
+        expect(() => plan({ requestedAddIds: ['p2'], requestedRemoveIds: ['p2'] })).toThrow(/both added and removed/);
+    });
+
+    it('refuses to remove the last playlist of a playlist-only video', () => {
+        expect(() => plan({ isPlaylistOnly: true, requestedRemoveIds: ['p1'] })).toThrow(/invisible/);
+    });
+
+    it('allows moving a playlist-only video to another playlist', () => {
+        expect(plan({ isPlaylistOnly: true, requestedAddIds: ['p2'], requestedRemoveIds: ['p1'] }).finalPlaylistIds).toEqual(['p2']);
+    });
+
+    it('lets a Home video leave all playlists', () => {
+        expect(plan({ requestedRemoveIds: ['p1'] }).finalPlaylistIds).toEqual([]);
     });
 });

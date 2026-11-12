@@ -8,6 +8,8 @@
 //                          optionally into a playlist and saved as v.1.
 //   --video <id>           Update an existing custom video: only the passed
 //                          fields change; saved as draft or as a new version.
+//                          Playlists can be added (--playlist) and removed
+//                          (--remove-playlist); added videos go last.
 //   --delete --video <id>  Delete a video the way the app does (Storage files,
 //                          subcollections, Home order, playlist references).
 // Nothing is uploaded to YouTube.
@@ -58,7 +60,9 @@ Fields:
 Where:
   --channel <name|id>          Internal channel (exact name, case-insensitive, or id).
                                Optional when --playlist or --video identifies the channel.
-  --playlist <name|id>         Put the video first in this playlist
+  --playlist <name|id>         Add the video to the end of this playlist (repeat for several playlists).
+                               A video already in the playlist keeps its position.
+  --remove-playlist <name|id>  Remove the video from this playlist (update mode, repeatable)
   --playlist-only              Create the video only in the playlist, not on Home (create mode, needs --playlist)
   --user <uid>                 Owner uid (auto-detected when the project has one user)
 
@@ -85,7 +89,8 @@ function readCliOptions() {
             'description-file': { type: 'string' },
             tags: { type: 'string' },
             thumbnail: { type: 'string' },
-            playlist: { type: 'string' },
+            playlist: { type: 'string', multiple: true },
+            'remove-playlist': { type: 'string', multiple: true },
             'playlist-only': { type: 'boolean', default: false },
             'save-version': { type: 'boolean', default: false },
             execute: { type: 'boolean', default: false },
@@ -96,7 +101,8 @@ function readCliOptions() {
     return values;
 }
 
-const FIELD_FLAGS = ['title', 'description', 'description-file', 'tags', 'thumbnail', 'playlist', 'playlist-only', 'save-version'];
+const FIELD_FLAGS = ['title', 'description', 'description-file', 'tags', 'thumbnail', 'playlist', 'remove-playlist',
+    'playlist-only', 'save-version'];
 
 function validateDeleteOptions(options) {
     if (!options.video) throw new Error('--delete requires --video <id>');
@@ -114,6 +120,7 @@ function validateOptions(options) {
     }
     if (options['playlist-only'] && isUpdate) throw new Error('--playlist-only is only available when creating a video');
     if (options['playlist-only'] && !options.playlist) throw new Error('--playlist-only requires --playlist');
+    if (options['remove-playlist'] && !isUpdate) throw new Error('--remove-playlist is only available with --video');
     if (!isUpdate && !options.channel && !options.playlist) {
         throw new Error('Pass --channel or --playlist so the video knows where to go (see --list)');
     }
@@ -226,7 +233,7 @@ async function resolveChannel(db, userId, options) {
     if (options.channel) return findByIdOrName(db, channelsPath, options.channel, 'channel');
     const channels = (await db.collection(channelsPath).get()).docs;
     if (options.video) return findChannelByVideo(channels, options.video);
-    return findChannelByPlaylist(db, channels, options.playlist);
+    return findChannelByPlaylist(db, channels, options.playlist[0]);
 }
 
 // ── List mode ────────────────────────────────────────────────────────────────
@@ -260,15 +267,21 @@ async function uploadCover({ bucket, getDownloadURL, builder }, cover, userId, c
     return { url: await getDownloadURL(file), fileName: cover.fileName };
 }
 
-/** Prepend an id to an array field inside a transaction (no lost concurrent updates). */
-async function prependIdInDoc(db, docPath, field, id, prependUniqueId, extraFields = {}) {
-    const ref = db.doc(docPath);
+/**
+ * Rewrite an id-list field (Home order, playlist videoIds) inside a transaction, so a concurrent
+ * edit in the app is not lost. Skips the write when the list does not change.
+ */
+async function updateIdListInDoc(db, ref, field, transformIds, extraFields = {}) {
     await db.runTransaction(async (tx) => {
         const snap = await tx.get(ref);
         const current = snap.exists && Array.isArray(snap.data()[field]) ? snap.data()[field] : [];
-        tx.set(ref, { [field]: prependUniqueId(current, id), ...extraFields }, { merge: true });
+        const next = transformIds(current);
+        if (next.length === current.length && next.every((id, i) => id === current[i])) return;
+        tx.set(ref, { [field]: next, ...extraFields }, { merge: true });
     });
 }
+
+const withoutId = (id) => (ids) => ids.filter((existing) => existing !== id);
 
 async function createVideo(ctx, plan) {
     const { db, builder } = ctx;
@@ -294,7 +307,8 @@ async function createVideo(ctx, plan) {
     console.log(`Created video ${videoId}`);
 
     if (!options['playlist-only']) {
-        await prependIdInDoc(db, `${channelPath}/settings/videoOrder`, 'order', videoId, builder.prependUniqueId);
+        await updateIdListInDoc(db, db.doc(`${channelPath}/settings/videoOrder`), 'order',
+            (ids) => builder.prependUniqueId(ids, videoId));
         console.log('Placed first on Home');
     }
     return videoId;
@@ -326,8 +340,7 @@ async function updateVideo(ctx, plan) {
 /** Create, update, or (playlist-only change of an existing video) leave the video doc untouched. */
 async function applyVideoWrite(ctx, plan) {
     if (!plan.existing) return createVideo(ctx, plan);
-    const touchesVideo = Object.keys(plan.changes).length > 0 || plan.cover || plan.options['save-version'];
-    if (!touchesVideo) return plan.options.video;
+    if (!touchesVideoDoc(plan.changes, plan.options)) return plan.options.video;
     return updateVideo(ctx, plan);
 }
 
@@ -365,16 +378,6 @@ function printDeletePlan(plan, execute) {
     console.log(`Playlists:      ${playlists.length ? playlists.map(formatEntry).join(', ') : '(none)'}\n`);
 }
 
-/** Remove an id from an array field inside a transaction. */
-async function removeIdFromDoc(db, ref, field, id, extraFields = {}) {
-    await db.runTransaction(async (tx) => {
-        const snap = await tx.get(ref);
-        const current = snap.exists && Array.isArray(snap.data()[field]) ? snap.data()[field] : [];
-        if (!current.includes(id)) return;
-        tx.update(ref, { [field]: current.filter((existing) => existing !== id), ...extraFields });
-    });
-}
-
 /** Same order as VideoService.deleteVideo: files → docs → Home order → playlists. */
 async function deleteVideo({ db }, plan) {
     const { channel, videoId, videoRef, storageFiles, playlists, isOnHome } = plan;
@@ -383,11 +386,11 @@ async function deleteVideo({ db }, plan) {
     console.log(`Deleted video ${videoId} (${storageFiles.length} storage files)`);
 
     if (isOnHome) {
-        await removeIdFromDoc(db, channel.ref.collection('settings').doc('videoOrder'), 'order', videoId);
+        await updateIdListInDoc(db, channel.ref.collection('settings').doc('videoOrder'), 'order', withoutId(videoId));
         console.log('Removed from Home');
     }
     for (const playlist of playlists) {
-        await removeIdFromDoc(db, playlist.ref, 'videoIds', videoId, { updatedAt: Date.now() });
+        await updateIdListInDoc(db, playlist.ref, 'videoIds', withoutId(videoId), { updatedAt: Date.now() });
         console.log(`Removed from playlist "${docName(playlist)}"`);
     }
 }
@@ -419,10 +422,25 @@ function describeField(value, fallback) {
     return value === undefined ? fallback : value;
 }
 
+function describePlaylists({ playlistsById, membership }) {
+    const names = (ids) => ids.map((id) => formatEntry(playlistsById.get(id))).join(', ');
+    const lines = [`after: ${membership.finalPlaylistIds.length ? names(membership.finalPlaylistIds) : '(none)'}`];
+    if (membership.toAdd.length) lines.push(`+ add (last): ${names(membership.toAdd)}`);
+    if (membership.toRemove.length) lines.push(`- remove:     ${names(membership.toRemove)}`);
+    if (membership.alreadyIn.length) lines.push(`= already in, position kept: ${names(membership.alreadyIn)}`);
+    if (membership.notIn.length) lines.push(`= not in, nothing to remove: ${names(membership.notIn)}`);
+    return lines.join('\n              ');
+}
+
+function describePackaging({ existing, changes, options }) {
+    if (existing && !touchesVideoDoc(changes, options)) return '(unchanged — only playlists change)';
+    return options['save-version'] ? 'saved as a new version' : 'draft';
+}
+
 function printPlan(plan) {
-    const { options, userId, channel, playlist, cover, changes, existing } = plan;
+    const { options, userId, channel, cover, changes, existing } = plan;
     const unchanged = '(unchanged)';
-    console.log(`=== ${existing ? `Update Custom Video ${options.video}` : 'Create Custom Video'} ===`);
+    console.log(`=== ${existing ? `Update Video ${options.video}` : 'Create Custom Video'} ===`);
     console.log(`Mode:         ${options.execute ? 'EXECUTE' : 'DRY-RUN (nothing is written)'}`);
     console.log(`User:         ${userId}`);
     console.log(`Channel:      ${formatEntry(channel)}`);
@@ -431,9 +449,9 @@ function printPlan(plan) {
     console.log(`Description:  ${changes.description === undefined ? unchanged : `${changes.description.length} chars`}`);
     console.log(`Tags:         ${changes.tags === undefined ? unchanged : changes.tags.join(', ') || '(none)'}`);
     console.log(`Cover:        ${describeCover(cover)}`);
-    console.log(`Playlist:     ${playlist ? formatEntry(playlist) : '(none)'}`);
+    console.log(`Playlists:    ${describePlaylists(plan)}`);
     if (!existing) console.log(`Home:         ${options['playlist-only'] ? 'hidden (playlist only)' : 'first on Home'}`);
-    console.log(`Packaging:    ${options['save-version'] ? 'saved as a new version' : 'draft'}\n`);
+    console.log(`Packaging:    ${describePackaging(plan)}\n`);
     if (existing?.publishedVideoId && options['save-version']) {
         console.log('Note: this video is published. The Packaging tab would ask for a Suggested Traffic CSV');
         console.log('      to close the previous version; the CLI closes it without that snapshot.\n');
@@ -457,28 +475,74 @@ function initFirebase() {
     return { db: admin.firestore(), bucket: admin.storage().bucket(), getDownloadURL };
 }
 
-async function loadExistingVideo(db, userId, channel, videoId) {
+/** Packaging fields are editable on custom videos only; playlist membership works for any video. */
+async function loadExistingVideo(db, userId, channel, videoId, touchesVideoDoc) {
     if (!videoId) return null;
     const snap = await db.doc(`users/${userId}/channels/${channel.id}/videos/${videoId}`).get();
     if (!snap.exists) throw new Error(`Video ${videoId} not found in channel ${formatEntry(channel)}`);
-    if (!snap.data().isCustom) throw new Error(`Video ${videoId} is a YouTube video — only custom videos can be edited`);
+    if (touchesVideoDoc && !snap.data().isCustom) {
+        throw new Error(`Video ${videoId} is a YouTube video — only its playlists can be changed, not its packaging`);
+    }
     return snap.data();
+}
+
+function touchesVideoDoc(changes, options) {
+    return Object.keys(changes).length > 0 || Boolean(options.thumbnail) || options['save-version'];
 }
 
 async function buildPlan(ctx, options) {
     const { db, builder } = ctx;
     const changes = readFieldChanges(options, builder.parseTagList);
-    if (options.video && Object.keys(changes).length === 0 && !options.thumbnail && !options.playlist && !options['save-version']) {
-        throw new Error('Nothing to update — pass at least one of --title, --description, --tags, --thumbnail, --playlist, --save-version');
+    const touchesPlaylists = options.playlist || options['remove-playlist'];
+    if (options.video && !touchesVideoDoc(changes, options) && !touchesPlaylists) {
+        throw new Error('Nothing to update — pass at least one of --title, --description, --tags, --thumbnail, '
+            + '--playlist, --remove-playlist, --save-version');
     }
     const cover = prepareCover(options.thumbnail, builder);
     const userId = await resolveUserId(db, options.user);
     const channel = await resolveChannel(db, userId, options);
-    const playlist = options.playlist
-        ? await findByIdOrName(db, `${channel.ref.path}/playlists`, options.playlist, 'playlist')
-        : null;
-    const existing = await loadExistingVideo(db, userId, channel, options.video);
-    return { options, userId, channel, playlist, cover, changes, existing };
+    const existing = await loadExistingVideo(db, userId, channel, options.video, touchesVideoDoc(changes, options));
+    const playlistPlan = await buildPlaylistPlan(ctx, channel, options, existing);
+    return { options, userId, channel, cover, changes, existing, ...playlistPlan };
+}
+
+async function resolvePlaylists(db, channel, queries = []) {
+    const playlistsPath = `${channel.ref.path}/playlists`;
+    const playlists = [];
+    for (const query of queries) playlists.push(await findByIdOrName(db, playlistsPath, query, 'playlist'));
+    return playlists;
+}
+
+/** Resolve --playlist / --remove-playlist names and compute the membership change. */
+async function buildPlaylistPlan({ db, builder }, channel, options, existing) {
+    const toAddSnaps = await resolvePlaylists(db, channel, options.playlist);
+    const toRemoveSnaps = await resolvePlaylists(db, channel, options['remove-playlist']);
+    const currentSnaps = existing
+        ? (await channel.ref.collection('playlists').where('videoIds', 'array-contains', options.video).get()).docs
+        : [];
+    const playlistsById = new Map([...currentSnaps, ...toAddSnaps, ...toRemoveSnaps].map((snap) => [snap.id, snap]));
+    const membership = builder.planPlaylistMembership({
+        currentPlaylistIds: currentSnaps.map((snap) => snap.id),
+        requestedAddIds: toAddSnaps.map((snap) => snap.id),
+        requestedRemoveIds: toRemoveSnaps.map((snap) => snap.id),
+        isPlaylistOnly: Boolean(existing?.isPlaylistOnly),
+    });
+    return { playlistsById, membership };
+}
+
+/** New playlists get the video at the end; removals drop it. Each playlist in its own transaction. */
+async function applyPlaylistChanges({ db, builder }, plan, videoId) {
+    const { playlistsById, membership } = plan;
+    for (const playlistId of membership.toAdd) {
+        const playlist = playlistsById.get(playlistId);
+        await updateIdListInDoc(db, playlist.ref, 'videoIds', (ids) => builder.appendUniqueId(ids, videoId), { updatedAt: Date.now() });
+        console.log(`Added to the end of playlist "${docName(playlist)}"`);
+    }
+    for (const playlistId of membership.toRemove) {
+        const playlist = playlistsById.get(playlistId);
+        await updateIdListInDoc(db, playlist.ref, 'videoIds', withoutId(videoId), { updatedAt: Date.now() });
+        console.log(`Removed from playlist "${docName(playlist)}"`);
+    }
 }
 
 async function main() {
@@ -508,11 +572,7 @@ async function main() {
     }
 
     const videoId = await applyVideoWrite(ctx, plan);
-    if (plan.playlist) {
-        await prependIdInDoc(ctx.db, `${plan.channel.ref.path}/playlists/${plan.playlist.id}`, 'videoIds', videoId,
-            builder.prependUniqueId, { updatedAt: Date.now() });
-        console.log(`Added to playlist "${docName(plan.playlist)}"`);
-    }
+    await applyPlaylistChanges(ctx, plan, videoId);
     console.log(`\nDone. Video id: ${videoId}`);
 }
 
