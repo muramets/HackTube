@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { SubnicheService } from '../../../core/services/subnicheService';
-import { resolveReferences } from '../../../core/utils/subnicheUtils';
+import { resolveReferences } from '../../../../shared/subniche';
 import type { ResolvedSubnicheReference, Subniche } from '../../../core/types/subniche';
 
 /** View counts change at most once per Trends sync — no need to refetch more often. */

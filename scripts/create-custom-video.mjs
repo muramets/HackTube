@@ -12,6 +12,8 @@
 //                          (--remove-playlist); added videos go last.
 //   --delete --video <id>  Delete a video the way the app does (Storage files,
 //                          subcollections, Home order, playlist references).
+//   --show --subniche <n>  Read-only: a subniche's references ranked by current
+//                          Trends views + my videos assigned to it.
 // Nothing is uploaded to YouTube.
 //
 // Usage:
@@ -40,6 +42,7 @@ const STORAGE_BUCKET = 'mytube-46104.firebasestorage.app';
 const COVER_CACHE_CONTROL = 'public,max-age=31536000';
 const DOWNSCALE_JPEG_QUALITY = '85';
 const SHARED_BUILDER_PATH = new URL('../functions/lib/shared/customVideo.js', import.meta.url).pathname;
+const SHARED_SUBNICHE_PATH = new URL('../functions/lib/shared/subniche.js', import.meta.url).pathname;
 
 const HELP = `
 Prepare custom videos for publishing (nothing is uploaded to YouTube).
@@ -49,6 +52,7 @@ Modes:
   (default)                    Create a new video
   --video <id>                 Update an existing custom video (only passed fields change)
   --delete --video <id>        Delete a video with its files, history and playlist references
+  --show --subniche <name|id>  Read-only: references ranked by current views + my videos in the subniche
 
 Fields:
   --title <text>               Title (required when creating)
@@ -85,6 +89,7 @@ function readCliOptions() {
         options: {
             list: { type: 'boolean', default: false },
             delete: { type: 'boolean', default: false },
+            show: { type: 'boolean', default: false },
             video: { type: 'string' },
             user: { type: 'string' },
             channel: { type: 'string' },
@@ -213,19 +218,18 @@ async function resolveUserId(db, userOption) {
     throw new Error(`Several users found — pass --user <uid>. Available:\n${available}`);
 }
 
-/** Find which channel holds a playlist (by id or name) when --channel is omitted. */
-async function findChannelByPlaylist(db, channels, playlistQuery) {
-    const wanted = playlistQuery.trim().toLowerCase();
+/** Find which channel holds a playlist / subniche (by id or name) when --channel is omitted. */
+async function findChannelByChildDoc(channels, collectionName, query, kind) {
+    const wanted = query.trim().toLowerCase();
     const hits = [];
     for (const channel of channels) {
-        const playlists = await channel.ref.collection('playlists').get();
-        const playlist = playlists.docs.find((p) => p.id === playlistQuery || docName(p).trim().toLowerCase() === wanted);
-        if (playlist) hits.push({ channel, playlist });
+        const children = await channel.ref.collection(collectionName).get();
+        if (children.docs.some((d) => d.id === query || docName(d).trim().toLowerCase() === wanted)) hits.push(channel);
     }
-    if (hits.length === 1) return hits[0].channel;
-    if (hits.length === 0) throw new Error(`Playlist "${playlistQuery}" not found in any channel (see --list)`);
-    const where = hits.map((h) => `  - ${formatEntry(h.channel)}`).join('\n');
-    throw new Error(`Playlist "${playlistQuery}" exists in several channels — add --channel. Found in:\n${where}`);
+    if (hits.length === 1) return hits[0];
+    if (hits.length === 0) throw new Error(`${kind} "${query}" not found in any channel (see --list)`);
+    const where = hits.map((channel) => `  - ${formatEntry(channel)}`).join('\n');
+    throw new Error(`${kind} "${query}" exists in several channels — add --channel. Found in:\n${where}`);
 }
 
 async function findChannelByVideo(channels, videoId) {
@@ -241,7 +245,8 @@ async function resolveChannel(db, userId, options) {
     if (options.channel) return findByIdOrName(db, channelsPath, options.channel, 'channel');
     const channels = (await db.collection(channelsPath).get()).docs;
     if (options.video) return findChannelByVideo(channels, options.video);
-    return findChannelByPlaylist(db, channels, options.playlist[0]);
+    if (options.playlist) return findChannelByChildDoc(channels, 'playlists', options.playlist[0], 'Playlist');
+    return findChannelByChildDoc(channels, 'subniches', options.subniche, 'Subniche');
 }
 
 // ── List mode ────────────────────────────────────────────────────────────────
@@ -436,6 +441,67 @@ async function runDelete(ctx, options) {
     console.log('\nDone.');
 }
 
+// ── Show subniche (read-only) ────────────────────────────────────────────────
+
+/** --show only reads: anything beyond these flags would suggest a write the mode won't do. */
+const SHOW_FLAGS = new Set(['show', 'subniche', 'channel', 'user']);
+
+function validateShowOptions(options) {
+    if (!options.subniche) throw new Error('--show requires --subniche <name|id> (see --list)');
+    const conflicting = Object.entries(options)
+        .filter(([flag, value]) => !SHOW_FLAGS.has(flag) && value !== undefined && value !== false)
+        .map(([flag]) => `--${flag}`);
+    if (conflicting.length > 0) throw new Error(`--show is read-only and cannot be combined with ${conflicting.join(', ')}`);
+}
+
+function formatCount(count) {
+    if (count >= 1_000_000) return `${(count / 1_000_000).toFixed(1)}M`;
+    if (count >= 1_000) return `${(count / 1_000).toFixed(1)}K`;
+    return String(count);
+}
+
+/** Live Trends docs of the references, keyed by video id (missing ones fall back to the snapshot). */
+async function fetchLiveReferenceVideos(channel, references) {
+    const snaps = await Promise.all(references.map((r) =>
+        channel.ref.collection('trendChannels').doc(r.trendChannelId).collection('videos').doc(r.videoId).get()));
+    return new Map(snaps.filter((snap) => snap.exists).map((snap) => [snap.id, snap.data()]));
+}
+
+function describePackagingState(video) {
+    if (!video.isCustom) return 'YouTube video';
+    return video.isDraft ? 'draft' : `v.${video.activeVersion}`;
+}
+
+async function runShowSubniche({ db, subnicheLib }, options) {
+    validateShowOptions(options);
+    const userId = await resolveUserId(db, options.user);
+    const channel = await resolveChannel(db, userId, options);
+    const subniche = await findByIdOrName(db, `${channel.ref.path}/subniches`, options.subniche, 'subniche');
+    const references = subniche.data().references ?? [];
+    const ranked = subnicheLib.pickTopReferences(
+        subnicheLib.resolveReferences(references, await fetchLiveReferenceVideos(channel, references)));
+
+    console.log(`=== Subniche ${formatEntry(subniche)} — channel ${formatEntry(channel)} ===\n`);
+    console.log(`References (${ranked.length}, by current views; top ${subnicheLib.TOP_REFERENCE_COUNT} are pinned in playlists):`);
+    if (ranked.length === 0) console.log('  (none — add them in Trends: select videos → "Use as subniche visual reference")');
+    ranked.forEach((ref, i) => {
+        const source = ref.isLive ? '' : '  (snapshot — no longer in Trends)';
+        console.log(`  ${i + 1}. ${formatCount(ref.viewCount).padStart(6)}  "${ref.title}" — ${ref.channelTitle || '(unknown channel)'}${source}`);
+        console.log(`             https://www.youtube.com/watch?v=${ref.videoId}`);
+        console.log(`             cover: ${ref.thumbnail}`);
+    });
+
+    const videos = (await channel.ref.collection('videos').where('subnicheId', '==', subniche.id).get()).docs;
+    const playlists = (await channel.ref.collection('playlists').get()).docs;
+    console.log(`\nMy videos (${videos.length}):`);
+    if (videos.length === 0) console.log('  (none — assign with --video <id> --subniche, or in Details)');
+    for (const video of videos) {
+        const inPlaylists = playlists.filter((p) => (p.data().videoIds ?? []).includes(video.id)).map((p) => `"${docName(p)}"`);
+        console.log(`  - ${video.id}  "${video.data().title ?? '(no title)'}"  ${describePackagingState(video.data())}`);
+        console.log(`      playlists: ${inPlaylists.join(', ') || '(none)'}`);
+    }
+}
+
 // ── Plan output ──────────────────────────────────────────────────────────────
 
 function describeCover(cover) {
@@ -495,11 +561,11 @@ function printPlan(plan) {
 
 // ── Main ─────────────────────────────────────────────────────────────────────
 
-async function loadSharedBuilder() {
-    if (!existsSync(SHARED_BUILDER_PATH)) {
-        throw new Error('Compiled builder not found. Run: cd functions && npm run build');
+async function loadSharedModule(path) {
+    if (!existsSync(path)) {
+        throw new Error('Compiled shared code not found. Run: cd functions && npm run build');
     }
-    return import(pathToFileURL(resolve(SHARED_BUILDER_PATH)).href);
+    return import(pathToFileURL(resolve(path)).href);
 }
 
 function initFirebase() {
@@ -604,8 +670,9 @@ async function main() {
         console.log(HELP);
         return;
     }
-    const builder = await loadSharedBuilder();
-    const ctx = { ...initFirebase(), builder };
+    const builder = await loadSharedModule(SHARED_BUILDER_PATH);
+    const subnicheLib = await loadSharedModule(SHARED_SUBNICHE_PATH);
+    const ctx = { ...initFirebase(), builder, subnicheLib };
 
     if (options.list) {
         await printChannelsWithPlaylists(ctx.db, await resolveUserId(ctx.db, options.user), options.channel);
@@ -613,6 +680,10 @@ async function main() {
     }
     if (options.delete) {
         await runDelete(ctx, options);
+        return;
+    }
+    if (options.show) {
+        await runShowSubniche(ctx, options);
         return;
     }
 

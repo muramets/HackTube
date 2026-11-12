@@ -3,7 +3,7 @@ import { db } from '../../config/firebase';
 import { subscribeToCollection, setDocument, updateDocument, fetchCollection, fetchDoc } from './firestore';
 import type { TrendVideo } from '../types/trends';
 import type { Subniche, SubnicheReference } from '../types/subniche';
-import { mergeReferences } from '../utils/subnicheUtils';
+import { mergeReferences } from '../../../shared/subniche';
 
 const SUBNICHE_ID_PREFIX = 'subniche-';
 

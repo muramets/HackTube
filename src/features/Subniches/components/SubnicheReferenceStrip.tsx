@@ -4,7 +4,7 @@ import { useAuth } from '../../../core/hooks/useAuth';
 import { useChannelStore } from '../../../core/stores/channelStore';
 import { useSettings } from '../../../core/hooks/useSettings';
 import { useVideoPlayer } from '../../../core/hooks/useVideoPlayer';
-import { pickTopReferences } from '../../../core/utils/subnicheUtils';
+import { pickTopReferences, TOP_REFERENCE_COUNT } from '../../../../shared/subniche';
 import { formatViewCount } from '../../../core/utils/formatUtils';
 import type { ResolvedSubnicheReference, Subniche } from '../../../core/types/subniche';
 import { GRID_LAYOUT } from '../../Video/layout';
@@ -43,7 +43,7 @@ export const SubnicheReferenceStrip: React.FC<SubnicheReferenceStripProps> = ({ 
     const { currentChannel } = useChannelStore();
     const { generalSettings } = useSettings();
     const resolved = useResolvedReferences(user?.uid || '', currentChannel?.id || '', subniche);
-    const topReferences = useMemo(() => pickTopReferences(resolved), [resolved]);
+    const topReferences = useMemo(() => pickTopReferences(resolved, TOP_REFERENCE_COUNT), [resolved]);
 
     return (
         <div

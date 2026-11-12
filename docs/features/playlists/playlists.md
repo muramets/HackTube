@@ -13,7 +13,7 @@
 - Auto-switch: при drag в sorted-режиме автоматически переключается в manual с нормализацией порядка
 - Cross-playlist video selection (выделение видео через несколько плейлистов)
 - Collapsed groups persistence (localStorage)
-- Сортировка **By subniche**: топ-3 референса подниши сверху + только мои видео подниши → [Subniches](../video-management/subniches.md)
+- Фильтр **Subniche**: только мои видео подниши + топ-3 референса подниши сверху → [Subniches](../video-management/subniches.md)
 - Выцветание видео внутри плейлиста (Deprioritize) + скрытие выцветших → [Deprioritized Videos](./deprioritized-videos.md)
 - DnD рефакторинг завершён: `useReducer`, stable callbacks, throttling, crash fix (React #185)
 

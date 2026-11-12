@@ -1,8 +1,7 @@
 import { create } from 'zustand';
-import type { SubnicheSortKey } from '../utils/subnicheUtils';
 
 export type FilterOperator = 'contains' | 'equals' | 'gt' | 'lt' | 'gte' | 'lte' | 'between';
-export type FilterType = 'channel' | 'playlist' | 'title' | 'duration' | 'date' | 'views' | 'videoType';
+export type FilterType = 'channel' | 'playlist' | 'subniche' | 'title' | 'duration' | 'date' | 'views' | 'videoType';
 
 export type FilterValue = string | number | [number, number] | string[];
 
@@ -21,11 +20,10 @@ export interface ChannelMusicFilters {
     bpmFilter: [number, number] | null;
 }
 
-/** Sort of videos inside a playlist: built-ins, a saved ranking (`ranking-…`) or "only this subniche" (`subniche:…`). */
+/** Sort of videos inside a playlist: built-ins or a saved ranking (`ranking-…`). */
 export type PlaylistVideoSortBy =
     | 'default' | 'views' | 'date' | 'delta24h' | 'delta7d' | 'delta30d'
-    | `ranking-${string}`
-    | SubnicheSortKey;
+    | `ranking-${string}`;
 
 // Per-page saved filter/sort/channel state
 export interface PageFilterState {

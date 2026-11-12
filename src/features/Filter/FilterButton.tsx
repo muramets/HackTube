@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Filter, ChevronRight, X, Calendar, Clock, Eye, Type, List, MonitorPlay, ChevronLeft } from 'lucide-react';
+import { Filter, ChevronRight, X, Calendar, Clock, Eye, Type, List, MonitorPlay, ChevronLeft, Layers } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { useFilterStore, type FilterType, type FilterOperator } from '../../core/stores/filterStore';
 import { FilterInputTitle } from './FilterInputs/FilterInputTitle';
@@ -8,6 +8,7 @@ import { FilterInputDate } from './FilterInputs/FilterInputDate';
 import { FilterInputList } from './FilterInputs/FilterInputList';
 import { useVideos } from '../../core/hooks/useVideos';
 import { usePlaylists } from '../../core/hooks/usePlaylists';
+import { useSubniches } from '../../core/hooks/useSubniches';
 import { useAuth } from '../../core/hooks/useAuth';
 import { useChannelStore } from '../../core/stores/channelStore';
 
@@ -27,6 +28,7 @@ export const FilterButton: React.FC = () => {
     // Data hooks for lists
     const { videos } = useVideos(user?.uid || '', currentChannel?.id || '');
     const { playlists } = usePlaylists(user?.uid || '', currentChannel?.id || '');
+    const { subniches } = useSubniches(user?.uid || '', currentChannel?.id || '');
 
     // Prepare list options
     const channelOptions = Array.from(new Set(videos.map(v => v.channelTitle))).map(name => ({
@@ -38,6 +40,12 @@ export const FilterButton: React.FC = () => {
         id: p.id,
         label: p.name,
         description: `${p.videoIds.length} videos`
+    }));
+
+    const subnicheOptions = subniches.map(s => ({
+        id: s.id,
+        label: s.name,
+        description: `${s.references.length} references`
     }));
 
 
@@ -92,6 +100,7 @@ export const FilterButton: React.FC = () => {
     const filterTypes: { type: FilterType; label: string; icon: React.ElementType }[] = [
         { type: 'channel', label: 'Channel', icon: MonitorPlay },
         { type: 'playlist', label: 'Playlist', icon: List },
+        { type: 'subniche', label: 'Subniche', icon: Layers },
         { type: 'title', label: 'Title', icon: Type },
         { type: 'duration', label: 'Duration', icon: Clock },
         { type: 'date', label: 'Publish Date', icon: Calendar },
@@ -219,6 +228,16 @@ export const FilterButton: React.FC = () => {
                                         onApply={(ids) => {
                                             const names = ids.map(id => playlists.find(p => p.id === id)?.name || id);
                                             handleAddFilter('playlist', 'equals', ids, `Playlist: ${ids.length > 1 ? `${ids.length} Selected` : names[0]}`);
+                                        }}
+                                    />
+                                )}
+                                {activeView === 'subniche' && (
+                                    <FilterInputList
+                                        options={subnicheOptions}
+                                        placeholder="Search subniches"
+                                        onApply={(ids) => {
+                                            const names = ids.map(id => subniches.find(s => s.id === id)?.name || id);
+                                            handleAddFilter('subniche', 'equals', ids, `Subniche: ${ids.length > 1 ? `${ids.length} Selected` : names[0]}`);
                                         }}
                                     />
                                 )}

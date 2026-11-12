@@ -240,6 +240,11 @@ export const VideoGrid: React.FC<VideoGridProps> = ({
             });
           }
 
+          case 'subniche': {
+            const subnicheIds = Array.isArray(filter.value) ? filter.value.map(String) : [String(filter.value)];
+            return !!video.subnicheId && subnicheIds.includes(video.subnicheId);
+          }
+
           case 'videoType': {
             const types = Array.isArray(filter.value) ? filter.value : [filter.value];
             return types.some(type => {
