@@ -10,6 +10,7 @@ import { useUIStore } from '../../../core/stores/uiStore';
 import { VideoService } from '../../../core/services/videoService';
 import { NicheSelector } from './components/NicheSelector';
 import { PlaylistSelector } from './components/PlaylistSelector';
+import { SubnicheReferenceSelector } from './components/SubnicheReferenceSelector';
 import { trendVideoToVideoDetails, trendVideoToVideoCardContext } from '../../../core/utils/videoAdapters';
 import { useCanvasStore } from '../../../core/stores/canvas/canvasStore';
 import { ConfirmationModal } from '../../../components/ui/organisms/ConfirmationModal';
@@ -40,7 +41,7 @@ export const TrendsFloatingBar: React.FC<TrendsFloatingBarProps> = ({
     const { videos: homeVideos } = useVideos(user?.uid || '', currentChannel?.id || '');
 
     // State to coordinate which menu is open (mutually exclusive)
-    const [activeMenu, setActiveMenu] = useState<'niche' | 'playlist' | 'canvas' | null>(null);
+    const [activeMenu, setActiveMenu] = useState<'niche' | 'playlist' | 'subniche' | 'canvas' | null>(null);
     const [isProcessing, setIsProcessing] = useState(false);
 
     // Trash / Restore State
@@ -325,6 +326,13 @@ export const TrendsFloatingBar: React.FC<TrendsFloatingBarProps> = ({
                             isOpen={activeMenu === 'playlist'}
                             openAbove={openAbove}
                             onToggle={() => setActiveMenu(activeMenu === 'playlist' ? null : 'playlist')}
+                        />
+
+                        <SubnicheReferenceSelector
+                            videos={videos}
+                            isOpen={activeMenu === 'subniche'}
+                            openAbove={openAbove}
+                            onToggle={() => setActiveMenu(activeMenu === 'subniche' ? null : 'subniche')}
                         />
 
                         {/* Add to Canvas */}

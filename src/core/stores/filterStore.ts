@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import type { SubnicheSortKey } from '../utils/subnicheUtils';
 
 export type FilterOperator = 'contains' | 'equals' | 'gt' | 'lt' | 'gte' | 'lte' | 'between';
 export type FilterType = 'channel' | 'playlist' | 'title' | 'duration' | 'date' | 'views' | 'videoType';
@@ -20,6 +21,12 @@ export interface ChannelMusicFilters {
     bpmFilter: [number, number] | null;
 }
 
+/** Sort of videos inside a playlist: built-ins, a saved ranking (`ranking-…`) or "only this subniche" (`subniche:…`). */
+export type PlaylistVideoSortBy =
+    | 'default' | 'views' | 'date' | 'delta24h' | 'delta7d' | 'delta30d'
+    | `ranking-${string}`
+    | SubnicheSortKey;
+
 // Per-page saved filter/sort/channel state
 export interface PageFilterState {
     selectedChannel: string | null;
@@ -33,7 +40,7 @@ interface FilterState {
     searchQuery: string;
     selectedChannel: string | null; // Legacy simple filter (can be kept for backward compat or migrated)
     homeSortBy: 'default' | 'views' | 'date' | 'recently_added';
-    playlistVideoSortBy: 'default' | 'views' | 'date' | 'delta24h' | 'delta7d' | 'delta30d'; // Persistent sort for videos INSIDE a playlist
+    playlistVideoSortBy: PlaylistVideoSortBy; // Persistent sort for videos INSIDE a playlist
     playlistsSortBy: 'default' | 'views' | 'updated' | 'created'; // Persistent sort for the LIST of playlists
     musicSortBy: string; // 'default' or 'tag:CategoryName' — library-level sort
     musicSortAsc: boolean; // library-level sort direction
@@ -64,7 +71,7 @@ interface FilterState {
     setSearchQuery: (query: string) => void;
     setSelectedChannel: (channel: string | null) => void;
     setHomeSortBy: (sort: 'default' | 'views' | 'date' | 'recently_added') => void;
-    setPlaylistVideoSortBy: (sort: 'default' | 'views' | 'date' | 'delta24h' | 'delta7d' | 'delta30d') => void;
+    setPlaylistVideoSortBy: (sort: PlaylistVideoSortBy) => void;
     setPlaylistsSortBy: (sort: 'default' | 'views' | 'updated' | 'created') => void;
     setMusicSortBy: (sort: string) => void;
     setMusicSortAsc: (asc: boolean) => void;

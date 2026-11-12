@@ -220,6 +220,8 @@ export interface CustomVideoInput {
     isPlaylistOnly: boolean;
     /** true → packaging saved as v.1 immediately; false → video stays a draft. */
     saveAsVersion: boolean;
+    /** Visual subniche id (users/{uid}/channels/{ch}/subniches/{id}); not part of packaging versions. */
+    subnicheId?: string;
     /** Injected clock (ms) — keeps the builder deterministic and testable. */
     now: number;
 }
@@ -272,6 +274,7 @@ export function buildCustomVideoDoc(input: CustomVideoInput): DocData {
         abTestResults: { titles: [], thumbnails: [] },
         ...packaging,
         ...(input.isPlaylistOnly ? { isPlaylistOnly: true } : { addedToHomeAt: input.now }),
+        ...(input.subnicheId ? { subnicheId: input.subnicheId } : {}),
     };
 }
 

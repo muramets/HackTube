@@ -317,6 +317,16 @@ describe('prependUniqueId', () => {
     });
 });
 
+describe('buildCustomVideoDoc subniche', () => {
+    it('stores the subniche when given', () => {
+        expect(buildCustomVideoDoc(baseInput({ subnicheId: 'subniche-1' })).subnicheId).toBe('subniche-1');
+    });
+
+    it('omits the field otherwise (Firestore rejects undefined)', () => {
+        expect('subnicheId' in buildCustomVideoDoc(baseInput())).toBe(false);
+    });
+});
+
 describe('appendUniqueId', () => {
     it('puts the id last', () => {
         expect(appendUniqueId(['a', 'b'], 'c')).toEqual(['a', 'b', 'c']);

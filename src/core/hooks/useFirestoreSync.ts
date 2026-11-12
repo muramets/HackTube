@@ -11,6 +11,7 @@ import { useAuth } from './useAuth';
 import { useChannelStore } from '../stores/channelStore';
 import { VideoService } from '../services/videoService';
 import { PlaylistService } from '../services/playlistService';
+import { SubnicheService } from '../services/subnicheService';
 import { KnowledgeService } from '../services/knowledge/knowledgeService';
 import { SettingsService, type GeneralSettings } from '../services/settingsService';
 import { terminatingVideoIds } from './useVideos';
@@ -38,6 +39,15 @@ export const useFirestoreSync = () => {
         if (!userId || !channelId) return;
         const unsub = PlaylistService.subscribeToPlaylists(userId, channelId, (data) => {
             queryClient.setQueryData(['playlists', userId, channelId], data);
+        });
+        return () => unsub();
+    }, [userId, channelId, queryClient]);
+
+    // --- Subniches ---
+    useEffect(() => {
+        if (!userId || !channelId) return;
+        const unsub = SubnicheService.subscribeToSubniches(userId, channelId, (data) => {
+            queryClient.setQueryData(['subniches', userId, channelId], data);
         });
         return () => unsub();
     }, [userId, channelId, queryClient]);

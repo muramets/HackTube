@@ -5,11 +5,14 @@ import { useVideos } from '../../core/hooks/useVideos';
 import { usePlaylists } from '../../core/hooks/usePlaylists';
 import { useAuth } from '../../core/hooks/useAuth';
 import { useChannelStore } from '../../core/stores/channelStore';
-import { ArrowLeft, PlaySquare, Trophy, Trash2, Check, Eye, EyeOff, X, Hourglass } from 'lucide-react';
+import { ArrowLeft, PlaySquare, Trophy, Trash2, Check, Eye, EyeOff, X, Hourglass, Layers } from 'lucide-react';
 import { VideoGrid } from '../../features/Video/VideoGrid';
 import { ZoomControls } from '../../features/Video/ZoomControls';
 import { PlaylistExportControls } from '../../features/Playlists/components/PlaylistExportControls';
-import { useFilterStore } from '../../core/stores/filterStore';
+import { useFilterStore, type PlaylistVideoSortBy } from '../../core/stores/filterStore';
+import { useSubniches } from '../../core/hooks/useSubniches';
+import { parseSubnicheSortKey, toSubnicheSortKey } from '../../core/utils/subnicheUtils';
+import { SubnicheReferenceStrip } from '../../features/Subniches/components/SubnicheReferenceStrip';
 import { SortButton } from '../../features/Filter/SortButton';
 import { FilterButton } from '../../features/Filter/FilterButton';
 import { usePlaylistDeltaStats, type PlaylistDeltaStats } from '../../features/Playlists/hooks/usePlaylistDeltaStats';
@@ -90,6 +93,25 @@ export const PlaylistDetailPage: React.FC = () => {
     const { pickerSettings } = useSettings();
 
     const playlist = playlists.find(p => p.id === id);
+    const { subniches, isLoading: isSubnichesLoading } = useSubniches(user?.uid || '', currentChannel?.id || '');
+    const activeSubnicheId = parseSubnicheSortKey(playlistVideoSortBy);
+    const activeSubniche = activeSubnicheId ? subniches.find(s => s.id === activeSubnicheId) : undefined;
+
+    // Subniches that have at least one of this playlist's videos, with how many
+    const playlistSubnicheCounts = useMemo(() => {
+        const counts = new Map<string, number>();
+        const playlistVideoIds = new Set(playlist?.videoIds ?? []);
+        for (const video of videos) {
+            if (video.subnicheId && playlistVideoIds.has(video.id)) counts.set(video.subnicheId, (counts.get(video.subnicheId) ?? 0) + 1);
+        }
+        return counts;
+    }, [videos, playlist?.videoIds]);
+    const playlistSubniches = useMemo(() => subniches.filter(s => playlistSubnicheCounts.has(s.id)), [subniches, playlistSubnicheCounts]);
+
+    // A remembered subniche sort whose subniche was deleted falls back to manual order
+    React.useEffect(() => {
+        if (activeSubnicheId && !isSubnichesLoading && !activeSubniche) setPlaylistVideoSortBy('default');
+    }, [activeSubnicheId, activeSubniche, isSubnichesLoading, setPlaylistVideoSortBy]);
     const deprioritizedIds = useMemo(() => new Set(playlist?.deprioritizedVideoIds ?? []), [playlist?.deprioritizedVideoIds]);
 
     // Pick the Winner
@@ -133,7 +155,8 @@ export const PlaylistDetailPage: React.FC = () => {
         if (picker.isActive) {
             picker.deactivate();
         }
-        setPlaylistVideoSortBy(val as 'views' | 'date' | 'delta24h' | 'delta7d' | 'delta30d' | 'default');
+        // SortButton emits plain strings; every option it renders is a PlaylistVideoSortBy value
+        setPlaylistVideoSortBy(val as PlaylistVideoSortBy);
     }, [picker, setPlaylistVideoSortBy]);
 
     // Save ranking handler
@@ -154,6 +177,32 @@ export const PlaylistDetailPage: React.FC = () => {
                     Pick the Winner
                 </button>
             </div>
+            {playlistSubniches.length > 0 && (
+                <div className="border-t border-border mt-1 pt-1">
+                    <div className="px-3 py-1.5 text-xs font-bold text-text-tertiary uppercase tracking-wider">
+                        By Subniche
+                    </div>
+                    {playlistSubniches.map(subniche => {
+                        const sortKey = toSubnicheSortKey(subniche.id);
+                        const isActive = playlistVideoSortBy === sortKey;
+                        return (
+                            <button
+                                key={subniche.id}
+                                onClick={() => handleSortChange(sortKey)}
+                                className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors border-none cursor-pointer ${isActive
+                                    ? 'bg-menu-item-active-bg text-text-primary'
+                                    : 'text-text-secondary hover:bg-menu-item-hover-bg hover:text-text-primary bg-transparent'
+                                    }`}
+                            >
+                                <Layers size={14} className="flex-shrink-0" />
+                                <span className="truncate flex-1">{subniche.name}</span>
+                                <span className="text-xs text-text-tertiary flex-shrink-0">{playlistSubnicheCounts.get(subniche.id)}</span>
+                                {isActive && <Check size={14} className="flex-shrink-0" />}
+                            </button>
+                        );
+                    })}
+                </div>
+            )}
             {rankings.length > 0 && (
                 <div className="border-t border-border mt-1 pt-1">
                     <div className="px-3 py-1.5 text-xs font-bold text-text-tertiary uppercase tracking-wider">
@@ -193,7 +242,7 @@ export const PlaylistDetailPage: React.FC = () => {
                 </div>
             )}
         </>
-    ), [picker.isActive, rankings, playlistVideoSortBy, handleSortChange, deleteRanking, setPlaylistVideoSortBy]);
+    ), [picker.isActive, rankings, playlistVideoSortBy, handleSortChange, deleteRanking, setPlaylistVideoSortBy, playlistSubniches, playlistSubnicheCounts]);
 
     // Local state for optimistic video order (prevents jitter on Firestore sync)
     const [localVideoOrder, setLocalVideoOrder] = React.useState<string[]>([]);
@@ -293,11 +342,17 @@ export const PlaylistDetailPage: React.FC = () => {
         return rankedPlaylistVideos.slice(0, pickerSettings.winnerCount);
     }, [rankedPlaylistVideos, hideLosers, isViewingRanking, pickerSettings.winnerCount]);
 
+    // Subniche sort: only my videos of that subniche, in manual order
+    const subnichePlaylistVideos = useMemo(() => {
+        if (!activeSubnicheId) return filteredPlaylistVideos;
+        return filteredPlaylistVideos.filter(v => v.subnicheId === activeSubnicheId);
+    }, [filteredPlaylistVideos, activeSubnicheId]);
+
     // Apply "Hide deprioritized" toggle — the videos stay in the playlist, just out of view
     const playlistVideos = useMemo(() => {
-        if (!hideDeprioritized) return filteredPlaylistVideos;
-        return filteredPlaylistVideos.filter(v => !deprioritizedIds.has(v.id));
-    }, [filteredPlaylistVideos, hideDeprioritized, deprioritizedIds]);
+        if (!hideDeprioritized) return subnichePlaylistVideos;
+        return subnichePlaylistVideos.filter(v => !deprioritizedIds.has(v.id));
+    }, [subnichePlaylistVideos, hideDeprioritized, deprioritizedIds]);
 
     const deprioritizedCount = countDeprioritizedInPlaylist(localVideoOrder, deprioritizedIds);
 
@@ -488,8 +543,9 @@ export const PlaylistDetailPage: React.FC = () => {
 
         if (oldIndex === -1 || newIndex === -1 || !user || !currentChannel || !playlist) return;
 
-        // If we are in a Sorted View (not 'default'), we need to capturing current order -> switch to default
-        if (playlistVideoSortBy !== 'default') {
+        // If we are in a Sorted View (not 'default'), we need to capturing current order -> switch to default.
+        // The subniche view keeps manual order, so dragging there stays in the subniche view.
+        if (playlistVideoSortBy !== 'default' && !activeSubnicheId) {
             // calculated new order based on VISIBLE list
             const newOrder = [...currentVisibleOrder];
             const [movedItem] = newOrder.splice(oldIndex, 1);
@@ -690,6 +746,8 @@ export const PlaylistDetailPage: React.FC = () => {
                         )}
                     </div>
                 )}
+
+                {activeSubniche && <SubnicheReferenceStrip subniche={activeSubniche} />}
 
                 {/* Reusable Video Grid */}
                 <VideoGrid

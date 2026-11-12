@@ -66,6 +66,10 @@ Where:
   --playlist-only              Create the video only in the playlist, not on Home (create mode, needs --playlist)
   --user <uid>                 Owner uid (auto-detected when the project has one user)
 
+Subniche (visual formula, see --list; not part of packaging versions):
+  --subniche <name|id>         Assign the video to this subniche (works for YouTube videos too)
+  --clear-subniche             Remove the video's subniche (update mode)
+
 Packaging:
   --save-version               Save as a packaging version (v.1 on create, next version on update).
                                Without it the video is saved as a draft.
@@ -91,6 +95,8 @@ function readCliOptions() {
             thumbnail: { type: 'string' },
             playlist: { type: 'string', multiple: true },
             'remove-playlist': { type: 'string', multiple: true },
+            subniche: { type: 'string' },
+            'clear-subniche': { type: 'boolean', default: false },
             'playlist-only': { type: 'boolean', default: false },
             'save-version': { type: 'boolean', default: false },
             execute: { type: 'boolean', default: false },
@@ -102,7 +108,7 @@ function readCliOptions() {
 }
 
 const FIELD_FLAGS = ['title', 'description', 'description-file', 'tags', 'thumbnail', 'playlist', 'remove-playlist',
-    'playlist-only', 'save-version'];
+    'playlist-only', 'save-version', 'subniche', 'clear-subniche'];
 
 function validateDeleteOptions(options) {
     if (!options.video) throw new Error('--delete requires --video <id>');
@@ -121,6 +127,8 @@ function validateOptions(options) {
     if (options['playlist-only'] && isUpdate) throw new Error('--playlist-only is only available when creating a video');
     if (options['playlist-only'] && !options.playlist) throw new Error('--playlist-only requires --playlist');
     if (options['remove-playlist'] && !isUpdate) throw new Error('--remove-playlist is only available with --video');
+    if (options.subniche && options['clear-subniche']) throw new Error('Use either --subniche or --clear-subniche, not both');
+    if (options['clear-subniche'] && !isUpdate) throw new Error('--clear-subniche is only available with --video');
     if (!isUpdate && !options.channel && !options.playlist) {
         throw new Error('Pass --channel or --playlist so the video knows where to go (see --list)');
     }
@@ -191,7 +199,7 @@ async function findByIdOrName(db, collectionPath, query, kind) {
     const matches = all.docs.filter((d) => docName(d).trim().toLowerCase() === wanted);
     if (matches.length === 1) return matches[0];
 
-    const available = all.docs.map((d) => `  - ${formatEntry(d)}`).join('\n');
+    const available = all.docs.map((d) => `  - ${formatEntry(d)}`).join('\n') || '  (none)';
     const reason = matches.length > 1 ? `Several ${kind}s are named "${query}"` : `${kind} "${query}" not found`;
     throw new Error(`${reason}. Pass the id instead. Available ${kind}s:\n${available}`);
 }
@@ -253,6 +261,11 @@ async function printChannelsWithPlaylists(db, userId, channelFilter) {
             const count = Array.isArray(playlist.data().videoIds) ? playlist.data().videoIds.length : 0;
             console.log(`  - ${formatEntry(playlist)}  ${count} videos`);
         }
+        const subniches = await channel.ref.collection('subniches').get();
+        for (const subniche of subniches.docs) {
+            const references = Array.isArray(subniche.data().references) ? subniche.data().references.length : 0;
+            console.log(`  ◆ subniche ${formatEntry(subniche)}  ${references} references`);
+        }
     }
 }
 
@@ -300,7 +313,7 @@ async function removeVideoFromPlaylistDoc(db, playlistRef, videoId) {
 
 async function createVideo(ctx, plan) {
     const { db, builder } = ctx;
-    const { userId, channel, playlist, cover, changes, options } = plan;
+    const { userId, channel, cover, changes, options } = plan;
     const channelPath = `users/${userId}/channels/${channel.id}`;
     const now = Date.now();
     const videoId = builder.buildCustomVideoId(now);
@@ -316,6 +329,7 @@ async function createVideo(ctx, plan) {
         cover: uploadedCover,
         isPlaylistOnly: options['playlist-only'],
         saveAsVersion: options['save-version'],
+        subnicheId: plan.subnicheChange?.id,
         now,
     });
     await db.doc(`${channelPath}/videos/${videoId}`).create(videoDoc);
@@ -447,8 +461,13 @@ function describePlaylists({ playlistsById, membership }) {
     return lines.join('\n              ');
 }
 
+function describeSubniche({ subnicheChange }) {
+    if (subnicheChange === undefined) return '(unchanged / none)';
+    return subnicheChange === null ? 'cleared' : `"${subnicheChange.name}"  [${subnicheChange.id}]`;
+}
+
 function describePackaging({ existing, changes, options }) {
-    if (existing && !touchesVideoDoc(changes, options)) return '(unchanged — only playlists change)';
+    if (existing && !touchesVideoDoc(changes, options)) return '(unchanged — only playlists / subniche change)';
     return options['save-version'] ? 'saved as a new version' : 'draft';
 }
 
@@ -465,6 +484,7 @@ function printPlan(plan) {
     console.log(`Tags:         ${changes.tags === undefined ? unchanged : changes.tags.join(', ') || '(none)'}`);
     console.log(`Cover:        ${describeCover(cover)}`);
     console.log(`Playlists:    ${describePlaylists(plan)}`);
+    console.log(`Subniche:     ${describeSubniche(plan)}`);
     if (!existing) console.log(`Home:         ${options['playlist-only'] ? 'hidden (playlist only)' : 'first on Home'}`);
     console.log(`Packaging:    ${describePackaging(plan)}\n`);
     if (existing?.publishedVideoId && options['save-version']) {
@@ -486,8 +506,9 @@ function initFirebase() {
     const require = createRequire(new URL('../functions/package.json', import.meta.url).pathname);
     const admin = require('firebase-admin');
     const { getDownloadURL } = require('firebase-admin/storage');
+    const { FieldValue } = require('firebase-admin/firestore');
     admin.initializeApp({ projectId: PROJECT_ID, storageBucket: STORAGE_BUCKET });
-    return { db: admin.firestore(), bucket: admin.storage().bucket(), getDownloadURL };
+    return { db: admin.firestore(), bucket: admin.storage().bucket(), getDownloadURL, FieldValue };
 }
 
 /** Packaging fields are editable on custom videos only; playlist membership works for any video. */
@@ -508,17 +529,34 @@ function touchesVideoDoc(changes, options) {
 async function buildPlan(ctx, options) {
     const { db, builder } = ctx;
     const changes = readFieldChanges(options, builder.parseTagList);
-    const touchesPlaylists = options.playlist || options['remove-playlist'];
-    if (options.video && !touchesVideoDoc(changes, options) && !touchesPlaylists) {
+    const touchesMembership = options.playlist || options['remove-playlist'] || options.subniche || options['clear-subniche'];
+    if (options.video && !touchesVideoDoc(changes, options) && !touchesMembership) {
         throw new Error('Nothing to update — pass at least one of --title, --description, --tags, --thumbnail, '
-            + '--playlist, --remove-playlist, --save-version');
+            + '--playlist, --remove-playlist, --subniche, --clear-subniche, --save-version');
     }
     const cover = prepareCover(options.thumbnail, builder);
     const userId = await resolveUserId(db, options.user);
     const channel = await resolveChannel(db, userId, options);
     const existing = await loadExistingVideo(db, userId, channel, options.video, touchesVideoDoc(changes, options));
     const playlistPlan = await buildPlaylistPlan(ctx, channel, options, existing);
-    return { options, userId, channel, cover, changes, existing, ...playlistPlan };
+    const subnicheChange = await resolveSubnicheChange(db, channel, options);
+    return { options, userId, channel, cover, changes, existing, subnicheChange, ...playlistPlan };
+}
+
+/** undefined = leave as is, null = clear, { id, name } = assign. */
+async function resolveSubnicheChange(db, channel, options) {
+    if (options['clear-subniche']) return null;
+    if (!options.subniche) return undefined;
+    const subniche = await findByIdOrName(db, `${channel.ref.path}/subniches`, options.subniche, 'subniche');
+    return { id: subniche.id, name: docName(subniche) };
+}
+
+/** Subniche lives outside packaging versions — a plain field write on an existing video. */
+async function applySubnicheChange({ db, FieldValue }, plan, videoId) {
+    if (!plan.existing || plan.subnicheChange === undefined) return;
+    const videoRef = db.doc(`users/${plan.userId}/channels/${plan.channel.id}/videos/${videoId}`);
+    await videoRef.update({ subnicheId: plan.subnicheChange ? plan.subnicheChange.id : FieldValue.delete() });
+    console.log(plan.subnicheChange ? `Subniche set to "${plan.subnicheChange.name}"` : 'Subniche cleared');
 }
 
 async function resolvePlaylists(db, channel, queries = []) {
@@ -587,6 +625,7 @@ async function main() {
     }
 
     const videoId = await applyVideoWrite(ctx, plan);
+    await applySubnicheChange(ctx, plan, videoId);
     await applyPlaylistChanges(ctx, plan, videoId);
     console.log(`\nDone. Video id: ${videoId}`);
 }

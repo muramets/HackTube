@@ -6,6 +6,7 @@ import { type TrafficSnapshot, type TrafficGroup, type TrafficSource } from '../
 import type { TrafficSourceSnapshot } from '../../../core/types/suggestedTraffic/trafficSource';
 import type { GallerySource } from '../../../core/types/gallery';
 import { SidebarVideoPreview } from './SidebarVideoPreview';
+import { SubnicheField } from '../../../features/Subniches/components/SubnicheField';
 import { SidebarNavItem } from './SidebarNavItem';
 import { PackagingNav } from './Packaging/PackagingNav';
 import { TrafficSourceNav } from './TrafficSource/TrafficSourceNav';
@@ -168,6 +169,8 @@ export const DetailsSidebar = React.memo<DetailsSidebarProps>(({
                 viewingVersion={viewingVersion}
                 versions={versions}
             />
+
+            <SubnicheField videoId={video.id} subnicheId={video.subnicheId} />
 
             {/* Navigation Items */}
             <nav className="flex-1 overflow-y-auto no-scrollbar">
