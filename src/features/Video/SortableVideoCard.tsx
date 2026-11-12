@@ -4,7 +4,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { VideoCard } from './VideoCard';
 import type { VideoDetails } from '../../core/utils/youtubeApi';
 import type { VideoDeltaStats } from '../../../shared/viewDeltas';
-import type { VideoCardAnonymizeData } from './VideoCard';
+import type { VideoCardAnonymizeData, VideoFadeStyle } from './VideoCard';
 
 interface SortableVideoCardProps {
     video: VideoDetails;
@@ -19,10 +19,10 @@ interface SortableVideoCardProps {
     deltaStats?: VideoDeltaStats;
     rankingOverlay?: number | null;
     anonymizeData?: VideoCardAnonymizeData;
-    freshnessStyle?: { opacity: number; saturate: number };
+    fadeStyle?: VideoFadeStyle;
 }
 
-export const SortableVideoCard: React.FC<SortableVideoCardProps> = ({ video, playlistId, scale = 1, onMenuOpenChange, onRemove, onSetAsCover, isSelected, onToggleSelection, isSelectionMode, deltaStats, rankingOverlay, anonymizeData, freshnessStyle }) => {
+export const SortableVideoCard: React.FC<SortableVideoCardProps> = ({ video, playlistId, scale = 1, onMenuOpenChange, onRemove, onSetAsCover, isSelected, onToggleSelection, isSelectionMode, deltaStats, rankingOverlay, anonymizeData, fadeStyle }) => {
     const {
         attributes,
         listeners,
@@ -59,7 +59,7 @@ export const SortableVideoCard: React.FC<SortableVideoCardProps> = ({ video, pla
                 deltaStats={deltaStats}
                 rankingOverlay={rankingOverlay}
                 anonymizeData={anonymizeData}
-                freshnessStyle={freshnessStyle}
+                fadeStyle={fadeStyle}
             />
         </div>
     );

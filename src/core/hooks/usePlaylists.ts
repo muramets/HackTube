@@ -77,6 +77,12 @@ export const usePlaylists = (userId: string, channelId: string) => {
         }
     });
 
+    const setVideosDeprioritizedMutation = useMutation({
+        mutationFn: async ({ playlistId, videoIds, isDeprioritized }: { playlistId: string, videoIds: string[], isDeprioritized: boolean }) => {
+            await PlaylistService.setVideosDeprioritized(userId, channelId, playlistId, videoIds, isDeprioritized);
+        }
+    });
+
     const reorderPlaylistsMutation = useMutation({
         mutationFn: async (newOrder: string[]) => {
             await SettingsService.updatePlaylistOrder(userId, channelId, newOrder);
@@ -246,6 +252,7 @@ export const usePlaylists = (userId: string, channelId: string) => {
         deletePlaylist: deletePlaylistMutation.mutateAsync,
         addVideosToPlaylist: addVideosToPlaylistMutation.mutateAsync,
         removeVideosFromPlaylist: removeVideosFromPlaylistMutation.mutateAsync,
+        setVideosDeprioritized: setVideosDeprioritizedMutation.mutateAsync,
         reorderPlaylists: reorderPlaylistsMutation.mutateAsync,
         reorderPlaylistVideos: reorderPlaylistVideosMutation.mutateAsync,
         // Group operations
@@ -265,6 +272,7 @@ export const usePlaylists = (userId: string, channelId: string) => {
         deletePlaylistMutation.mutateAsync,
         addVideosToPlaylistMutation.mutateAsync,
         removeVideosFromPlaylistMutation.mutateAsync,
+        setVideosDeprioritizedMutation.mutateAsync,
         reorderPlaylistsMutation.mutateAsync,
         reorderPlaylistVideosMutation.mutateAsync,
         reorderGroupOrderMutation.mutateAsync,

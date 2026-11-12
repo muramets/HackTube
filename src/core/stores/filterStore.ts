@@ -26,6 +26,7 @@ export interface PageFilterState {
     sortBy: string;
     filters: FilterItem[];
     freshnessMode?: boolean;
+    hideDeprioritized?: boolean;
 }
 
 interface FilterState {
@@ -54,6 +55,10 @@ interface FilterState {
     // Freshness visualization toggle (per-page, persisted)
     freshnessMode: boolean;
     setFreshnessMode: (enabled: boolean) => void;
+
+    // Hide deprioritized videos inside a playlist (per-page, persisted)
+    hideDeprioritized: boolean;
+    setHideDeprioritized: (hidden: boolean) => void;
 
     // Actions
     setSearchQuery: (query: string) => void;
@@ -103,6 +108,7 @@ export const useFilterStore = create<FilterState>()(
             musicTagFilters: [],
             musicBpmFilter: null,
             freshnessMode: false,
+            hideDeprioritized: false,
             activeFilters: [],
             channelFilters: {},
             channelPlaylistsSorts: {},
@@ -179,6 +185,7 @@ export const useFilterStore = create<FilterState>()(
                 return { musicGenreFilters: [], musicTagFilters: [], musicBpmFilter: null, channelMusicFilters };
             }),
             setFreshnessMode: (enabled) => set({ freshnessMode: enabled }),
+            setHideDeprioritized: (hidden) => set({ hideDeprioritized: hidden }),
 
             // Per-page state: snapshot current state into pageStates[pageId]
             savePageState: (pageId: string) => {
@@ -197,6 +204,7 @@ export const useFilterStore = create<FilterState>()(
                             sortBy,
                             filters: state.activeFilters,
                             freshnessMode: state.freshnessMode,
+                            hideDeprioritized: state.hideDeprioritized,
                         }
                     }
                 });
@@ -213,6 +221,7 @@ export const useFilterStore = create<FilterState>()(
                         selectedChannel: null,
                         activeFilters: [],
                         freshnessMode: false,
+                        hideDeprioritized: false,
                     };
                     if (pageId === 'home') defaults.homeSortBy = 'default';
                     else if (pageId === 'playlists-list') defaults.playlistsSortBy = 'default';
@@ -226,6 +235,7 @@ export const useFilterStore = create<FilterState>()(
                     selectedChannel: saved.selectedChannel,
                     activeFilters: saved.filters,
                     freshnessMode: saved.freshnessMode ?? false,
+                    hideDeprioritized: saved.hideDeprioritized ?? false,
                 };
                 if (pageId === 'home') restored.homeSortBy = saved.sortBy as FilterState['homeSortBy'];
                 else if (pageId === 'playlists-list') restored.playlistsSortBy = saved.sortBy as FilterState['playlistsSortBy'];

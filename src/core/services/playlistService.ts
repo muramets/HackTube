@@ -5,7 +5,7 @@ import {
     updateDocument,
     fetchCollection
 } from './firestore';
-import { orderBy, arrayRemove, doc, updateDoc, getDoc } from 'firebase/firestore';
+import { orderBy, arrayRemove, arrayUnion, doc, updateDoc, getDoc } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 
 export interface Playlist {
@@ -13,6 +13,8 @@ export interface Playlist {
     name: string;
     coverImage?: string;
     videoIds: string[];
+    /** Videos dimmed in this playlist only (kept in place, just less prominent). Subset of videoIds. */
+    deprioritizedVideoIds?: string[];
     createdAt: number;
     updatedAt?: number;
     group?: string;
@@ -114,7 +116,22 @@ export const PlaylistService = {
         const playlistRef = doc(db, getPlaylistsPath(userId, channelId), playlistId);
         await updateDoc(playlistRef, {
             videoIds: arrayRemove(...videoIds),
+            deprioritizedVideoIds: arrayRemove(...videoIds),
             updatedAt: Date.now()
+        });
+    },
+
+    /** Dim (or restore) videos inside one playlist. A view preference, so updatedAt is left alone. */
+    setVideosDeprioritized: async (
+        userId: string,
+        channelId: string,
+        playlistId: string,
+        videoIds: string[],
+        isDeprioritized: boolean
+    ) => {
+        const playlistRef = doc(db, getPlaylistsPath(userId, channelId), playlistId);
+        await updateDoc(playlistRef, {
+            deprioritizedVideoIds: isDeprioritized ? arrayUnion(...videoIds) : arrayRemove(...videoIds),
         });
     },
 

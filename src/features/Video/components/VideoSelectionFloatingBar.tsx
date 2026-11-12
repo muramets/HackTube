@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Trash2, ListPlus, Home, ArrowRightLeft } from 'lucide-react';
+import { Trash2, ListPlus, Home, ArrowRightLeft, Sun, SunDim } from 'lucide-react';
 import { FloatingBar } from '../../../components/ui/organisms/FloatingBar';
 import { AddToPlaylistModal } from '../../Playlists/modals/AddToPlaylistModal';
 import { CanvasPageSelector } from '../../Canvas/components/CanvasPageSelector';
@@ -12,6 +12,11 @@ interface VideoSelectionFloatingBarProps {
     onAddToHome?: (ids: string[]) => void;
     onAddToCanvas?: (ids: string[], pageId: string, pageTitle: string) => void;
     onTransfer?: (ids: string[]) => void;
+    /** Playlist-only: dim the selection, or restore it when every selected video is already dimmed. */
+    deprioritizeAction?: {
+        isRestore: boolean;
+        onApply: (ids: string[]) => void;
+    };
 }
 
 export const VideoSelectionFloatingBar: React.FC<VideoSelectionFloatingBarProps> = ({
@@ -22,6 +27,7 @@ export const VideoSelectionFloatingBar: React.FC<VideoSelectionFloatingBarProps>
     onAddToHome,
     onAddToCanvas,
     onTransfer,
+    deprioritizeAction,
 }) => {
     const [showPlaylistModal, setShowPlaylistModal] = useState(false);
     const [canvasMenuOpen, setCanvasMenuOpen] = useState(false);
@@ -55,6 +61,16 @@ export const VideoSelectionFloatingBar: React.FC<VideoSelectionFloatingBarProps>
                                 title="Add to Home"
                             >
                                 <Home size={20} />
+                            </button>
+                        )}
+
+                        {deprioritizeAction && (
+                            <button
+                                onClick={() => deprioritizeAction.onApply(Array.from(selectedIds))}
+                                className="p-2 hover:bg-overlay/10 rounded-full text-text-primary transition-colors border-none cursor-pointer flex items-center justify-center"
+                                title={deprioritizeAction.isRestore ? 'Restore priority' : 'Deprioritize'}
+                            >
+                                {deprioritizeAction.isRestore ? <Sun size={20} /> : <SunDim size={20} />}
                             </button>
                         )}
 

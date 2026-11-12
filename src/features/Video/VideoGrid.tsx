@@ -14,7 +14,7 @@ import { useAuth } from '../../core/hooks/useAuth';
 import { useChannelStore } from '../../core/stores/channelStore';
 import { useUIStore } from '../../core/stores/uiStore';
 import type { VideoDeltaStats } from '../../../shared/viewDeltas';
-import type { VideoCardAnonymizeData } from './VideoCard';
+import type { VideoCardAnonymizeData, VideoFadeStyle } from './VideoCard';
 
 interface VideoGridProps {
   videos?: VideoDetails[];
@@ -29,7 +29,7 @@ interface VideoGridProps {
   getRankingOverlay?: (videoId: string) => number | null;
   anonymizeData?: VideoCardAnonymizeData;
   isSelectionMode?: boolean;
-  freshnessMap?: Map<string, { opacity: number; saturate: number }>;
+  fadeMap?: Map<string, VideoFadeStyle>;
 }
 
 const parseViewCount = (viewCount: string | number | undefined): number => {
@@ -65,7 +65,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({
   getRankingOverlay,
   anonymizeData,
   isSelectionMode: propIsSelectionMode,
-  freshnessMap
+  fadeMap
 }) => {
   const { user, isLoading: authLoading } = useAuth();
   const currentChannel = useChannelStore(state => state.currentChannel);
@@ -458,7 +458,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({
         videoDeltaStats={videoDeltaStats}
         getRankingOverlay={getRankingOverlay}
         anonymizeData={anonymizeData}
-        freshnessMap={freshnessMap}
+        fadeMap={fadeMap}
       />
     </VideoGridContainer>
   );

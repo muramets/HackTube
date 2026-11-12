@@ -283,6 +283,21 @@ async function updateIdListInDoc(db, ref, field, transformIds, extraFields = {})
 
 const withoutId = (id) => (ids) => ids.filter((existing) => existing !== id);
 
+/** Drop a video from a playlist: its slot in videoIds and its "deprioritized" mark, in one transaction. */
+async function removeVideoFromPlaylistDoc(db, playlistRef, videoId) {
+    await db.runTransaction(async (tx) => {
+        const snap = await tx.get(playlistRef);
+        if (!snap.exists) return;
+        const listOf = (field) => (Array.isArray(snap.data()[field]) ? snap.data()[field] : []);
+        if (!listOf('videoIds').includes(videoId) && !listOf('deprioritizedVideoIds').includes(videoId)) return;
+        tx.update(playlistRef, {
+            videoIds: withoutId(videoId)(listOf('videoIds')),
+            deprioritizedVideoIds: withoutId(videoId)(listOf('deprioritizedVideoIds')),
+            updatedAt: Date.now(),
+        });
+    });
+}
+
 async function createVideo(ctx, plan) {
     const { db, builder } = ctx;
     const { userId, channel, playlist, cover, changes, options } = plan;
@@ -390,7 +405,7 @@ async function deleteVideo({ db }, plan) {
         console.log('Removed from Home');
     }
     for (const playlist of playlists) {
-        await updateIdListInDoc(db, playlist.ref, 'videoIds', withoutId(videoId), { updatedAt: Date.now() });
+        await removeVideoFromPlaylistDoc(db, playlist.ref, videoId);
         console.log(`Removed from playlist "${docName(playlist)}"`);
     }
 }
@@ -540,7 +555,7 @@ async function applyPlaylistChanges({ db, builder }, plan, videoId) {
     }
     for (const playlistId of membership.toRemove) {
         const playlist = playlistsById.get(playlistId);
-        await updateIdListInDoc(db, playlist.ref, 'videoIds', withoutId(videoId), { updatedAt: Date.now() });
+        await removeVideoFromPlaylistDoc(db, playlist.ref, videoId);
         console.log(`Removed from playlist "${docName(playlist)}"`);
     }
 }

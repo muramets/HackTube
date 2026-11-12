@@ -117,8 +117,9 @@
 - **Обложка:** путь `users/{uid}/channels/{channelId}/videos/{videoId}/{timestamp}_{fileName}`.
   Если шире 1280px или > 2 MB — копия через macOS `sips` (JPEG, качество 85) во временную папку.
 - **Плейлисты:** текущие находятся через `array-contains` по `videoIds`. Добавление — id в **конец** `videoIds`
-  (уже присутствующий id остаётся на месте), удаление — фильтр; + `updatedAt`, каждый плейлист в своей транзакции
-  (`updateIdListInDoc`). Отличие от UI: `PlaylistService.addVideosToPlaylist` ставит видео в начало.
+  (уже присутствующий id остаётся на месте), удаление — фильтр `videoIds` и `deprioritizedVideoIds`
+  ([Deprioritized Videos](../playlists/deprioritized-videos.md)); + `updatedAt`, каждый плейлист в своей транзакции
+  (`updateIdListInDoc` / `removeVideoFromPlaylistDoc`). Отличие от UI: `PlaylistService.addVideosToPlaylist` ставит видео в начало.
 - **Порядок записи:** обложка → видео → Home → плейлист. При сбое после записи видео — видео уже есть,
   CLI печатает пройденные шаги, остальное доделывается в UI.
 

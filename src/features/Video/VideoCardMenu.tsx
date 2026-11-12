@@ -1,5 +1,5 @@
 import React from 'react';
-import { ListPlus, Trash2, RefreshCw, MinusCircle, ArrowLeftRight, ArrowRightLeft, FileText, Home } from 'lucide-react';
+import { ListPlus, Trash2, RefreshCw, MinusCircle, ArrowLeftRight, ArrowRightLeft, FileText, Home, Sun, SunDim } from 'lucide-react';
 import { Dropdown } from '../../components/ui/molecules/Dropdown';
 
 interface VideoCardMenuProps {
@@ -16,6 +16,9 @@ interface VideoCardMenuProps {
     onDetails?: (e: React.MouseEvent) => void;
     onSetAsCover?: (e: React.MouseEvent) => void;
     onAddToHome?: (e: React.MouseEvent) => void;
+    /** Playlist-only: dim the video in this playlist, or restore it. */
+    onToggleDeprioritized?: (e: React.MouseEvent) => void;
+    isDeprioritized?: boolean;
     onTransferToChannel?: (e: React.MouseEvent) => void;
     isOrphanInPlaylist?: boolean;
     hideDelete?: boolean;
@@ -35,6 +38,8 @@ export const VideoCardMenu: React.FC<VideoCardMenuProps> = ({
     onDetails,
     onSetAsCover,
     onAddToHome,
+    onToggleDeprioritized,
+    isDeprioritized,
     onTransferToChannel,
     isOrphanInPlaylist,
     hideDelete
@@ -84,6 +89,16 @@ export const VideoCardMenu: React.FC<VideoCardMenuProps> = ({
                 >
                     <Home size={20} />
                     <span>Add to Home</span>
+                </div>
+            )}
+
+            {onToggleDeprioritized && (
+                <div
+                    className="flex items-center gap-3 px-4 py-2 cursor-pointer hover:bg-hover-bg text-sm"
+                    onClick={onToggleDeprioritized}
+                >
+                    {isDeprioritized ? <Sun size={20} /> : <SunDim size={20} />}
+                    <span>{isDeprioritized ? 'Restore priority' : 'Deprioritize'}</span>
                 </div>
             )}
 

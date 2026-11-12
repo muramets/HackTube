@@ -6,7 +6,7 @@ import type { VideoDetails } from '../../core/utils/youtubeApi';
 import { useSettings } from '../../core/hooks/useSettings';
 import { GRID_LAYOUT } from './layout';
 import type { VideoDeltaStats } from '../../../shared/viewDeltas';
-import type { VideoCardAnonymizeData } from './VideoCard';
+import type { VideoCardAnonymizeData, VideoFadeStyle } from './VideoCard';
 import {
     DndContext,
     closestCenter,
@@ -36,7 +36,7 @@ interface VirtualVideoGridProps {
     videoDeltaStats?: Map<string, VideoDeltaStats>;
     getRankingOverlay?: (videoId: string) => number | null;
     anonymizeData?: VideoCardAnonymizeData;
-    freshnessMap?: Map<string, { opacity: number; saturate: number }>;
+    fadeMap?: Map<string, VideoFadeStyle>;
 }
 
 interface InnerGridProps extends VirtualVideoGridProps {
@@ -58,7 +58,7 @@ const InnerGrid: React.FC<InnerGridProps> = ({
     videoDeltaStats,
     getRankingOverlay,
     anonymizeData,
-    freshnessMap
+    fadeMap
 }) => {
     const { generalSettings } = useSettings();
     const cardsPerRow = generalSettings.cardsPerRow;
@@ -190,7 +190,7 @@ const InnerGrid: React.FC<InnerGridProps> = ({
                                         deltaStats={videoDeltaStats?.get(video.id)}
                                         rankingOverlay={getRankingOverlay?.(video.id)}
                                         anonymizeData={anonymizeData}
-                                        freshnessStyle={freshnessMap?.get(video.id)}
+                                        fadeStyle={fadeMap?.get(video.id)}
                                     />
                                 ) : (
                                     <VideoCard
@@ -204,7 +204,7 @@ const InnerGrid: React.FC<InnerGridProps> = ({
                                         deltaStats={videoDeltaStats?.get(video.id)}
                                         rankingOverlay={getRankingOverlay?.(video.id)}
                                         anonymizeData={anonymizeData}
-                                        freshnessStyle={freshnessMap?.get(video.id)}
+                                        fadeStyle={fadeMap?.get(video.id)}
                                     />
                                 )}
                             </div>

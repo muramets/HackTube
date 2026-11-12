@@ -9,7 +9,7 @@ import {
 } from './firestore';
 import type { DocumentData } from 'firebase/firestore';
 import type { VideoDetails, HistoryItem, CoverVersion } from '../utils/youtubeApi';
-import { orderBy, getDocs, deleteDoc, writeBatch, doc } from 'firebase/firestore';
+import { orderBy, getDocs, deleteDoc, writeBatch, doc, arrayRemove } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import { deleteCsvSnapshot } from './storageService';
 
@@ -245,8 +245,10 @@ export const VideoService = {
 
                 for (const playlist of playlistsWithVideo) {
                     const playlistRef = doc(db, playlistsPath, playlist.id);
-                    const updatedVideoIds = playlist.videoIds.filter(id => id !== videoId);
-                    batch.update(playlistRef, { videoIds: updatedVideoIds });
+                    batch.update(playlistRef, {
+                        videoIds: playlist.videoIds.filter(id => id !== videoId),
+                        deprioritizedVideoIds: arrayRemove(videoId),
+                    });
                 }
 
                 await batch.commit();

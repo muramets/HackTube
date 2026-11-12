@@ -28,6 +28,12 @@ import { VideoTransferModal } from '../../features/Video/Modals/VideoTransferMod
 import { useSelectionContextBridge } from '../../features/Video/hooks/useSelectionContextBridge';
 import { useAddToCanvas } from '../../features/Video/hooks/useAddToCanvas';
 import { useVideoSelectionStore, selectAllSelectedIds } from '../../core/stores/videoSelectionStore';
+import {
+    areAllDeprioritized,
+    buildPlaylistFadeMap,
+    countDeprioritizedInPlaylist,
+    mergeVisibleReorder,
+} from '../../features/Playlists/utils/deprioritizedVideos';
 
 // Format number with K/M suffix
 const formatDelta = (value: number | null): string | null => {
@@ -70,9 +76,9 @@ export const PlaylistDetailPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const { user } = useAuth();
     const { currentChannel } = useChannelStore();
-    const { playlists, reorderPlaylistVideos, updatePlaylist, removeVideosFromPlaylist, isLoading: isPlaylistsLoading } = usePlaylists(user?.uid || '', currentChannel?.id || '');
+    const { playlists, reorderPlaylistVideos, updatePlaylist, removeVideosFromPlaylist, setVideosDeprioritized, isLoading: isPlaylistsLoading } = usePlaylists(user?.uid || '', currentChannel?.id || '');
     const { videos, isLoading: isVideosLoading, removeVideo, updateVideo } = useVideos(user?.uid || '', currentChannel?.id || '');
-    const { playlistVideoSortBy, setPlaylistVideoSortBy, activeFilters, removeFilter, selectedChannel, setSelectedChannel, savePageState, loadPageState, freshnessMode, setFreshnessMode } = useFilterStore();
+    const { playlistVideoSortBy, setPlaylistVideoSortBy, activeFilters, removeFilter, selectedChannel, setSelectedChannel, savePageState, loadPageState, freshnessMode, setFreshnessMode, hideDeprioritized, setHideDeprioritized } = useFilterStore();
     const navigate = useNavigate();
 
     // Per-playlist state persistence: load on enter, save on leave
@@ -84,6 +90,7 @@ export const PlaylistDetailPage: React.FC = () => {
     const { pickerSettings } = useSettings();
 
     const playlist = playlists.find(p => p.id === id);
+    const deprioritizedIds = useMemo(() => new Set(playlist?.deprioritizedVideoIds ?? []), [playlist?.deprioritizedVideoIds]);
 
     // Pick the Winner
     const picker = usePickTheWinner(playlist?.videoIds?.length ?? 0);
@@ -286,8 +293,13 @@ export const PlaylistDetailPage: React.FC = () => {
         return rankedPlaylistVideos.slice(0, pickerSettings.winnerCount);
     }, [rankedPlaylistVideos, hideLosers, isViewingRanking, pickerSettings.winnerCount]);
 
-    // Alias for compatibility with rest of component
-    const playlistVideos = filteredPlaylistVideos;
+    // Apply "Hide deprioritized" toggle — the videos stay in the playlist, just out of view
+    const playlistVideos = useMemo(() => {
+        if (!hideDeprioritized) return filteredPlaylistVideos;
+        return filteredPlaylistVideos.filter(v => !deprioritizedIds.has(v.id));
+    }, [filteredPlaylistVideos, hideDeprioritized, deprioritizedIds]);
+
+    const deprioritizedCount = countDeprioritizedInPlaylist(localVideoOrder, deprioritizedIds);
 
     // Build full anonymization data with per-video title labels
     const anonymizeData: VideoCardAnonymizeData | undefined = useMemo(() => {
@@ -340,6 +352,12 @@ export const PlaylistDetailPage: React.FC = () => {
         return map;
     }, [freshnessMode, playlistVideos]);
 
+    // Freshness + deprioritized dimming combined into one per-card style
+    const fadeMap = useMemo(
+        () => buildPlaylistFadeMap(playlistVideos.map(v => v.id), freshnessMap, deprioritizedIds),
+        [playlistVideos, freshnessMap, deprioritizedIds]
+    );
+
     // Lazy cleanup: auto-remove orphaned video IDs on playlist open
     const cleanupDoneRef = React.useRef<string | null>(null);
 
@@ -354,7 +372,14 @@ export const PlaylistDetailPage: React.FC = () => {
         if (orphanedCount > 0) {
             cleanupDoneRef.current = playlist.id;
             // Silent fire-and-forget cleanup
-            updatePlaylist({ playlistId: playlist.id, updates: { videoIds: validVideoIds } });
+            const validIdSet = new Set(validVideoIds);
+            updatePlaylist({
+                playlistId: playlist.id,
+                updates: {
+                    videoIds: validVideoIds,
+                    deprioritizedVideoIds: (playlist.deprioritizedVideoIds ?? []).filter(vid => validIdSet.has(vid)),
+                },
+            });
         }
     }, [playlist, videos, user, currentChannel, updatePlaylist]);
 
@@ -471,13 +496,14 @@ export const PlaylistDetailPage: React.FC = () => {
             newOrder.splice(newIndex, 0, movedItem);
 
             // 1. Optimistically update local order FIRST
-            setLocalVideoOrder(newOrder);
+            setLocalVideoOrder(mergeVisibleReorder(rankedPlaylistVideos.map(v => v.id), newOrder));
 
             // 2. Switch UI to Manual Sort
             setPlaylistVideoSortBy('default');
 
-            // 3. Persist this new "Manual" order
-            reorderPlaylistVideos({ playlistId: playlist.id, newVideoIds: newOrder });
+            // 3. Persist this new "Manual" order — hidden videos (losers, deprioritized) keep their slots
+            const fullSortedOrder = rankedPlaylistVideos.map(v => v.id);
+            reorderPlaylistVideos({ playlistId: playlist.id, newVideoIds: mergeVisibleReorder(fullSortedOrder, newOrder) });
             return;
         }
 
@@ -592,6 +618,19 @@ export const PlaylistDetailPage: React.FC = () => {
                                 <Hourglass size={20} />
                             </button>
                         </PortalTooltip>
+                        {(deprioritizedCount > 0 || hideDeprioritized) && (
+                            <PortalTooltip content={`${hideDeprioritized ? 'Show' : 'Hide'}\u00A0deprioritized\u00A0(${deprioritizedCount})`}>
+                                <button
+                                    onClick={() => setHideDeprioritized(!hideDeprioritized)}
+                                    className={`w-[34px] h-[34px] rounded-full flex items-center justify-center transition-colors border-none cursor-pointer flex-shrink-0 ${hideDeprioritized
+                                        ? 'bg-text-primary text-bg-primary'
+                                        : 'bg-transparent text-text-primary hover:bg-hover-bg'
+                                        }`}
+                                >
+                                    {hideDeprioritized ? <EyeOff size={20} /> : <Eye size={20} />}
+                                </button>
+                            </PortalTooltip>
+                        )}
                         <PlaylistExportControls
                             videos={videosToExport}
                             playlistName={playlist.name}
@@ -676,7 +715,7 @@ export const PlaylistDetailPage: React.FC = () => {
                     getRankingOverlay={getRankingOverlay}
                     anonymizeData={anonymizeData}
                     isSelectionMode={picker.isActive || isSelectionMode}
-                    freshnessMap={freshnessMap}
+                    fadeMap={fadeMap}
                 />
 
                 {/* Floating Zoom Controls */}
@@ -713,6 +752,17 @@ export const PlaylistDetailPage: React.FC = () => {
                         const subset = videos.filter(v => ids.includes(v.id));
                         if (subset.length > 0) setTransferVideos(subset);
                     }}
+                    deprioritizeAction={allFromCurrentPlaylist && playlist ? {
+                        isRestore: areAllDeprioritized(allSelectedIds, deprioritizedIds),
+                        onApply: async (ids) => {
+                            await setVideosDeprioritized({
+                                playlistId: playlist.id,
+                                videoIds: ids,
+                                isDeprioritized: !areAllDeprioritized(ids, deprioritizedIds),
+                            });
+                            clearAll();
+                        },
+                    } : undefined}
                 />
 
                 <VideoTransferModal
@@ -724,7 +774,7 @@ export const PlaylistDetailPage: React.FC = () => {
                     videos={transferVideos}
                 />
 
-                {playlistVideos.length === 0 && (
+                {basePlaylistVideos.length === 0 && (
                     <div className="text-center text-text-secondary mt-12">
                         <p>No videos in this playlist yet.</p>
                         <button

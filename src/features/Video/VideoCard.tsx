@@ -23,6 +23,12 @@ import { useSettings } from '../../core/hooks/useSettings';
 import { useUIStore } from '../../core/stores/uiStore';
 import type { VideoDeltaStats } from '../../../shared/viewDeltas';
 
+/** Dimmed look of a card (freshness, deprioritized); full color returns on hover. */
+export interface VideoFadeStyle {
+  opacity: number;
+  saturate: number;
+}
+
 export interface VideoCardAnonymizeData {
   channelTitle: string;
   channelAvatar: string;
@@ -46,17 +52,17 @@ interface VideoCardProps {
   deltaStats?: VideoDeltaStats;
   rankingOverlay?: number | null;
   anonymizeData?: VideoCardAnonymizeData;
-  freshnessStyle?: { opacity: number; saturate: number };
+  fadeStyle?: VideoFadeStyle;
 }
 
-export const VideoCard: React.FC<VideoCardProps> = ({ video, playlistId, onMenuOpenChange, onRemove, onSetAsCover, isOverlay, isSelected, onToggleSelection, isSelectionMode, deltaStats, rankingOverlay, anonymizeData, freshnessStyle }) => {
+export const VideoCard: React.FC<VideoCardProps> = ({ video, playlistId, onMenuOpenChange, onRemove, onSetAsCover, isOverlay, isSelected, onToggleSelection, isSelectionMode, deltaStats, rankingOverlay, anonymizeData, fadeStyle }) => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const currentChannel = useChannelStore(state => state.currentChannel);
 
   const { syncVideo } = useVideoSync(user?.uid || '', currentChannel?.id || '');
 
-  const { removeVideosFromPlaylist, playlists } = usePlaylists(user?.uid || '', currentChannel?.id || '');
+  const { removeVideosFromPlaylist, setVideosDeprioritized, playlists } = usePlaylists(user?.uid || '', currentChannel?.id || '');
   const { updateVideo } = useVideos(user?.uid || '', currentChannel?.id || '');
   const { generalSettings } = useSettings();
   const apiKey = generalSettings.apiKey;
@@ -191,6 +197,16 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video, playlistId, onMenuO
   const isOrphanInPlaylist = !!(playlistId && video.isPlaylistOnly &&
     !playlists.some(p => p.id !== playlistId && p.videoIds?.includes(video.id)));
 
+  const isDeprioritized = !!playlistId &&
+    !!playlists.find(p => p.id === playlistId)?.deprioritizedVideoIds?.includes(video.id);
+
+  const handleToggleDeprioritized = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    handleMenuClose();
+    if (!playlistId) return;
+    setVideosDeprioritized({ playlistId, videoIds: [video.id], isDeprioritized: !isDeprioritized });
+  };
+
   const handleRemoveFromPlaylist = (e: React.MouseEvent) => {
     e.stopPropagation();
     handleMenuClose();
@@ -316,21 +332,21 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video, playlistId, onMenuO
           transform: isFlipping ? 'rotateY(90deg)' : 'rotateY(0deg)',
           transformStyle: 'preserve-3d',
           cursor: isOverlay ? 'grabbing' : 'pointer',
-          ...(freshnessStyle ? {
-            opacity: freshnessStyle.opacity,
-            filter: `saturate(${freshnessStyle.saturate})`,
+          ...(fadeStyle ? {
+            opacity: fadeStyle.opacity,
+            filter: `saturate(${fadeStyle.saturate})`,
             transition: 'opacity 0.3s ease, filter 0.3s ease',
           } : {})
         }}
-        onMouseEnter={freshnessStyle ? (e) => {
+        onMouseEnter={fadeStyle ? (e) => {
           const el = e.currentTarget;
           el.style.opacity = '1';
           el.style.filter = 'saturate(1)';
         } : undefined}
-        onMouseLeave={freshnessStyle ? (e) => {
+        onMouseLeave={fadeStyle ? (e) => {
           const el = e.currentTarget;
-          el.style.opacity = String(freshnessStyle.opacity);
-          el.style.filter = `saturate(${freshnessStyle.saturate})`;
+          el.style.opacity = String(fadeStyle.opacity);
+          el.style.filter = `saturate(${fadeStyle.saturate})`;
         } : undefined}
         onClick={(e) => {
           // Ctrl/Cmd + Click to toggle selection
@@ -666,6 +682,8 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video, playlistId, onMenuO
                       handleMenuClose();
                     } : undefined}
                     onAddToHome={playlistId ? handleAddToHome : undefined}
+                    onToggleDeprioritized={playlistId ? handleToggleDeprioritized : undefined}
+                    isDeprioritized={isDeprioritized}
                     onTransferToChannel={!isOrphanInPlaylist ? (e) => {
                       e.stopPropagation();
                       setShowTransferModal(true);
